@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import AuthForm, { IAuthForm } from "../molecules/AuthForm";
 
 interface IAuthContainer extends IAuthForm {

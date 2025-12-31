@@ -1,4 +1,5 @@
 import { FaMoneyBills } from "react-icons/fa6";
+
 import Feature from "../atoms/Feature";
 
 const FeaturePrice = () => {

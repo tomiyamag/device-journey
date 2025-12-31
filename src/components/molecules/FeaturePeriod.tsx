@@ -1,4 +1,5 @@
 import { FaFire } from "react-icons/fa";
+
 import Feature from "../atoms/Feature";
 
 const FeaturePeriod = () => {
