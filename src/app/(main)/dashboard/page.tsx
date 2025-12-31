@@ -1,7 +1,7 @@
-"use client";
-
-import InformationCard from "@/components/atoms/InformationCard";
-import PickupButton from "@/components/atoms/PickupButton";
+import InformationHeading from "@/components/atoms/InformationHeading";
+import ManageLink from "@/components/atoms/ManageLink";
+import DevicesSlider from "@/components/molecules/DevicesSlider";
+import Pickups from "@/components/molecules/Pickups";
 import ActiveDevice from "@/components/organisms/ActiveDevice";
 
 export default function Dashboard() {
@@ -9,15 +9,10 @@ export default function Dashboard() {
     <div className="flex flex-col gap-9">
       <div className="flex flex-col gap-2">
         <ActiveDevice />
-
-        <div className="flex gap-2">
-          <PickupButton emoji="📱" label="端末登録" onClick={() => {}} />
-          <PickupButton emoji="📍" label="チェックイン" onClick={() => {}} />
-          <PickupButton emoji="📈" label="コスト推移" onClick={() => {}} />
-        </div>
+        <Pickups />
       </div>
 
-      <div className="flex flex-col gap-4">
+      {/* <div className="flex flex-col gap-4">
         <InformationCard header={<>iPhone 15 Pro</>}>
           <></>
         </InformationCard>
@@ -29,6 +24,16 @@ export default function Dashboard() {
         <InformationCard header={<>Google Pixel 5a</>}>
           <></>
         </InformationCard>
+      </div> */}
+
+      <div>
+        <InformationHeading
+          action={<ManageLink href="/devices" label="端末を管理" />}
+        >
+          その他のデバイス
+        </InformationHeading>
+
+        <DevicesSlider />
       </div>
     </div>
   );

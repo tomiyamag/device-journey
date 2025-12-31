@@ -1,22 +1,19 @@
+import Link from "next/link";
+import { FaCircle } from "react-icons/fa";
+import { FaCalendarDays } from "react-icons/fa6";
+import { GrStorage } from "react-icons/gr";
+import { IoIosArrowForward, IoMdColorPalette } from "react-icons/io";
+
+import ActiveDeviceTag from "../atoms/ActiveDeviceTag";
+import DeviceSpec from "../atoms/DeviceSpec";
 import InformationCard from "../atoms/InformationCard";
 import InformationHeading from "../atoms/InformationHeading";
 import ActiveDeviceFeatures from "../molecules/ActiveDeviceFeatures";
-import ManageLink from "../atoms/ManageLink";
-import { FaCircle } from "react-icons/fa";
-import { GrStorage } from "react-icons/gr";
-import { IoIosArrowForward, IoMdColorPalette } from "react-icons/io";
-import { FaCalendarDays } from "react-icons/fa6";
-import Link from "next/link";
-import ActiveDeviceTag from "../atoms/ActiveDeviceTag";
-import DeviceSpec from "../atoms/DeviceSpec";
 
 const ActiveDevice = () => {
   return (
-    <>
-      <InformationHeading
-        className="mb-1"
-        action={<ManageLink href="/devices" label="端末を管理" />}
-      >
+    <div>
+      <InformationHeading>
         <span className="flex gap-2 items-center">
           <FaCircle size={8} className="text-teal-600" />
           メインのアクティブデバイス
@@ -85,7 +82,7 @@ const ActiveDevice = () => {
           </div>
         </div>
       </InformationCard>
-    </>
+    </div>
   );
 };
 
