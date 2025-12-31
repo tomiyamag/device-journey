@@ -32,7 +32,7 @@ const ActiveDevice = () => {
 
           <div className="flex-1">
             <div className="mb-4 sm:mb-2.5 flex items-center gap-3">
-              <div className="rounded-lg overflow-hidden w-24 h-22 relative sm:hidden">
+              <div className="rounded-lg overflow-hidden w-30 h-28 relative sm:hidden">
                 <img
                   src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
                   alt=""

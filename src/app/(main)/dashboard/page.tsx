@@ -1,8 +1,8 @@
 import InformationHeading from "@/components/atoms/InformationHeading";
 import ManageLink from "@/components/atoms/ManageLink";
-import DevicesSlider from "@/components/molecules/DevicesSlider";
 import Pickups from "@/components/molecules/Pickups";
 import ActiveDevice from "@/components/organisms/ActiveDevice";
+import DevicesSlider from "@/components/organisms/DevicesSlider";
 
 export default function Dashboard() {
   return (
