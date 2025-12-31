@@ -1,4 +1,4 @@
-import { login, signup } from "@/app/(auth)/auth/actions";
+import { login, signup } from "@/actions/auth";
 
 import Input from "../atoms/forms/Input";
 import SubmitButton from "../atoms/forms/SubmitButton";
