@@ -4,7 +4,7 @@ import { useFormStatus } from "react-dom";
 
 import Button, { IButton } from "../Button";
 
-interface ISubmitButton extends IButton {}
+type ISubmitButton = IButton;
 
 const SubmitButton = ({ children, ...rest }: ISubmitButton) => {
   const { pending } = useFormStatus();

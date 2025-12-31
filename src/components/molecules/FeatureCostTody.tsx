@@ -6,7 +6,7 @@ const FeatureCostTody = () => {
   return (
     // TODO: アイコン・カラー出し分け、ヘルプアイコン
     <Feature icon={FaCoffee} title="今日のコスト" className="text-amber-900">
-      <div>¥ 320 / day</div>
+      <div>¥ 320 / 日</div>
     </Feature>
   );
 };

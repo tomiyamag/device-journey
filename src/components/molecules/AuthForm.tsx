@@ -3,8 +3,10 @@ import { login, signup } from "@/app/(auth)/auth/actions";
 import Input from "../atoms/forms/Input";
 import SubmitButton from "../atoms/forms/SubmitButton";
 
+export type AuthType = "login" | "signup";
+
 export interface IAuthForm {
-  type: "login" | "signup";
+  type: AuthType;
 }
 
 const AuthForm = ({ type }: IAuthForm) => {

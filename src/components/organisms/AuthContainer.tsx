@@ -1,26 +1,33 @@
 import Link from "next/link";
 
-import AuthForm, { IAuthForm } from "../molecules/AuthForm";
+import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 
 interface IAuthContainer extends IAuthForm {
   title: string;
   description?: string;
 }
 
-const AuthContainer = ({ type, title, description }: IAuthContainer) => {
-  const AUTH_META = {
-    login: {
-      switchText: "アカウントをお持ちではありませんか？",
-      linkText: "新規登録",
-      href: "/signup",
-    },
-    signup: {
-      switchText: "すでにアカウントをお持ちですか？",
-      linkText: "ログイン",
-      href: "/login",
-    },
-  };
+const AUTH_META: Record<
+  AuthType,
+  {
+    switchText: string;
+    linkText: string;
+    href: string;
+  }
+> = {
+  login: {
+    switchText: "アカウントをお持ちではありませんか？",
+    linkText: "新規登録",
+    href: "/signup",
+  },
+  signup: {
+    switchText: "すでにアカウントをお持ちですか？",
+    linkText: "ログイン",
+    href: "/login",
+  },
+};
 
+const AuthContainer = ({ type, title, description }: IAuthContainer) => {
   const meta = AUTH_META[type];
 
   return (

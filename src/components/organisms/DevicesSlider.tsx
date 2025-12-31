@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import InformationCard from "../atoms/InformationCard";
+import OthersDeviceDetails from "../molecules/OthersDeviceDetails";
 
 const DevicesSlider = () => {
   return (
@@ -18,9 +19,53 @@ const DevicesSlider = () => {
         <SwiperSlide className="w-auto!">
           <Link
             href=""
-            className="block w-3xs transition-opacity hover:opacity-80"
+            className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
           >
-            <InformationCard footer={"iPhone 13 Pro"}>
+            <InformationCard
+              footer={
+                <OthersDeviceDetails name="Google Pixel 5" status={"sub"} />
+              }
+            >
+              <div className="rounded-xl bg-white overflow-hidden h-28 relative">
+                <img
+                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                  alt=""
+                  className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
+                />
+              </div>
+            </InformationCard>
+          </Link>
+        </SwiperSlide>
+
+        <SwiperSlide className="w-auto!">
+          <Link
+            href=""
+            className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
+          >
+            <InformationCard
+              footer={<OthersDeviceDetails name="Google Pixel 4 XL" />}
+            >
+              <div className="rounded-xl bg-white overflow-hidden h-28 relative">
+                <img
+                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                  alt=""
+                  className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
+                />
+              </div>
+            </InformationCard>
+          </Link>
+        </SwiperSlide>
+
+        <SwiperSlide className="w-auto!">
+          <Link
+            href=""
+            className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
+          >
+            <InformationCard
+              footer={
+                <OthersDeviceDetails name="Google Pixel 3 XL" status={"sold"} />
+              }
+            >
               <div className="rounded-xl bg-white overflow-hidden h-28 relative">
                 <img
                   src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"

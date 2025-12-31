@@ -40,16 +40,16 @@ const ActiveDevice = () => {
                 />
               </div>
 
-              <div>
-                <div className="font-bold mb-1.5">
+              <div className="flex-1">
+                <h3 className="font-bold mb-1.5">
                   <Link
                     href="/dashboard"
                     className="inline-flex gap-2 items-center underline hover:no-underline"
                   >
-                    iPhone 15 Pro
-                    <IoIosArrowForward size={14} />
+                    <span className="flex-1">Apple iPhone 15 Pro</span>
+                    <IoIosArrowForward size={14} className="w-3.5" />
                   </Link>
-                </div>
+                </h3>
 
                 <div className="flex flex-wrap gap-1">
                   <ActiveDeviceTag>
