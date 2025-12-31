@@ -22,7 +22,7 @@ const Button = ({
   return (
     <button
       className={classNames(
-        "rounded-lg h-11 block text-white font-bold cursor-pointer hover:opacity-80 disabled:text-gray-100 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
+        "rounded-lg h-11 block text-white font-bold cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
         {
           "w-full": size === "full",
           // TODO: 他サイズのスタイル設定
