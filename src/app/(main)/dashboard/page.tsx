@@ -1,8 +1,6 @@
-import InformationHeading from "@/components/atoms/InformationHeading";
-import ManageLink from "@/components/atoms/ManageLink";
 import Pickups from "@/components/molecules/Pickups";
 import ActiveDevice from "@/components/organisms/ActiveDevice";
-import DevicesSlider from "@/components/organisms/DevicesSlider";
+import OtherDevices from "@/components/organisms/OtherDevices";
 
 export default function Dashboard() {
   return (
@@ -13,13 +11,7 @@ export default function Dashboard() {
       </div>
 
       <div>
-        <InformationHeading
-          action={<ManageLink href="/devices" label="端末を管理" />}
-        >
-          その他のデバイス
-        </InformationHeading>
-
-        <DevicesSlider />
+        <OtherDevices />
       </div>
     </div>
   );
