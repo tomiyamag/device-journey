@@ -1,6 +1,6 @@
 export type DeviceStatusType = "in_use" | "sold" | "sub";
 
-export interface DeviceSpec {
+export interface IDeviceSpec {
   display?: string;
   camera?: string;
   battery?: string;
@@ -10,7 +10,7 @@ export interface DeviceSpec {
   colors?: string;
 }
 
-export interface Device {
+export interface IDevice {
   id: string;
   created_at: string;
   user_id: string;
@@ -22,5 +22,12 @@ export interface Device {
   purchase_date: string;
   retire_date: string | null;
   status: DeviceStatusType | null;
-  spec: DeviceSpec | null;
+  spec: IDeviceSpec | null;
+}
+
+export interface IAutocompleteMobileApiResult {
+  id: number;
+  name: string;
+  brand: string;
+  full_name: string;
 }

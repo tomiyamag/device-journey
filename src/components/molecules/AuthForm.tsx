@@ -1,7 +1,7 @@
 import { login, signup } from "@/actions/auth";
 
-import Input from "../atoms/forms/Input";
-import SubmitButton from "../atoms/forms/SubmitButton";
+import FormInput from "../atoms/FormInput";
+import FormSubmitButton from "../atoms/FormSubmitButton";
 
 export type AuthType = "login" | "signup";
 
@@ -18,7 +18,7 @@ const AuthForm = ({ type }: IAuthForm) => {
         <label htmlFor="email" className={labelClassNames}>
           メールアドレス
         </label>
-        <Input
+        <FormInput
           id="email"
           name="email"
           type="email"
@@ -31,13 +31,13 @@ const AuthForm = ({ type }: IAuthForm) => {
         <label htmlFor="password" className={labelClassNames}>
           パスワード
         </label>
-        <Input id="password" name="password" type="password" required />
+        <FormInput id="password" name="password" type="password" required />
       </div>
 
       {type === "login" ? (
-        <SubmitButton formAction={login}>ログイン</SubmitButton>
+        <FormSubmitButton formAction={login}>ログイン</FormSubmitButton>
       ) : (
-        <SubmitButton formAction={signup}>新規登録</SubmitButton>
+        <FormSubmitButton formAction={signup}>新規登録</FormSubmitButton>
       )}
     </form>
   );

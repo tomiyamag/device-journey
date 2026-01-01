@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 
-export interface IButton extends React.ComponentProps<"button"> {
+export interface IButton extends ComponentProps<"button"> {
   className?: string;
   variant?: "primary" | "secondary";
   size?: "sm" | "md" | "lg" | "full";

@@ -2,11 +2,11 @@
 
 import { useFormStatus } from "react-dom";
 
-import Button, { IButton } from "../Button";
+import Button, { IButton } from "./Button";
 
-type ISubmitButton = IButton;
+type IFormSubmitButton = IButton;
 
-const SubmitButton = ({ children, ...rest }: ISubmitButton) => {
+const FormSubmitButton = ({ children, ...rest }: IFormSubmitButton) => {
   const { pending } = useFormStatus();
 
   return (
@@ -16,4 +16,4 @@ const SubmitButton = ({ children, ...rest }: ISubmitButton) => {
   );
 };
 
-export default SubmitButton;
+export default FormSubmitButton;

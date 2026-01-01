@@ -12,20 +12,6 @@ export default function Dashboard() {
         <Pickups />
       </div>
 
-      {/* <div className="flex flex-col gap-4">
-        <InformationCard header={<>iPhone 15 Pro</>}>
-          <></>
-        </InformationCard>
-
-        <InformationCard header={<>Google Pixel 4</>}>
-          <></>
-        </InformationCard>
-
-        <InformationCard header={<>Google Pixel 5a</>}>
-          <></>
-        </InformationCard>
-      </div> */}
-
       <div>
         <InformationHeading
           action={<ManageLink href="/devices" label="端末を管理" />}
