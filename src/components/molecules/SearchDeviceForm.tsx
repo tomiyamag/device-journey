@@ -29,6 +29,7 @@ const StatusMessage = ({ label }: IStatusMessage) => {
 const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [suggestions, setSuggestions] = useState<
     IAutocompleteMobileApiResult[]
   >([]);
@@ -40,8 +41,10 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
   const isSuggestionsShow = query.length > minLength;
 
   useEffect(() => {
-    if (!(query.length > minLength)) {
-      setSuggestions([]);
+    setIsError(false);
+    setSuggestions([]);
+
+    if (query.length < minLength) {
       setIsLoading(false);
       return;
     }
@@ -54,11 +57,11 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
         setSuggestions(data);
       } catch (error) {
         console.error(error);
-        setSuggestions([]);
+        setIsError(true);
       } finally {
         setIsLoading(false);
       }
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [query]);
@@ -109,7 +112,9 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
 
             {isLoading && <StatusMessage label="端末を検索しています..." />}
 
-            {!isLoading && suggestions.length === 0 && (
+            {isError && <StatusMessage label="通信エラーが発生しました" />}
+
+            {!isLoading && !isError && suggestions.length === 0 && (
               <StatusMessage label="端末が見つかりませんでした" />
             )}
           </ComboboxOptions>
