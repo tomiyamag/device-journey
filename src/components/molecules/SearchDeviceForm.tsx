@@ -18,11 +18,15 @@ interface IStatusMessage {
   label: string;
 }
 
+interface ISearchDeviceForm {
+  onDeviceSelected: (id: number) => void;
+}
+
 const StatusMessage = ({ label }: IStatusMessage) => {
   return <div className="px-3.5 py-3 text-gray-500">{label}</div>;
 };
 
-const SearchDeviceForm = () => {
+const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<
@@ -33,6 +37,7 @@ const SearchDeviceForm = () => {
   );
 
   const minLength = 1;
+  const isSuggestionsShow = query.length > minLength;
 
   useEffect(() => {
     if (!(query.length > minLength)) {
@@ -58,19 +63,17 @@ const SearchDeviceForm = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const isSuggestionsShow = query.length > minLength;
-
   return (
     <div>
-      <FormLabel htmlFor="deviceName" labelText="機種名を入力してください" />
+      <FormLabel htmlFor="deviceName" labelText="端末名を入力してください" />
 
       <Combobox
         value={selected}
         onChange={(value) => {
           setSelected(value);
-
-          // TODO: サジェスト結果クリック時の処理
-          console.log("Selected:", value);
+          if (value) {
+            onDeviceSelected(value.id);
+          }
         }}
         onClose={() => setQuery("")}
       >

@@ -1,11 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import PickupButton from "../atoms/PickupButton";
 
 const Pickups = () => {
+  const { push } = useRouter();
+
   return (
     <div className="flex gap-2">
-      <PickupButton emoji="📱" label="端末登録" onClick={() => {}} />
+      <PickupButton
+        emoji="📱"
+        label="端末登録"
+        onClick={() => {
+          push("/devices/add");
+        }}
+      />
       <PickupButton emoji="📍" label="チェックイン" onClick={() => {}} />
       <PickupButton emoji="📈" label="コスト推移" onClick={() => {}} />
     </div>

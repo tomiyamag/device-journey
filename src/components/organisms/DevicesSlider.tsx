@@ -21,19 +21,21 @@ const DevicesSlider = () => {
             href=""
             className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
           >
-            <InformationCard
-              footer={
-                <OthersDeviceDetails name="Google Pixel 5" status={"sub"} />
-              }
-            >
-              <div className="rounded-xl bg-white overflow-hidden h-28 relative">
-                <img
-                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
-                  alt=""
-                  className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
-                />
-              </div>
-            </InformationCard>
+            <section>
+              <InformationCard
+                footer={
+                  <OthersDeviceDetails name="Google Pixel 5" status={"sub"} />
+                }
+              >
+                <div className="rounded-xl bg-white overflow-hidden h-28 relative">
+                  <img
+                    src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                    alt=""
+                    className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
+                  />
+                </div>
+              </InformationCard>
+            </section>
           </Link>
         </SwiperSlide>
 
@@ -42,17 +44,19 @@ const DevicesSlider = () => {
             href=""
             className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
           >
-            <InformationCard
-              footer={<OthersDeviceDetails name="Google Pixel 4 XL" />}
-            >
-              <div className="rounded-xl bg-white overflow-hidden h-28 relative">
-                <img
-                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
-                  alt=""
-                  className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
-                />
-              </div>
-            </InformationCard>
+            <section>
+              <InformationCard
+                footer={<OthersDeviceDetails name="Google Pixel 4 XL" />}
+              >
+                <div className="rounded-xl bg-white overflow-hidden h-28 relative">
+                  <img
+                    src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                    alt=""
+                    className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
+                  />
+                </div>
+              </InformationCard>
+            </section>
           </Link>
         </SwiperSlide>
 
@@ -61,19 +65,24 @@ const DevicesSlider = () => {
             href=""
             className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
           >
-            <InformationCard
-              footer={
-                <OthersDeviceDetails name="Google Pixel 3 XL" status={"sold"} />
-              }
-            >
-              <div className="rounded-xl bg-white overflow-hidden h-28 relative">
-                <img
-                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
-                  alt=""
-                  className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
-                />
-              </div>
-            </InformationCard>
+            <section>
+              <InformationCard
+                footer={
+                  <OthersDeviceDetails
+                    name="Google Pixel 3 XL"
+                    status={"sold"}
+                  />
+                }
+              >
+                <div className="rounded-xl bg-white overflow-hidden h-28 relative">
+                  <img
+                    src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                    alt=""
+                    className="absolute top-1/2 left-1/2 -translate-1/2 h-3/4"
+                  />
+                </div>
+              </InformationCard>
+            </section>
           </Link>
         </SwiperSlide>
       </Swiper>
