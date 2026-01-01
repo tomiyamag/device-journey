@@ -6,9 +6,22 @@ import { PiSmileySad } from "react-icons/pi";
 import { getMobileDevice } from "@/actions/mobile-api";
 import { IGetDeviceMobileApiResult } from "@/types";
 
+interface IStatusMessage {
+  message: string;
+}
+
 interface ISearchDeviceResult {
   deviceId: number;
 }
+
+const StatusMessage = ({ message }: IStatusMessage) => {
+  return (
+    <div className="font-bold text-sm flex flex-col gap-5 justify-center items-center py-10">
+      <PiSmileySad size={100} className="text-gray-300" />
+      <div className="text-gray-400">{message}</div>
+    </div>
+  );
+};
 
 const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
   const [deviceData, setDeviceData] =
@@ -46,22 +59,12 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
     );
   }
 
-  if (!isLoading && isError) {
-    return (
-      <div className="font-bold text-sm flex flex-col gap-5 justify-center items-center py-10">
-        <PiSmileySad size={100} className="text-gray-300" />
-        <div className="text-gray-400">通信エラーが発生しました</div>
-      </div>
-    );
+  if (isError) {
+    return <StatusMessage message="通信エラーが発生しました" />;
   }
 
-  if (!isLoading && !deviceData) {
-    return (
-      <div className="font-bold text-sm flex flex-col gap-5 justify-center items-center py-10">
-        <PiSmileySad size={100} className="text-gray-300" />
-        <div className="text-gray-400">端末情報が見つかりませんでした</div>
-      </div>
-    );
+  if (!isLoading && !isError && !deviceData) {
+    return <StatusMessage message="端末情報が見つかりませんでした" />;
   }
 
   return (
