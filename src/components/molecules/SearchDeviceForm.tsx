@@ -12,6 +12,8 @@ import { autocompleteMobileDevices } from "@/actions/mobile-api";
 import { InputClassNames } from "@/components/atoms/FormInput";
 import { IAutocompleteMobileApiResult } from "@/types";
 
+import FormLabel from "../atoms/FormLabel";
+
 interface IStatusMessage {
   label: string;
 }
@@ -60,12 +62,7 @@ const SearchDeviceForm = () => {
 
   return (
     <div>
-      <label
-        htmlFor="deviceName"
-        className="font-bold text-sm text-gray-600 mb-3 inline-block"
-      >
-        機種名を入力してください
-      </label>
+      <FormLabel htmlFor="deviceName" labelText="機種名を入力してください" />
 
       <Combobox
         value={selected}
