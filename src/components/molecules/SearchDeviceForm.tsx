@@ -90,7 +90,8 @@ const SearchDeviceForm = () => {
         {isSuggestionsShow && (
           <ComboboxOptions
             anchor={{ to: "bottom", gap: 8 }}
-            className="bg-white rounded-lg border border-gray-200 shadow-xs w-(--input-width) max-h-50!"
+            className="bg-white rounded-lg border border-gray-200 shadow-xs w-(--input-width) max-h-50! z-50"
+            portal
           >
             {suggestions.length > 0 &&
               suggestions.map((device: IAutocompleteMobileApiResult) => (
