@@ -1,5 +1,6 @@
 export type DeviceStatusType = "in_use" | "sold" | "sub";
 
+// TODO: あとで直す
 export interface IDeviceSpec {
   display?: string;
   camera?: string;
@@ -10,6 +11,7 @@ export interface IDeviceSpec {
   colors?: string;
 }
 
+// TODO: あとで直す
 export interface IDevice {
   id: string;
   created_at: string;
