@@ -88,7 +88,7 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
               device?.name || ""
             }
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="iPhone 12 Pro, Pixel 5..."
+            placeholder="iPhone 17 Pro, Pixel 9..."
             autoComplete="off"
           />
         </div>

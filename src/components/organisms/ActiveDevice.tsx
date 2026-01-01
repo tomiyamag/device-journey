@@ -24,7 +24,7 @@ const ActiveDevice = () => {
         <div className="flex gap-3.5 items-center sm:items-start">
           <div className="rounded-lg overflow-hidden w-48 h-44 relative hidden sm:block">
             <img
-              src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+              src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-13-pro-01.jpg"
               alt=""
               className="absolute top-1/2 left-1/2 -translate-1/2 h-full"
             />
@@ -34,7 +34,7 @@ const ActiveDevice = () => {
             <div className="mb-4 sm:mb-2.5 flex items-center gap-3">
               <div className="rounded-lg overflow-hidden w-30 h-28 relative sm:hidden">
                 <img
-                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+                  src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-13-pro-01.jpg"
                   alt=""
                   className="absolute top-1/2 left-1/2 -translate-1/2 h-full"
                 />
@@ -46,7 +46,7 @@ const ActiveDevice = () => {
                     href="/dashboard"
                     className="inline-flex gap-2 items-center underline hover:no-underline"
                   >
-                    <span className="flex-1">Apple iPhone 15 Pro</span>
+                    <span className="flex-1">Apple iPhone 13 Pro</span>
                     <IoIosArrowForward size={14} className="w-3.5" />
                   </Link>
                 </h3>

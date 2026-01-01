@@ -4,7 +4,7 @@ import { ComponentProps, ReactNode } from "react";
 export interface IButton extends ComponentProps<"button"> {
   className?: string;
   variant?: "primary" | "secondary";
-  size?: "sm" | "md" | "lg" | "full";
+  size?: "sm" | "full";
   disabled?: boolean;
   loading?: boolean;
   children: ReactNode;
@@ -22,10 +22,10 @@ const Button = ({
   return (
     <button
       className={classNames(
-        "rounded-lg h-11 block text-white font-bold cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
+        "rounded-lg h-11 block text-white font-bold cursor-pointer mx-auto transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
         {
           "w-full": size === "full",
-          // TODO: 他サイズのスタイル設定
+          "w-full sm:w-xs text-sm": size === "sm",
         },
         {
           "bg-teal-500": variant === "primary",

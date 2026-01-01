@@ -100,7 +100,7 @@ export async function autocompleteMobileDevices(query: string) {
   }
 
   try {
-    const url = `https://api.mobileapi.dev/devices/autocomplete/?q=${encodeURIComponent(query)}&limit=50&key=${apiKey}`;
+    const url = `https://api.mobileapi.dev/devices/autocomplete/?q=${encodeURIComponent(query)}&limit=30&key=${apiKey}`;
     console.log(url);
     const res = await fetch(url);
 

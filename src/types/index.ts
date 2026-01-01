@@ -50,6 +50,10 @@ export interface IAutocompleteMobileApiResult {
   full_name: string;
 }
 
+/**
+ * NOTE: 型定義未提供のため、実際のレスポンスをもとに定義
+ * @remarks 使用時は値の存在チェックを行うこと
+ */
 export interface IGetDeviceMobileApiResult {
   id: number;
   name: string;
