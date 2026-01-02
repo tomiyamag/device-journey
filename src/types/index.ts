@@ -14,6 +14,15 @@ import {
   Sound,
 } from "./mobile-api";
 
+export type UserProfile = {
+  id: string;
+  updated_at: Date;
+  username: string | null;
+  full_name: string | null;
+  avatar_url: string | null;
+  website: string | null;
+};
+
 export type DeviceStatus = "in_use" | "sold" | "sub";
 
 export type DeviceSpec = {
@@ -25,12 +34,12 @@ export type DeviceSpec = {
   storage: string;
 };
 
-export type Device = {
+export type DeviceInput = {
   name: string;
   brand: string;
   purchase_price: string;
-  purchase_date: string;
-  retire_date: string;
+  purchase_date: string | null;
+  retire_date: string | null;
   image_url: string | null;
   spec: DeviceSpec;
   status: DeviceStatus | null;
@@ -42,12 +51,12 @@ export type Device = {
   is_main: boolean;
 };
 
-export type DeviceDraft = Device & {
+export type DeviceInputDraft = DeviceInput & {
   candidate_colors: string[];
   candidate_storages: string[];
 };
 
-export type DeviceRow = Device & {
+export type Device = DeviceInput & {
   readonly id: string;
   readonly created_at: Date;
   readonly user_id: string;

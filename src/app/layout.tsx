@@ -3,6 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import QueryProvider from "@/providers/QueryProvider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,11 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 font-sans">
-          <div className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between bg-white sm:items-start">
-            <div className="w-full relative">{children}</div>
+        <QueryProvider>
+          <div className="flex min-h-screen items-center justify-center bg-slate-50 font-sans">
+            <div className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between bg-white sm:items-start">
+              <div className="w-full relative">{children}</div>
+            </div>
           </div>
-        </div>
+        </QueryProvider>
       </body>
     </html>
   );

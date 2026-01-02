@@ -1,8 +1,10 @@
 "use client";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
+import { registerDevice } from "@/actions/devices";
 import Button from "@/components/atoms/Button";
 import FormInput from "@/components/atoms/FormInput";
 import FormRadio from "@/components/atoms/FormRadio";
@@ -12,23 +14,24 @@ import PageHeading from "@/components/atoms/PageHeading";
 import FormField from "@/components/molecules/FormField";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
 import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
-import { Device } from "@/types";
+import { DeviceInput } from "@/types";
 
 export default function DeviceAddPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const draft = useDeviceDraftStore((state) => state.draft);
   const { clearDraft } = useDeviceDraftStore();
   const { clearSearch } = useDeviceSearchStore();
 
-  const initialDeviceState: Device = {
+  const initialDeviceState: DeviceInput = {
     name: "",
     brand: "",
-    purchase_price: "null",
-    purchase_date: "",
-    retire_date: "",
-    image_url: "",
+    purchase_price: "",
+    purchase_date: null,
+    retire_date: null,
+    image_url: null,
     spec: {
       display: "",
       camera: "",
@@ -46,14 +49,14 @@ export default function DeviceAddPage() {
     is_main: false,
   };
 
-  const [formData, setFormData] = useState<Device>(() => {
+  const [formData, setFormData] = useState<DeviceInput>(() => {
     if (draft) {
       return {
         name: draft.name,
         brand: draft.brand,
         purchase_price: draft.purchase_price,
-        purchase_date: draft.purchase_date,
-        retire_date: draft.retire_date,
+        purchase_date: toDateOrNull(draft.purchase_date),
+        retire_date: toDateOrNull(draft.retire_date),
         image_url: draft.image_url,
         spec: {
           display: draft.spec.display,
@@ -76,33 +79,54 @@ export default function DeviceAddPage() {
     return initialDeviceState;
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: DeviceInput) => registerDevice(data),
+    onSuccess: async (result) => {
+      if (result?.error) {
+        alert(result.error);
+        return;
+      }
+
+      alert("デバイスを登録しました");
+
+      // クライアント側のキャッシュを無効化
+      await queryClient.invalidateQueries({ queryKey: ["devices"] });
+
+      router.push("/dashboard");
+
+      /**
+       * NOTE:
+       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス一覧へ遷移させる）
+       */
+      setIsSubmitting(true);
+
+      clearDraft();
+      clearSearch();
+    },
+    onError: (err) => {
+      console.error(err);
+      alert("予期せぬエラーが発生しました");
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // console.log("DB に保存するデータ: ", { ...formData });
+    mutate(formData);
+  };
+
   useEffect(() => {
     if (!draft && !isSubmitting) {
       router.push("/devices/search");
     }
   }, [draft, isSubmitting, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    console.log("DB に保存するデータ: ", { ...formData });
-
-    // TODO: セーブ
-    alert("保存しました（コンソール確認）");
-
-    clearDraft();
-    clearSearch();
-
-    router.push("/dashboard");
-  };
-
   if (!draft) return null;
 
   // TODO: 不足している入力欄を追加する
   return (
     <section>
-      <PageHeading label="端末情報の登録" />
+      <PageHeading label="デバイス情報の登録" />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <FormField htmlFor="name" labelText="機種名">
@@ -219,9 +243,13 @@ export default function DeviceAddPage() {
         <FormField htmlFor="purchase-date" labelText="購入日">
           <FormInput
             id="purchase-date"
-            value={formData.purchase_date}
+            value={formData.purchase_date ?? undefined}
             onChange={(e) =>
-              setFormData({ ...formData, purchase_date: e.target.value })
+              setFormData({
+                ...formData,
+                purchase_date:
+                  formData.purchase_date !== undefined ? e.target.value : null,
+              })
             }
             type="date"
           />
@@ -230,13 +258,17 @@ export default function DeviceAddPage() {
         <FormField
           htmlFor="retire-date"
           labelText="売却日"
-          description="すでに端末を売却済みの場合は、売却日を指定してください。"
+          description="すでにデバイスを売却済みの場合は、売却日を指定してください。"
         >
           <FormInput
             id="retire-date"
-            value={formData.retire_date}
+            value={formData.retire_date ?? undefined}
             onChange={(e) =>
-              setFormData({ ...formData, retire_date: e.target.value })
+              setFormData({
+                ...formData,
+                retire_date:
+                  formData.retire_date !== undefined ? e.target.value : null,
+              })
             }
             type="date"
           />
@@ -247,12 +279,20 @@ export default function DeviceAddPage() {
             type="button"
             variant="secondary"
             onClick={() => router.back()}
+            disabled={isPending}
           >
             戻る
           </Button>
-          <FormSubmitButton>登録する</FormSubmitButton>
+          <FormSubmitButton loading={isPending}>登録する</FormSubmitButton>
         </div>
       </form>
     </section>
   );
+}
+
+function toDateOrNull(dateStr: string | null) {
+  if (!dateStr || dateStr.trim() === "") {
+    return null;
+  }
+  return dateStr;
 }

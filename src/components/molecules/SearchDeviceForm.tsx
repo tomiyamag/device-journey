@@ -89,11 +89,13 @@ const SearchDeviceForm = () => {
                 </ComboboxOption>
               ))}
 
-            {isFetching && <StatusMessage label="端末を検索しています..." />}
+            {isFetching && (
+              <StatusMessage label="デバイスを検索しています..." />
+            )}
             {isError && <StatusMessage label="通信エラーが発生しました" />}
 
-            {!isFetching && !isError && !data && (
-              <StatusMessage label="端末が見つかりませんでした" />
+            {!isFetching && !isError && (!data || data.length === 0) && (
+              <StatusMessage label="デバイスが見つかりませんでした" />
             )}
           </ComboboxOptions>
         )}

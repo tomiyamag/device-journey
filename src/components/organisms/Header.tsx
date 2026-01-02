@@ -2,7 +2,13 @@
 
 import { usePathname } from "next/navigation";
 
-const Header = () => {
+import { UserProfile } from "@/types";
+
+interface IHeader {
+  profile: UserProfile;
+}
+
+const Header = ({ profile }: IHeader) => {
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";
 
@@ -17,7 +23,7 @@ const Header = () => {
               <br />
             </>
           )}
-          <strong>User Name</strong>
+          <strong>{profile.username}</strong>
         </h1>
       </div>
 

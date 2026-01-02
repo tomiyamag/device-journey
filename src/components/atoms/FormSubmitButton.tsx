@@ -4,13 +4,21 @@ import { useFormStatus } from "react-dom";
 
 import Button, { IButton } from "./Button";
 
-type IFormSubmitButton = IButton;
+interface IFormSubmitButton extends IButton {
+  loading?: boolean;
+}
 
-const FormSubmitButton = ({ children, ...rest }: IFormSubmitButton) => {
+const FormSubmitButton = ({
+  loading,
+  children,
+  ...rest
+}: IFormSubmitButton) => {
   const { pending } = useFormStatus();
 
+  const isLoading = loading || pending;
+
   return (
-    <Button loading={pending} type="submit" {...rest}>
+    <Button loading={isLoading} type="submit" {...rest}>
       {children}
     </Button>
   );

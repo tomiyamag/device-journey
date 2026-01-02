@@ -22,7 +22,7 @@ const ActiveDevice = () => {
 
       <InformationCard footer={<ActiveDeviceFeatures />}>
         <div className="flex gap-3.5 items-center sm:items-start">
-          <div className="rounded-lg overflow-hidden w-48 h-44 relative hidden sm:block">
+          <div className="overflow-hidden w-48 h-44 relative hidden sm:block">
             <img
               src="https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-13-pro-01.jpg"
               alt=""

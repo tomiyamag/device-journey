@@ -1,6 +1,7 @@
 "use client";
 
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { PiSmileySad } from "react-icons/pi";
@@ -59,8 +60,8 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
       name: data.name || "",
       brand: data.manufacturer_name || "",
       purchase_price: "",
-      purchase_date: "",
-      retire_date: "",
+      purchase_date: null,
+      retire_date: null,
       image_url: data?.images[0]?.image_url || null,
       spec: {
         display: data.screen_resolution || "",
@@ -102,7 +103,7 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
   }
 
   if (!isFetching && !isError && !data) {
-    return <StatusMessage message="端末情報が見つかりませんでした" />;
+    return <StatusMessage message="デバイス情報が見つかりませんでした" />;
   }
 
   return (
@@ -113,11 +114,11 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center">
               <div className="w-full sm:w-52 h-42 sm:h-72 relative overflow-hidden">
                 {data?.images[0]?.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={data.images[0].image_url}
                     alt=""
-                    className="absolute top-1/2 left-1/2 -translate-1/2 w-auto sm:w-full h-full sm:h-auto"
+                    fill
+                    className="top-1/2! left-1/2! w-auto! sm:w-full! h-full! sm:h-auto! -translate-1/2"
                   />
                 ) : (
                   <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl sm:text-6xl" />
@@ -164,7 +165,7 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
           </div>
 
           <Button type="button" onClick={handleProceed}>
-            この端末を登録する
+            このデバイスを登録する
           </Button>
         </>
       )}

@@ -4,7 +4,7 @@ import { DeviceStatus as DeviceStatsType } from "@/types";
 
 interface IDeviceStatus {
   className?: string;
-  status?: DeviceStatsType;
+  status?: DeviceStatsType | null;
 }
 
 const DEVICE_STATUS_MAP: Record<

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-import { DeviceDraft } from "@/types";
+import { DeviceInputDraft } from "@/types";
 
 interface IDeviceDraftStore {
-  draft: DeviceDraft | null;
-  setDraft: (data: DeviceDraft) => void;
+  draft: DeviceInputDraft | null;
+  setDraft: (data: DeviceInputDraft) => void;
   clearDraft: () => void;
 }
 
