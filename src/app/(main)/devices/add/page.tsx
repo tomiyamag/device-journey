@@ -11,11 +11,16 @@ import FormSubmitButton from "@/components/atoms/FormSubmitButton";
 import PageHeading from "@/components/atoms/PageHeading";
 import FormField from "@/components/molecules/FormField";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
+import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
 import { Device } from "@/types";
 
 export default function DeviceAddPage() {
   const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const draft = useDeviceDraftStore((state) => state.draft);
+  const { clearDraft } = useDeviceDraftStore();
+  const { clearSearch } = useDeviceSearchStore();
 
   const initialDeviceState: Device = {
     name: "",
@@ -72,17 +77,24 @@ export default function DeviceAddPage() {
   });
 
   useEffect(() => {
-    if (!draft) {
+    if (!draft && !isSubmitting) {
       router.push("/devices/search");
     }
-  }, [draft, router]);
+  }, [draft, isSubmitting, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     console.log("DB に保存するデータ: ", { ...formData });
 
     // TODO: セーブ
     alert("保存しました（コンソール確認）");
+
+    clearDraft();
+    clearSearch();
+
+    router.push("/dashboard");
   };
 
   if (!draft) return null;

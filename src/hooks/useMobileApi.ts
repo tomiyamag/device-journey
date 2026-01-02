@@ -25,7 +25,7 @@ export const useAutocompleteMobileDevices = (query: string) => {
     queryKey: ["autocompleteMobileDevices", debouncedQuery],
     queryFn: () => autocompleteMobileDevices(debouncedQuery),
     enabled: debouncedQuery.length > minLength,
-    initialData: [],
+    staleTime: Infinity,
   });
 
   return {
@@ -36,8 +36,8 @@ export const useAutocompleteMobileDevices = (query: string) => {
 
 export const useGetMobileDevice = (id: number) => {
   return useQuery<GetDeviceMobileApiResult | null>({
-    queryKey: ["getMobileDevice"],
+    queryKey: ["getMobileDevice", id],
     queryFn: () => getMobileDevice(id),
-    initialData: null,
+    staleTime: Infinity,
   });
 };

@@ -10,6 +10,7 @@ import { useState } from "react";
 
 import { InputClassNames } from "@/components/atoms/FormInput";
 import { useAutocompleteMobileDevices } from "@/hooks/useMobileApi";
+import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
 import { AutocompleteMobileApiResult } from "@/types";
 
 import FormLabel from "../atoms/FormLabel";
@@ -18,21 +19,16 @@ interface IStatusMessage {
   label: string;
 }
 
-interface ISearchDeviceForm {
-  onDeviceSelected: (id: number) => void;
-}
-
 const StatusMessage = ({ label }: IStatusMessage) => {
   return <div className="px-3.5 py-3 text-gray-500">{label}</div>;
 };
 
 export const minLength = 1;
 
-const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
-  const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<AutocompleteMobileApiResult | null>(
-    null,
-  );
+const SearchDeviceForm = () => {
+  const { query, setQuery, setSelectedDeviceId } = useDeviceSearchStore();
+  const [selectedDevice, setSelectedDevice] =
+    useState<AutocompleteMobileApiResult | null>(null);
 
   const { data, isFetching, isError } = useAutocompleteMobileDevices(query);
 
@@ -43,23 +39,33 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
       <FormLabel htmlFor="deviceName" labelText="機種名を入力してください" />
 
       <Combobox
-        value={selected}
+        value={selectedDevice}
         onChange={(value) => {
-          setSelected(value);
+          setSelectedDevice(value);
+
           if (value) {
-            onDeviceSelected(value.id);
+            setQuery(value.name);
+            setSelectedDeviceId(value.id);
           }
         }}
-        onClose={() => setQuery("")}
       >
         <div className="relative">
           <ComboboxInput
             id="deviceName"
             className={InputClassNames}
-            displayValue={(device: AutocompleteMobileApiResult | null) =>
-              device?.name || ""
+            displayValue={(device: AutocompleteMobileApiResult) =>
+              device?.name || query
             }
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+
+              setQuery(value);
+
+              if (value.length === 0) {
+                setSelectedDeviceId(null);
+                setSelectedDevice(null);
+              }
+            }}
             placeholder="iPhone 17 Pro, Pixel 9..."
             autoComplete="off"
           />
@@ -71,7 +77,8 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
             className="bg-white rounded-lg border border-gray-200 shadow-xs w-(--input-width) max-h-50! z-50"
             portal
           >
-            {data.length > 0 &&
+            {data &&
+              data.length > 0 &&
               data.map((device: AutocompleteMobileApiResult) => (
                 <ComboboxOption
                   key={device.id}
@@ -85,7 +92,7 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
             {isFetching && <StatusMessage label="端末を検索しています..." />}
             {isError && <StatusMessage label="通信エラーが発生しました" />}
 
-            {!isFetching && !isError && data.length === 0 && (
+            {!isFetching && !isError && !data && (
               <StatusMessage label="端末が見つかりませんでした" />
             )}
           </ComboboxOptions>

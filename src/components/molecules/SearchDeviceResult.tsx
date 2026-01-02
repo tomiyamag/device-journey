@@ -35,10 +35,10 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
   const setDraft = useDeviceDraftStore((state) => state.setDraft);
 
   // "," で区切られた文字列を配列に分解する
-  const parseMultipleData = (multipleString: string): string[] => {
-    if (!multipleString) return [];
+  const parseMultipleData = (multipleDataString: string): string[] => {
+    if (!multipleDataString) return [];
 
-    return multipleString
+    return multipleDataString
       .split(",")
       .map((c) => c.trim()) // 半角スペース削除
       .filter((c) => c.length > 0); // 空文字を除外
