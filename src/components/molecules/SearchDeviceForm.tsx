@@ -6,10 +6,10 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { autocompleteMobileDevices } from "@/actions/mobile-api";
 import { InputClassNames } from "@/components/atoms/FormInput";
+import { useAutocompleteMobileDevices } from "@/hooks/useMobileApi";
 import { AutocompleteMobileApiResult } from "@/types";
 
 import FormLabel from "../atoms/FormLabel";
@@ -26,45 +26,17 @@ const StatusMessage = ({ label }: IStatusMessage) => {
   return <div className="px-3.5 py-3 text-gray-500">{label}</div>;
 };
 
+export const minLength = 1;
+
 const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
   const [query, setQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [suggestions, setSuggestions] = useState<AutocompleteMobileApiResult[]>(
-    [],
-  );
   const [selected, setSelected] = useState<AutocompleteMobileApiResult | null>(
     null,
   );
 
-  const minLength = 1;
+  const { data, isFetching, isError } = useAutocompleteMobileDevices(query);
+
   const isSuggestionsShow = query.length > minLength;
-
-  useEffect(() => {
-    setIsError(false);
-    setSuggestions([]);
-
-    if (query.length < minLength) {
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-
-    const timer = setTimeout(async () => {
-      try {
-        const data = await autocompleteMobileDevices(query);
-        setSuggestions(data);
-      } catch (error) {
-        console.error(error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [query]);
 
   return (
     <div>
@@ -99,8 +71,8 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
             className="bg-white rounded-lg border border-gray-200 shadow-xs w-(--input-width) max-h-50! z-50"
             portal
           >
-            {suggestions.length > 0 &&
-              suggestions.map((device: AutocompleteMobileApiResult) => (
+            {data.length > 0 &&
+              data.map((device: AutocompleteMobileApiResult) => (
                 <ComboboxOption
                   key={device.id}
                   value={device}
@@ -110,11 +82,10 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
                 </ComboboxOption>
               ))}
 
-            {isLoading && <StatusMessage label="端末を検索しています..." />}
-
+            {isFetching && <StatusMessage label="端末を検索しています..." />}
             {isError && <StatusMessage label="通信エラーが発生しました" />}
 
-            {!isLoading && !isError && suggestions.length === 0 && (
+            {!isFetching && !isError && data.length === 0 && (
               <StatusMessage label="端末が見つかりませんでした" />
             )}
           </ComboboxOptions>
