@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
 
-interface IManageLink {
+interface IAppLink {
   href: string;
   label: string;
 }
 
-const ManageLink = ({ href, label }: IManageLink) => {
+const AppLink = ({ href, label }: IAppLink) => {
   return (
     <Link
       href={href}
-      className="flex gap-1 items-center text-teal-700 text-xs sm:text-sm underline hover:no-underline"
+      className="inline-flex gap-1 items-center text-teal-700 text-xs sm:text-sm underline hover:no-underline"
     >
       <span>{label}</span>
       <IoIosArrowForward />
@@ -18,4 +18,4 @@ const ManageLink = ({ href, label }: IManageLink) => {
   );
 };
 
-export default ManageLink;
+export default AppLink;

@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import PageHeading from "@/components/atoms/PageHeading";
+import BackHome from "@/components/molecules/BackHome";
 import SearchDeviceForm from "@/components/molecules/SearchDeviceForm";
 import SearchDeviceResult from "@/components/molecules/SearchDeviceResult";
 import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
@@ -25,6 +26,8 @@ export default function DevicesSearchPage() {
             <SearchDeviceResult deviceId={selectedDeviceId} />
           )}
         </div>
+
+        <BackHome />
       </section>
     </QueryClientProvider>
   );
