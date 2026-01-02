@@ -1,10 +1,10 @@
-import { DeviceStatus } from "@/types";
+import { DeviceStatus as DeviceStatusType } from "@/types";
 
 import DeviceStatus from "../atoms/DeviceStatus";
 
 interface IOthersDeviceDetails {
   name: string;
-  status?: DeviceStatus;
+  status?: DeviceStatusType;
 }
 
 const OthersDeviceDetails = ({ name, status }: IOthersDeviceDetails) => {

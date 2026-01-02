@@ -1,14 +1,14 @@
 import classNames from "classnames";
 
-import { DeviceStatus } from "@/types";
+import { DeviceStatus as DeviceStatsType } from "@/types";
 
-interface DeviceStatus {
+interface IDeviceStatus {
   className?: string;
-  status?: DeviceStatus;
+  status?: DeviceStatsType;
 }
 
 const DEVICE_STATUS_MAP: Record<
-  DeviceStatus,
+  DeviceStatsType,
   {
     label: string;
     theme: string;
@@ -28,7 +28,7 @@ const DEVICE_STATUS_MAP: Record<
   },
 };
 
-const DeviceStatus = ({ className, status }: DeviceStatus) => {
+const DeviceStatus = ({ className, status }: IDeviceStatus) => {
   if (!status) return;
 
   const { label, theme } = DEVICE_STATUS_MAP[status];
