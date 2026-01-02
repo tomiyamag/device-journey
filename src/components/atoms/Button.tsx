@@ -28,8 +28,8 @@ const Button = ({
           "w-full sm:w-xs text-sm": size === "sm",
         },
         {
-          "bg-teal-500": variant === "primary",
-          "bg-teal-400": variant === "secondary",
+          "bg-teal-600": variant === "primary",
+          "bg-teal-500": variant === "secondary",
         },
         className,
       )}

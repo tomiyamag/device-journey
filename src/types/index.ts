@@ -14,47 +14,57 @@ import {
   Sound,
 } from "./mobile-api";
 
-export type DeviceStatusType = "in_use" | "sold" | "sub";
+export type DeviceStatus = "in_use" | "sold" | "sub";
 
-// TODO: あとで直す
-export interface IDeviceSpec {
-  display?: string;
-  camera?: string;
-  battery?: string;
-  weight?: string;
-  hardware?: string;
-  storage?: string;
-  colors?: string;
-}
+export type DeviceSpec = {
+  display: string;
+  camera: string;
+  battery: string;
+  weight: string;
+  hardware: string;
+  storage: string;
+};
 
-// TODO: あとで直す
-export interface IDevice {
-  id: string;
-  created_at: string;
-  user_id: string;
+export type Device = {
   name: string;
   brand: string;
-  model_name: string;
-  price: number;
-  image_url: string | null;
+  purchase_price: string;
   purchase_date: string;
-  retire_date: string | null;
-  status: DeviceStatusType | null;
-  spec: IDeviceSpec | null;
-}
+  retire_date: string;
+  image_url: string | null;
+  spec: DeviceSpec;
+  status: DeviceStatus | null;
+  release_date: string;
+  colors: string;
+  color: string;
+  storage: string;
+  is_new: boolean;
+  is_main: boolean;
+};
 
-export interface IAutocompleteMobileApiResult {
+export type DeviceDraft = Device & {
+  candidate_colors: string[];
+  candidate_storages: string[];
+};
+
+export type DeviceRow = Device & {
+  readonly id: string;
+  readonly created_at: Date;
+  readonly user_id: string;
+};
+
+export type AutocompleteMobileApiResult = {
   id: number;
   name: string;
   brand: string;
   full_name: string;
-}
+};
 
 /**
  * NOTE: 型定義未提供のため、実際のレスポンスをもとに定義
  * @remarks 使用時は値の存在チェックを行うこと
  */
-export interface IGetDeviceMobileApiResult {
+export type GetDeviceMobileApiResult = {
   id: number;
   name: string;
   manufacturer: Manufacturer;
@@ -84,4 +94,4 @@ export interface IGetDeviceMobileApiResult {
   features: Features;
   battery: Battery;
   misc: Misc;
-}
+};

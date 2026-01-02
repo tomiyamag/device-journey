@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import { autocompleteMobileDevices } from "@/actions/mobile-api";
 import { InputClassNames } from "@/components/atoms/FormInput";
-import { IAutocompleteMobileApiResult } from "@/types";
+import { AutocompleteMobileApiResult } from "@/types";
 
 import FormLabel from "../atoms/FormLabel";
 
@@ -30,10 +30,10 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [suggestions, setSuggestions] = useState<
-    IAutocompleteMobileApiResult[]
-  >([]);
-  const [selected, setSelected] = useState<IAutocompleteMobileApiResult | null>(
+  const [suggestions, setSuggestions] = useState<AutocompleteMobileApiResult[]>(
+    [],
+  );
+  const [selected, setSelected] = useState<AutocompleteMobileApiResult | null>(
     null,
   );
 
@@ -68,7 +68,7 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
 
   return (
     <div>
-      <FormLabel htmlFor="deviceName" labelText="端末名を入力してください" />
+      <FormLabel htmlFor="deviceName" labelText="機種名を入力してください" />
 
       <Combobox
         value={selected}
@@ -84,7 +84,7 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
           <ComboboxInput
             id="deviceName"
             className={InputClassNames}
-            displayValue={(device: IAutocompleteMobileApiResult | null) =>
+            displayValue={(device: AutocompleteMobileApiResult | null) =>
               device?.name || ""
             }
             onChange={(event) => setQuery(event.target.value)}
@@ -100,7 +100,7 @@ const SearchDeviceForm = ({ onDeviceSelected }: ISearchDeviceForm) => {
             portal
           >
             {suggestions.length > 0 &&
-              suggestions.map((device: IAutocompleteMobileApiResult) => (
+              suggestions.map((device: AutocompleteMobileApiResult) => (
                 <ComboboxOption
                   key={device.id}
                   value={device}

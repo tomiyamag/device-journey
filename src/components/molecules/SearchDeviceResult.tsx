@@ -1,12 +1,14 @@
 "use client";
 
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { PiSmileySad } from "react-icons/pi";
 
 import { getMobileDevice } from "@/actions/mobile-api";
-import { IGetDeviceMobileApiResult } from "@/types";
+import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
+import { GetDeviceMobileApiResult } from "@/types";
 
 import Button from "../atoms/Button";
 import DeviceSpec from "../atoms/DeviceSpec";
@@ -29,8 +31,9 @@ const StatusMessage = ({ message }: IStatusMessage) => {
 };
 
 const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
-  const [deviceData, setDeviceData] =
-    useState<IGetDeviceMobileApiResult | null>(null);
+  const [deviceData, setDeviceData] = useState<GetDeviceMobileApiResult | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -54,11 +57,60 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
     fetchData();
   }, [deviceId]);
 
+  const router = useRouter();
+  const setDraft = useDeviceDraftStore((state) => state.setDraft);
+
+  // "," で区切られた文字列を配列に分解する
+  const parseMultipleData = (multipleString: string): string[] => {
+    if (!multipleString) return [];
+
+    return multipleString
+      .split(",")
+      .map((c) => c.trim()) // 半角スペース削除
+      .filter((c) => c.length > 0); // 空文字を除外
+  };
+
+  // 発売日データをフォーマットする
   const formatReleaseDate = (dateString: string) => {
     if (!dateString) return "";
 
     const cleanedDate = dateString.replace("Released ", "");
     return dayjs(cleanedDate).format("YYYY年MM月DD日");
+  };
+
+  const handleProceed = () => {
+    if (!deviceData) return;
+
+    setDraft({
+      name: deviceData.name || "",
+      brand: deviceData.manufacturer_name || "",
+      purchase_price: "",
+      purchase_date: "",
+      retire_date: "",
+      image_url: deviceData?.images[0]?.image_url || null,
+      spec: {
+        display: deviceData.screen_resolution || "",
+        camera: deviceData.camera || "",
+        battery: deviceData.battery_capacity || "",
+        weight: deviceData.weight || "",
+        hardware: deviceData.hardware || "",
+        storage: deviceData.storage || "",
+      },
+      status: null,
+      release_date:
+        deviceData.release_date && deviceData.release_date !== "Cancelled"
+          ? formatReleaseDate(deviceData.release_date)
+          : "不明",
+      candidate_colors: parseMultipleData(deviceData.colors || ""),
+      colors: deviceData.colors || "不明",
+      color: "",
+      candidate_storages: parseMultipleData(deviceData.storage || ""),
+      storage: "",
+      is_new: false,
+      is_main: false,
+    });
+
+    router.push("/devices/add");
   };
 
   if (isLoading) {
@@ -144,7 +196,9 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
             </div>
           </div>
 
-          <Button onClick={() => {}}>この端末を登録する</Button>
+          <Button type="button" onClick={handleProceed}>
+            この端末を登録する
+          </Button>
         </>
       )}
     </>

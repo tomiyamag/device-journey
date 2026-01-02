@@ -12,7 +12,7 @@ interface IFormInput extends ComponentProps<"input"> {
 }
 
 export const InputClassNames =
-  "border border-gray-300 rounded-lg h-11 w-full block px-3.5 bg-white shadow-xs focus:outline-2 focus:outline-teal-600";
+  "border border-gray-300 rounded-lg h-11 w-full block px-3.5 bg-white shadow-xs placeholder:text-gray-300 focus:outline-2 focus:outline-teal-600";
 
 const FormInput = ({
   className,
@@ -26,7 +26,11 @@ const FormInput = ({
 }: IFormInput) => {
   return (
     <input
-      className={classNames(InputClassNames, className)}
+      className={classNames(
+        InputClassNames,
+        className,
+        "read-only:bg-gray-50 read-only:text-gray-500 read-only:cursor-default read-only:focus:outline-none",
+      )}
       id={id}
       name={name}
       type={type}

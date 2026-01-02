@@ -1,9 +1,6 @@
 "use server";
 
-import {
-  IAutocompleteMobileApiResult,
-  IGetDeviceMobileApiResult,
-} from "@/types";
+import { AutocompleteMobileApiResult, GetDeviceMobileApiResult } from "@/types";
 
 const apiKey = process.env.MOBILE_API_KEY;
 
@@ -91,7 +88,7 @@ export async function autocompleteMobileDevices(query: string) {
       brand: "Apple",
       full_name: "Apple iPhone 13 Pro",
     },
-  ] as IAutocompleteMobileApiResult[];
+  ] as AutocompleteMobileApiResult[];
 
   return mockApi;
 
@@ -109,7 +106,7 @@ export async function autocompleteMobileDevices(query: string) {
     }
 
     const data = await res.json();
-    return data as IAutocompleteMobileApiResult[];
+    return data as AutocompleteMobileApiResult[];
   } catch (error) {
     console.error("Autocomplete failed:", error);
     throw error;
@@ -283,7 +280,7 @@ export async function getMobileDevice(id: number) {
       price:
         "\u00a3\u2009325.00 / \u20ac\u2009418.00 / $\u2009394.00 / C$\u2009583.42",
     },
-  } as IGetDeviceMobileApiResult;
+  } as GetDeviceMobileApiResult;
 
   return mockApi;
 
@@ -300,7 +297,7 @@ export async function getMobileDevice(id: number) {
     }
 
     const data = await res.json();
-    return data as IGetDeviceMobileApiResult;
+    return data as GetDeviceMobileApiResult;
   } catch (error) {
     console.error("Get device failed:", error);
     throw error;

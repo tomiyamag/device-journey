@@ -1,19 +1,19 @@
-export interface Battery {
+export type Battery = {
   id: number;
   type: string;
   charging: string;
-}
+};
 
-export interface Body {
+export type Body = {
   id: number;
   dimensions: string;
   weight: string;
   build: string;
   sim: string;
   other: string;
-}
+};
 
-export interface Comms {
+export type Comms = {
   id: number;
   wlan: string;
   bluetooth: string;
@@ -21,62 +21,62 @@ export interface Comms {
   nfc: string;
   radio: string;
   usb: string;
-}
+};
 
-export interface Display {
+export type Display = {
   id: number;
   type: string;
   size: string;
   resolution: string;
   protection: string;
   other: string;
-}
+};
 
-export interface Features {
+export type Features = {
   id: number;
   sensors: string;
   other: string;
-}
+};
 
-export interface Image {
+export type Image = {
   id: number;
   image_url: string;
   image_b64: string;
   caption: string;
   is_official: boolean;
   order: number;
-}
+};
 
-export interface Camera {
+export type Camera = {
   id: number;
   modules: string;
   features: string;
   video: string;
-}
+};
 
-export interface Manufacturer {
+export type Manufacturer = {
   id: number;
   name: string;
   logo_b64: null;
   website_url: null;
-}
+};
 
-export interface Memory {
+export type Memory = {
   id: number;
   card_slot: string;
   internal: string;
   other: string;
-}
+};
 
-export interface Misc {
+export type Misc = {
   id: number;
   model_numbers: string;
   sar_us: string;
   sar_eu: string;
   price: string;
-}
+};
 
-export interface Network {
+export type Network = {
   id: number;
   technology: string;
   bands_2g: string;
@@ -84,18 +84,18 @@ export interface Network {
   bands_4g: string;
   bands_5g: string;
   speed: string;
-}
+};
 
-export interface Platform {
+export type Platform = {
   id: number;
   os: string;
   chipset: string;
   cpu: string;
   gpu: string;
-}
+};
 
-export interface Sound {
+export type Sound = {
   id: number;
   loudspeaker: string;
   audio_jack: string;
-}
+};

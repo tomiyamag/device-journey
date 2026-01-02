@@ -1,8 +1,8 @@
-interface IDeviceTag {
+interface DeviceTag {
   label: string;
 }
 
-const DeviceTag = ({ label }: IDeviceTag) => {
+const DeviceTag = ({ label }: DeviceTag) => {
   return <div>{label}</div>;
 };
 
