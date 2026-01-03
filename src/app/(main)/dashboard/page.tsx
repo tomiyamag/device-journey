@@ -4,19 +4,17 @@ import OtherDevices from "@/components/organisms/OtherDevices";
 
 export default function DashboardPage() {
   return (
-    <section>
-      <div className="flex flex-col gap-9">
-        <section>
-          <div className="flex flex-col gap-2">
-            <ActiveDevice />
-            <Pickups />
-          </div>
-        </section>
+    <div className="flex flex-col gap-9">
+      <section>
+        <div className="flex flex-col gap-2">
+          <ActiveDevice />
+          <Pickups />
+        </div>
+      </section>
 
-        <section>
-          <OtherDevices />
-        </section>
-      </div>
-    </section>
+      <section>
+        <OtherDevices />
+      </section>
+    </div>
   );
 }

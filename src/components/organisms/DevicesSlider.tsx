@@ -18,23 +18,23 @@ interface IDevicesSlider {
   devices: Device[];
 }
 
+export const getDeviceStatus = (device: Device): DeviceStatusType | null => {
+  if (device.is_main) {
+    return "is_main";
+  }
+
+  if (device.is_sub) {
+    return "is_sub";
+  }
+
+  if (device.retire_date) {
+    return "is_sold";
+  }
+
+  return null;
+};
+
 const DevicesSlider = ({ devices }: IDevicesSlider) => {
-  const status = (device: Device): DeviceStatusType | null => {
-    if (device.is_main) {
-      return "is_main";
-    }
-
-    if (device.is_sub) {
-      return "is_sub";
-    }
-
-    if (device.retire_date) {
-      return "is_sold";
-    }
-
-    return null;
-  };
-
   return (
     <>
       {devices.length > 0 ? (
@@ -53,7 +53,7 @@ const DevicesSlider = ({ devices }: IDevicesSlider) => {
                         footer={
                           <OthersDeviceDetails
                             name={`${device.brand} ${device.name}`}
-                            status={status(device)}
+                            status={getDeviceStatus(device)}
                           />
                         }
                       >
@@ -85,7 +85,7 @@ const DevicesSlider = ({ devices }: IDevicesSlider) => {
             <InformationCard
               footer={
                 <div className="font-bold text-sm sm:text-base">
-                  デバイスを登録する
+                  デバイスを追加する
                 </div>
               }
             >

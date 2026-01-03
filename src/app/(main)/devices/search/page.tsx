@@ -8,7 +8,7 @@ export default function DevicesSearchPage() {
     <section>
       <div className="flex flex-col gap-9">
         <div>
-          <PageHeading label="新規登録するデバイスを検索" />
+          <PageHeading label="新規追加するデバイスを検索" />
           <SearchDeviceForm />
         </div>
 

@@ -296,7 +296,7 @@ const AddDeviceForm = () => {
           max={9999999}
           type="number"
           autoComplete="off"
-          placeholder="134800"
+          placeholder="159800"
         />
       </FormField>
 
@@ -342,7 +342,7 @@ const AddDeviceForm = () => {
         </>
       )}
 
-      <div className="flex gap-4 mt-3">
+      <div className="flex flex-col sm:flex-row gap-4 mt-3">
         <Button
           type="button"
           variant="secondary"

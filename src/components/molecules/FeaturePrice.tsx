@@ -15,7 +15,7 @@ const FeaturePrice = ({ device }: IFeaturePrice) => {
     if (!purchasePrice) {
       return "--";
     }
-    return purchasePrice.toLocaleString();
+    return Number(purchasePrice).toLocaleString();
   };
 
   return (

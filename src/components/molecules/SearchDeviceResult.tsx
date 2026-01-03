@@ -171,7 +171,7 @@ const SearchDeviceResult = () => {
             loading={isNavigating}
             disabled={isNavigating}
           >
-            このデバイスを登録する
+            このデバイスを追加する
           </Button>
         </div>
       )}
