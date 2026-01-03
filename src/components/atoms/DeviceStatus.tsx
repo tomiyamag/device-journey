@@ -29,7 +29,9 @@ const DEVICE_STATUS_MAP: Record<
 };
 
 const DeviceStatus = ({ className, status }: IDeviceStatus) => {
-  if (!status) return;
+  if (!status) {
+    return null;
+  }
 
   const { label, theme } = DEVICE_STATUS_MAP[status];
 

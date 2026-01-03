@@ -3,6 +3,7 @@
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { PiSmileySad } from "react-icons/pi";
 
@@ -29,12 +30,14 @@ const StatusMessage = ({ message }: IStatusMessage) => {
 const SearchDeviceResult = () => {
   const router = useRouter();
 
+  const [isNavigating, setIsNavigating] = useState(false);
   const { selectedDeviceId: deviceId } = useDeviceSearchStore();
-
   const { data, isFetching, isError } = useGetMobileDevice(deviceId);
   const setDraft = useDeviceDraftStore((state) => state.setDraft);
 
-  if (!deviceId) return;
+  if (!deviceId) {
+    return null;
+  }
 
   // "," で区切られた文字列を配列に分解する
   const parseMultipleData = (multipleDataString: string): string[] => {
@@ -56,6 +59,8 @@ const SearchDeviceResult = () => {
 
   const handleProceed = () => {
     if (!data) return;
+
+    setIsNavigating(true);
 
     setDraft({
       name: data.name || "",
@@ -165,7 +170,12 @@ const SearchDeviceResult = () => {
             </div>
           </div>
 
-          <Button type="button" onClick={handleProceed}>
+          <Button
+            type="button"
+            onClick={handleProceed}
+            loading={isNavigating}
+            disabled={isNavigating}
+          >
             このデバイスを登録する
           </Button>
         </div>
