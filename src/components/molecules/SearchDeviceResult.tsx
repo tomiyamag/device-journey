@@ -8,16 +8,13 @@ import { PiSmileySad } from "react-icons/pi";
 
 import { useGetMobileDevice } from "@/hooks/useMobileApi";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
+import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
 
 import Button from "../atoms/Button";
 import DeviceSpec from "../atoms/DeviceSpec";
 
 interface IStatusMessage {
   message: string;
-}
-
-interface ISearchDeviceResult {
-  deviceId: number;
 }
 
 const StatusMessage = ({ message }: IStatusMessage) => {
@@ -29,11 +26,15 @@ const StatusMessage = ({ message }: IStatusMessage) => {
   );
 };
 
-const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
+const SearchDeviceResult = () => {
   const router = useRouter();
+
+  const { selectedDeviceId: deviceId } = useDeviceSearchStore();
 
   const { data, isFetching, isError } = useGetMobileDevice(deviceId);
   const setDraft = useDeviceDraftStore((state) => state.setDraft);
+
+  if (!deviceId) return;
 
   // "," で区切られた文字列を配列に分解する
   const parseMultipleData = (multipleDataString: string): string[] => {
@@ -109,7 +110,7 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
   return (
     <>
       {data && (
-        <>
+        <div className="flex flex-col gap-9">
           <div className="bg-gray-100 rounded-xl p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center">
               <div className="w-full sm:w-52 h-42 sm:h-72 relative overflow-hidden">
@@ -167,7 +168,7 @@ const SearchDeviceResult = ({ deviceId }: ISearchDeviceResult) => {
           <Button type="button" onClick={handleProceed}>
             このデバイスを登録する
           </Button>
-        </>
+        </div>
       )}
     </>
   );

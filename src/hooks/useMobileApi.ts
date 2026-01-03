@@ -34,10 +34,14 @@ export const useAutocompleteMobileDevices = (query: string) => {
   };
 };
 
-export const useGetMobileDevice = (id: number) => {
+export const useGetMobileDevice = (id: number | null) => {
   return useQuery<GetDeviceMobileApiResult | null>({
     queryKey: ["getMobileDevice", id],
-    queryFn: () => getMobileDevice(id),
+    queryFn: async () => {
+      if (!id) return null;
+      return getMobileDevice(id);
+    },
     staleTime: Infinity,
+    enabled: !!id,
   });
 };
