@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-interface IFormRadioGroup {
+interface IFormOptionGroup {
   children: ReactNode;
 }
 
-const FormRadioGroup = ({ children }: IFormRadioGroup) => {
+const FormOptionGroup = ({ children }: IFormOptionGroup) => {
   return (
     <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
       {children}
@@ -12,4 +12,4 @@ const FormRadioGroup = ({ children }: IFormRadioGroup) => {
   );
 };
 
-export default FormRadioGroup;
+export default FormOptionGroup;

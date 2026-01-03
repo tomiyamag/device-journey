@@ -7,8 +7,8 @@ import { Fragment, useEffect, useState } from "react";
 import { registerDevice } from "@/actions/devices";
 import Button from "@/components/atoms/Button";
 import FormInput from "@/components/atoms/FormInput";
+import FormOptionGroup from "@/components/atoms/FormOptionGroup";
 import FormRadio from "@/components/atoms/FormRadio";
-import FormRadioGroup from "@/components/atoms/FormRadioGroup";
 import FormSubmitButton from "@/components/atoms/FormSubmitButton";
 import FormField from "@/components/molecules/FormField";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
@@ -46,7 +46,7 @@ const AddDeviceForm = () => {
     colors: "",
     color: "",
     storage: "",
-    is_new: false,
+    is_sub: false,
     is_main: false,
   };
 
@@ -72,7 +72,7 @@ const AddDeviceForm = () => {
         colors: draft.colors,
         color: draft.color,
         storage: draft.storage,
-        is_new: draft.is_new,
+        is_sub: draft.is_sub,
         is_main: draft.is_main,
       };
     }
@@ -152,11 +152,11 @@ const AddDeviceForm = () => {
         description={
           draft.candidate_colors.length > 0
             ? undefined
-            : "使用中の本体カラー名を入力してください。"
+            : "本体カラー名を入力してください。"
         }
       >
         {draft.candidate_colors.length > 0 ? (
-          <FormRadioGroup>
+          <FormOptionGroup>
             {draft.candidate_colors.map((color, index) => (
               <Fragment key={index}>
                 <FormRadio
@@ -171,7 +171,7 @@ const AddDeviceForm = () => {
                 />
               </Fragment>
             ))}
-          </FormRadioGroup>
+          </FormOptionGroup>
         ) : (
           <FormInput
             id="color"
@@ -192,11 +192,11 @@ const AddDeviceForm = () => {
         description={
           draft.candidate_storages.length > 0
             ? undefined
-            : "使用中のストレージ容量を入力してください。"
+            : "ストレージ容量を入力してください。"
         }
       >
         {draft.candidate_storages.length > 0 ? (
-          <FormRadioGroup>
+          <FormOptionGroup>
             {draft.candidate_storages.map((storage, index) => (
               <Fragment key={index}>
                 <FormRadio
@@ -211,11 +211,11 @@ const AddDeviceForm = () => {
                 />
               </Fragment>
             ))}
-          </FormRadioGroup>
+          </FormOptionGroup>
         ) : (
           <FormInput
             id="storage"
-            placeholder="256 GB"
+            placeholder="256GB"
             value={formData.storage}
             onChange={(e) =>
               setFormData({ ...formData, storage: e.target.value })
@@ -226,6 +226,48 @@ const AddDeviceForm = () => {
         )}
       </FormField>
 
+      <FormField
+        labelText="デバイスの用途"
+        description={
+          formData.is_main
+            ? "すでにメインデバイスが設定されている場合は、設定を更新します。"
+            : undefined
+        }
+      >
+        <FormOptionGroup>
+          <FormRadio
+            id="is-status-main"
+            label="メインデバイス"
+            name="status"
+            value="main"
+            checked={formData.is_main}
+            onChange={() => {
+              setFormData({ ...formData, is_main: true, is_sub: false });
+            }}
+          />
+          <FormRadio
+            id="is-status-sub"
+            label="サブ機"
+            name="status"
+            value="sub"
+            checked={formData.is_sub}
+            onChange={() => {
+              setFormData({ ...formData, is_main: false, is_sub: true });
+            }}
+          />
+          <FormRadio
+            id="is-status-null"
+            label="指定しない"
+            name="status"
+            value="none"
+            checked={!formData.is_main && !formData.is_sub}
+            onChange={() => {
+              setFormData({ ...formData, is_main: false, is_sub: false });
+            }}
+          />
+        </FormOptionGroup>
+      </FormField>
+
       <FormField htmlFor="purchase-price" labelText="購入金額">
         <FormInput
           id="purchase-price"
@@ -234,6 +276,8 @@ const AddDeviceForm = () => {
             setFormData({ ...formData, purchase_price: e.target.value })
           }
           min={0}
+          max={9999999}
+          maxLength={9999999}
           type="number"
           autoComplete="off"
           placeholder="134800"
@@ -243,12 +287,11 @@ const AddDeviceForm = () => {
       <FormField htmlFor="purchase-date" labelText="購入日">
         <FormInput
           id="purchase-date"
-          value={formData.purchase_date ?? undefined}
+          value={formData.purchase_date ?? ""}
           onChange={(e) =>
             setFormData({
               ...formData,
-              purchase_date:
-                formData.purchase_date !== undefined ? e.target.value : null,
+              purchase_date: e.target.value || null,
             })
           }
           type="date"
@@ -258,16 +301,15 @@ const AddDeviceForm = () => {
       <FormField
         htmlFor="retire-date"
         labelText="売却日"
-        description="すでにデバイスを売却済みの場合は、売却日を指定してください。"
+        description="デバイスを売却済みの場合は、売却日を指定してください。"
       >
         <FormInput
           id="retire-date"
-          value={formData.retire_date ?? undefined}
+          value={formData.retire_date ?? ""}
           onChange={(e) =>
             setFormData({
               ...formData,
-              retire_date:
-                formData.retire_date !== undefined ? e.target.value : null,
+              retire_date: e.target.value || null,
             })
           }
           type="date"

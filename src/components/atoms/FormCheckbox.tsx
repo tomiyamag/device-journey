@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
+import { FaCheck } from "react-icons/fa";
 
-interface IFormRadio extends ComponentProps<"input"> {
+interface IFormCheckbox extends ComponentProps<"input"> {
   id: string;
   name?: string;
   value?: string;
@@ -8,21 +9,21 @@ interface IFormRadio extends ComponentProps<"input"> {
   checked?: boolean;
 }
 
-const FormRadio = ({
+const FormCheckbox = ({
   id,
   name,
   value,
   label,
   checked = false,
   ...rest
-}: IFormRadio) => {
+}: IFormCheckbox) => {
   return (
     <label
       htmlFor={id}
       className="inline-flex items-center gap-2 cursor-pointer group"
     >
       <input
-        type="radio"
+        type="checkbox"
         id={id}
         value={value}
         name={name}
@@ -31,8 +32,10 @@ const FormRadio = ({
         {...rest}
       />
 
-      <span className="w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center">
-        <span className="w-2 h-2 bg-teal-600 rounded-full opacity-0 group-has-checked:opacity-100"></span>
+      <span className="w-4.5 h-4.5 border border-gray-400 rounded-sm flex items-center justify-center">
+        <span className="opacity-0 group-has-checked:opacity-100">
+          <FaCheck size={10} className="text-teal-600" />
+        </span>
       </span>
 
       <span className="flex-1">{label}</span>
@@ -40,4 +43,4 @@ const FormRadio = ({
   );
 };
 
-export default FormRadio;
+export default FormCheckbox;

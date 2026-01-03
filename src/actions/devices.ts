@@ -36,6 +36,21 @@ export async function registerDevice(deviceData: DeviceInput) {
   const supabase = await createClient();
   const user = await getUser();
 
+  // メインデバイスとして登録された場合は、他のデバイスの is_main を全て false にする
+  if (deviceData.is_main) {
+    const { error: updateError } = await supabase
+      .from("devices")
+      .update({ is_main: false })
+      .eq("user_id", user?.id);
+
+    if (updateError) {
+      console.error("DB Error: ", updateError);
+      return {
+        error: "メインデバイスの切り替えに失敗しました",
+      };
+    }
+  }
+
   const payload = {
     ...deviceData,
     user_id: user?.id,

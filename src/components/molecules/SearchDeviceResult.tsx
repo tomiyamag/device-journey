@@ -88,7 +88,7 @@ const SearchDeviceResult = () => {
       color: "",
       candidate_storages: parseMultipleData(data.storage || ""),
       storage: "",
-      is_new: false,
+      is_sub: false,
       is_main: false,
     });
 

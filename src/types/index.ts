@@ -47,7 +47,7 @@ export type DeviceInput = {
   colors: string;
   color: string;
   storage: string;
-  is_new: boolean;
+  is_sub: boolean;
   is_main: boolean;
 };
 
