@@ -46,6 +46,7 @@ export type DeviceInput = {
   storage: string;
   is_sub: boolean;
   is_main: boolean;
+  resale_price: string;
 };
 
 export type DeviceInputDraft = DeviceInput & {

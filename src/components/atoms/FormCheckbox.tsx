@@ -32,13 +32,13 @@ const FormCheckbox = ({
         {...rest}
       />
 
-      <span className="w-4.5 h-4.5 border border-gray-400 rounded-sm flex items-center justify-center">
+      <span className="w-4.5 h-4.5 border border-gray-400 rounded-sm flex items-center justify-center group-has-disabled:border-gray-300">
         <span className="opacity-0 group-has-checked:opacity-100">
           <FaCheck size={10} className="text-teal-600" />
         </span>
       </span>
 
-      <span className="flex-1">{label}</span>
+      <span className="flex-1 group-has-disabled:text-gray-300">{label}</span>
     </label>
   );
 };

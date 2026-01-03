@@ -89,6 +89,7 @@ const SearchDeviceResult = () => {
       storage: "",
       is_sub: false,
       is_main: false,
+      resale_price: "",
     });
 
     router.push("/devices/add");
@@ -118,7 +119,7 @@ const SearchDeviceResult = () => {
                     src={data.images[0].image_url}
                     alt=""
                     fill
-                    className="top-1/2! left-1/2! w-auto! sm:w-full! h-full! sm:h-auto! -translate-1/2"
+                    className="top-1/2! left-1/2! w-auto! h-full! sm:h-auto! -translate-1/2"
                   />
                 ) : (
                   <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl sm:text-6xl" />

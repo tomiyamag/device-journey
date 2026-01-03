@@ -31,11 +31,11 @@ const FormRadio = ({
         {...rest}
       />
 
-      <span className="w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center">
+      <span className="w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center group-has-disabled:border-gray-300">
         <span className="w-2 h-2 bg-teal-600 rounded-full opacity-0 group-has-checked:opacity-100"></span>
       </span>
 
-      <span className="flex-1">{label}</span>
+      <span className="flex-1 group-has-disabled:text-gray-300">{label}</span>
     </label>
   );
 };

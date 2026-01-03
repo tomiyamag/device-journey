@@ -45,7 +45,7 @@ const DevicesSlider = ({ devices }: IDevicesSlider) => {
               .map((device: Device) => (
                 <SwiperSlide key={device.id} className="px-2 w-auto!">
                   <Link
-                    href=""
+                    href={`/devices/${device.id}`}
                     className="block w-60 sm:w-3xs transition-opacity hover:opacity-80"
                   >
                     <section>

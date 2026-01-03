@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
@@ -47,6 +48,7 @@ const AddDeviceForm = () => {
     storage: "",
     is_sub: false,
     is_main: false,
+    resale_price: "",
   };
 
   const [formData, setFormData] = useState<DeviceInput>(() => {
@@ -72,6 +74,7 @@ const AddDeviceForm = () => {
         storage: draft.storage,
         is_sub: draft.is_sub,
         is_main: draft.is_main,
+        resale_price: draft.resale_price,
       };
     }
 
@@ -238,6 +241,7 @@ const AddDeviceForm = () => {
             name="status"
             value="main"
             checked={formData.is_main}
+            disabled={!!formData.retire_date}
             onChange={() => {
               setFormData({ ...formData, is_main: true, is_sub: false });
             }}
@@ -248,6 +252,7 @@ const AddDeviceForm = () => {
             name="status"
             value="sub"
             checked={formData.is_sub}
+            disabled={!!formData.retire_date}
             onChange={() => {
               setFormData({ ...formData, is_main: false, is_sub: true });
             }}
@@ -265,22 +270,6 @@ const AddDeviceForm = () => {
         </FormOptionGroup>
       </FormField>
 
-      <FormField htmlFor="purchase-price" labelText="購入金額">
-        <FormInput
-          id="purchase-price"
-          value={formData.purchase_price}
-          onChange={(e) =>
-            setFormData({ ...formData, purchase_price: e.target.value })
-          }
-          min={0}
-          max={9999999}
-          maxLength={9999999}
-          type="number"
-          autoComplete="off"
-          placeholder="134800"
-        />
-      </FormField>
-
       <FormField htmlFor="purchase-date" labelText="購入日">
         <FormInput
           id="purchase-date"
@@ -291,28 +280,66 @@ const AddDeviceForm = () => {
               purchase_date: e.target.value || null,
             })
           }
+          max={dayjs().format("YYYY-MM-DD")}
           type="date"
         />
       </FormField>
 
+      <FormField htmlFor="purchase-price" labelText="購入価格">
+        <FormInput
+          id="purchase-price"
+          value={formData.purchase_price}
+          onChange={(e) =>
+            setFormData({ ...formData, purchase_price: e.target.value })
+          }
+          min={0}
+          max={9999999}
+          type="number"
+          autoComplete="off"
+          placeholder="134800"
+        />
+      </FormField>
+
       {!formData.is_main && !formData.is_sub && (
-        <FormField
-          htmlFor="retire-date"
-          labelText="売却日"
-          description="デバイスを売却済みの場合は、売却日を指定してください。"
-        >
-          <FormInput
-            id="retire-date"
-            value={formData.retire_date ?? ""}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                retire_date: e.target.value || null,
-              })
-            }
-            type="date"
-          />
-        </FormField>
+        <>
+          <FormField
+            htmlFor="retire-date"
+            labelText="売却日"
+            description="デバイスを売却済みの場合は、売却日を指定してください。"
+          >
+            <FormInput
+              id="retire-date"
+              value={formData.retire_date ?? ""}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  retire_date: e.target.value || null,
+                  resale_price:
+                    e.target.value === "" ? "" : formData.resale_price,
+                })
+              }
+              max={dayjs().format("YYYY-MM-DD")}
+              type="date"
+            />
+          </FormField>
+
+          {!!formData.retire_date && (
+            <FormField htmlFor="sold-price" labelText="売却金額">
+              <FormInput
+                id="sold-price"
+                value={formData.resale_price}
+                onChange={(e) =>
+                  setFormData({ ...formData, resale_price: e.target.value })
+                }
+                min={0}
+                max={9999999}
+                type="number"
+                autoComplete="off"
+                placeholder="65000"
+              />
+            </FormField>
+          )}
+        </>
       )}
 
       <div className="flex gap-4 mt-3">

@@ -1,6 +1,12 @@
+import { Device } from "@/types";
+
 import FeatureCostTody from "./FeatureCostTody";
 import FeaturePeriod from "./FeaturePeriod";
 import FeaturePrice from "./FeaturePrice";
+
+interface IActiveDeviceFeatures {
+  device: Device;
+}
 
 const features = [
   {
@@ -17,12 +23,12 @@ const features = [
   },
 ];
 
-const ActiveDeviceFeatures = () => {
+const ActiveDeviceFeatures = ({ device }: IActiveDeviceFeatures) => {
   return (
     <div className="flex gap-3 justify-around sm:justify-between">
       {features.map(({ id, Component }) => (
         <div key={id} className="sm:w-1/3">
-          <Component />
+          <Component device={device} />
         </div>
       ))}
     </div>
