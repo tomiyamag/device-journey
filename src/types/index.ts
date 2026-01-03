@@ -23,8 +23,6 @@ export type UserProfile = {
   website: string | null;
 };
 
-export type DeviceStatus = "in_use" | "sold" | "sub";
-
 export type DeviceSpec = {
   display: string;
   camera: string;
@@ -42,7 +40,6 @@ export type DeviceInput = {
   retire_date: string | null;
   image_url: string | null;
   spec: DeviceSpec;
-  status: DeviceStatus | null;
   release_date: string;
   colors: string;
   color: string;

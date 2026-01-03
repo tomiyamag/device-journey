@@ -41,7 +41,6 @@ const AddDeviceForm = () => {
       hardware: "",
       storage: "",
     },
-    status: null,
     release_date: "",
     colors: "",
     color: "",
@@ -67,7 +66,6 @@ const AddDeviceForm = () => {
           hardware: draft.spec.hardware,
           storage: draft.spec.storage,
         },
-        status: draft.status,
         release_date: draft.release_date,
         colors: draft.colors,
         color: draft.color,
@@ -93,13 +91,13 @@ const AddDeviceForm = () => {
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
 
-      router.push("/dashboard");
-
       /**
        * NOTE:
        * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス一覧へ遷移させる）
        */
       setIsSubmitting(true);
+
+      router.push("/dashboard");
 
       clearDraft();
       clearSearch();
@@ -126,7 +124,6 @@ const AddDeviceForm = () => {
     return <ContentLoadingSpinner className="py-8" />;
   }
 
-  // TODO: 不足している入力欄を追加する
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <FormField htmlFor="name" labelText="機種名">
@@ -298,23 +295,25 @@ const AddDeviceForm = () => {
         />
       </FormField>
 
-      <FormField
-        htmlFor="retire-date"
-        labelText="売却日"
-        description="デバイスを売却済みの場合は、売却日を指定してください。"
-      >
-        <FormInput
-          id="retire-date"
-          value={formData.retire_date ?? ""}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              retire_date: e.target.value || null,
-            })
-          }
-          type="date"
-        />
-      </FormField>
+      {!formData.is_main && !formData.is_sub && (
+        <FormField
+          htmlFor="retire-date"
+          labelText="売却日"
+          description="デバイスを売却済みの場合は、売却日を指定してください。"
+        >
+          <FormInput
+            id="retire-date"
+            value={formData.retire_date ?? ""}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                retire_date: e.target.value || null,
+              })
+            }
+            type="date"
+          />
+        </FormField>
+      )}
 
       <div className="flex gap-4 mt-3">
         <Button

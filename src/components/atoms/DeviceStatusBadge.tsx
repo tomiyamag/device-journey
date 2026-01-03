@@ -1,10 +1,10 @@
 import classNames from "classnames";
 
-import { DeviceStatus as DeviceStatusType } from "@/types";
+export type DeviceStatusType = "is_main" | "is_sub" | "is_sold";
 
-interface IDeviceStatus {
+interface IDeviceStatusBadge {
   className?: string;
-  status?: DeviceStatusType | null;
+  status: DeviceStatusType | null;
 }
 
 const DEVICE_STATUS_MAP: Record<
@@ -14,21 +14,21 @@ const DEVICE_STATUS_MAP: Record<
     theme: string;
   }
 > = {
-  in_use: {
+  is_main: {
     label: "使用中",
-    theme: "bg-emerald-500 text-white",
+    theme: "bg-teal-600",
   },
-  sold: {
+  is_sold: {
     label: "売却済み",
-    theme: "border border-gray-400 bg-white text-gray-500",
+    theme: "bg-stone-400",
   },
-  sub: {
+  is_sub: {
     label: "サブ機",
-    theme: "bg-yellow-400 text-white",
+    theme: "bg-yellow-500",
   },
 };
 
-const DeviceStatus = ({ className, status }: IDeviceStatus) => {
+const DeviceStatusBadge = ({ className, status }: IDeviceStatusBadge) => {
   if (!status) {
     return null;
   }
@@ -38,7 +38,7 @@ const DeviceStatus = ({ className, status }: IDeviceStatus) => {
   return (
     <div
       className={classNames(
-        "text-xs rounded-sm px-2 py-1 font-bold",
+        "text-[0.6875rem] text-white rounded-sm px-2 py-1 font-bold",
         theme,
         className,
       )}
@@ -48,4 +48,4 @@ const DeviceStatus = ({ className, status }: IDeviceStatus) => {
   );
 };
 
-export default DeviceStatus;
+export default DeviceStatusBadge;

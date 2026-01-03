@@ -78,7 +78,6 @@ const SearchDeviceResult = () => {
         hardware: data.hardware || "",
         storage: data.storage || "",
       },
-      status: null,
       release_date:
         data.release_date && data.release_date !== "Cancelled"
           ? formatReleaseDate(data.release_date)
