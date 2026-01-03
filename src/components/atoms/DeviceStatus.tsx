@@ -1,14 +1,14 @@
 import classNames from "classnames";
 
-import { DeviceStatus as DeviceStatsType } from "@/types";
+import { DeviceStatus as DeviceStatusType } from "@/types";
 
 interface IDeviceStatus {
   className?: string;
-  status?: DeviceStatsType | null;
+  status?: DeviceStatusType | null;
 }
 
 const DEVICE_STATUS_MAP: Record<
-  DeviceStatsType,
+  DeviceStatusType,
   {
     label: string;
     theme: string;
