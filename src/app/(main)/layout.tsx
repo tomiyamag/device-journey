@@ -1,4 +1,7 @@
+import { redirect } from "next/navigation";
+
 import { getUserProfile } from "@/actions/profile";
+import { getUser } from "@/actions/user";
 import Footer from "@/components/organisms/Footer";
 import Header from "@/components/organisms/Header";
 
@@ -7,6 +10,12 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const profile = await getUserProfile();
 
   return (
