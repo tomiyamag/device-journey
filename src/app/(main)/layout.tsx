@@ -21,7 +21,7 @@ export default async function MainLayout({
   return (
     <>
       <Header profile={profile} />
-      <main className="px-5 sm:px-16 py-5 sm:py-10 overflow-x-hidden">
+      <main className="px-4 sm:px-16 py-5 sm:py-10 overflow-x-hidden">
         {children}
       </main>
       <Footer />

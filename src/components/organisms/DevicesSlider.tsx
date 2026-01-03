@@ -21,7 +21,7 @@ const DevicesSlider = ({ devices }: IDevicesSlider) => {
   return (
     <>
       {devices.length > 0 ? (
-        <div className="w-[calc(100%+1.5rem+1.5rem)] sm:w-[calc(100%+4.25rem+4.25rem)] -ml-7 sm:-ml-18">
+        <div className="w-[calc(100%+1.5rem+1.5rem)] sm:w-[calc(100%+4.5rem+4.5rem)] -ml-7 sm:-ml-18">
           <Swiper slidesPerView={"auto"} className="px-5! sm:px-16!">
             {devices.map((device: Device) => (
               <SwiperSlide key={device.id} className="px-2 w-auto!">
