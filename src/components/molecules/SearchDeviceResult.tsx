@@ -12,6 +12,7 @@ import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
 import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
 
 import Button from "../atoms/Button";
+import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 import DeviceSpec from "../atoms/DeviceSpec";
 
 interface IStatusMessage {
@@ -95,13 +96,7 @@ const SearchDeviceResult = () => {
   };
 
   if (isFetching) {
-    return (
-      <div className="font-bold text-sm py-24">
-        <div className="flex justify-center items-center gap-2">
-          <div className="h-8 w-8 animate-spin rounded-full border-3 border-teal-600 border-t-transparent"></div>
-        </div>
-      </div>
-    );
+    return <ContentLoadingSpinner className="py-24" />;
   }
 
   if (isError) {
