@@ -20,12 +20,17 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
     <div className="flex gap-3.5 items-center sm:items-start">
       <div className="overflow-hidden w-48 h-44 relative hidden sm:block">
         {device.image_url ? (
-          <Image
-            src={device.image_url}
-            alt=""
-            fill
-            className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
-          />
+          <Link
+            href={`/devices/${device.id}`}
+            className="transition-opacity hover:opacity-80"
+          >
+            <Image
+              src={device.image_url}
+              alt=""
+              fill
+              className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
+            />
+          </Link>
         ) : (
           <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl" />
         )}
@@ -35,12 +40,17 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
         <div className="mb-4 sm:mb-2.5 flex items-center gap-3">
           <div className="rounded-lg overflow-hidden w-30 h-28 relative sm:hidden">
             {device.image_url ? (
-              <Image
-                src={device.image_url}
-                alt=""
-                fill
-                className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
-              />
+              <Link
+                href={`/devices/${device.id}`}
+                className="transition-opacity hover:opacity-80"
+              >
+                <Image
+                  src={device.image_url}
+                  alt=""
+                  fill
+                  className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
+                />
+              </Link>
             ) : (
               <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-4xl" />
             )}

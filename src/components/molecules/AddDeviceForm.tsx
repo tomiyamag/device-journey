@@ -230,7 +230,7 @@ const AddDeviceForm = () => {
         labelText="デバイスの用途"
         description={
           formData.is_main
-            ? "すでにメインデバイスが設定されている場合は、設定を更新します。"
+            ? "すでにメインデバイスが登録されている場合は、設定が更新されます。"
             : undefined
         }
       >
