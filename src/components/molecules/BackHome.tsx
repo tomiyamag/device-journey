@@ -1,8 +1,16 @@
 import AppLink from "../atoms/AppLink";
 
-const BackHome = () => {
+interface IBackHome {
+  prevItem?: {
+    href: string;
+    label: string;
+  };
+}
+
+const BackHome = ({ prevItem }: IBackHome) => {
   return (
-    <div className="text-center mt-9">
+    <div className="flex gap-12 items-center justify-center mt-9">
+      {prevItem && <AppLink href={prevItem.href} label={prevItem.label} />}
       <AppLink href="/dashboard" label="ホーム" />
     </div>
   );

@@ -19,7 +19,7 @@ const FeaturePrice = ({ device }: IFeaturePrice) => {
   };
 
   return (
-    <Feature icon={FaMoneyBills} title="購入価格" className="text-blue-500">
+    <Feature icon={FaMoneyBills} title="購入金額" className="text-sky-500">
       <div>¥ {price()}</div>
     </Feature>
   );

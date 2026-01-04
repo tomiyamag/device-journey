@@ -63,7 +63,7 @@ const DevicesSlider = ({ devices }: IDevicesSlider) => {
                               src={device.image_url}
                               alt=""
                               fill
-                              className="top-1/2! left-1/2! w-auto! h-3/4! sm:h-4/5! -translate-1/2"
+                              className="top-1/2! left-1/2! w-auto! max-w-none h-3/4! sm:h-4/5! -translate-1/2"
                             />
                           ) : (
                             <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl" />

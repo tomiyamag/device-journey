@@ -285,7 +285,7 @@ const AddDeviceForm = () => {
         />
       </FormField>
 
-      <FormField htmlFor="purchase-price" labelText="購入価格">
+      <FormField htmlFor="purchase-price" labelText="購入金額">
         <FormInput
           id="purchase-price"
           value={formData.purchase_price}

@@ -17,7 +17,7 @@ const Feature = ({ className, icon: Icon, title, children }: IFeature) => {
         className,
       )}
     >
-      <div className="rounded-full bg-white w-7 sm:w-9 h-7 sm:h-9 flex items-center justify-center">
+      <div className="rounded-full bg-gray-50 w-7 sm:w-9 h-7 sm:h-9 flex items-center justify-center shadow-sm">
         <Icon size={16} />
       </div>
       <div className="text-xs sm:text-sm text-black flex-1">

@@ -71,12 +71,12 @@ const SearchDeviceResult = () => {
       retire_date: null,
       image_url: data?.images[0]?.image_url || null,
       spec: {
-        display: data.screen_resolution || "",
-        camera: data.camera || "",
-        battery: data.battery_capacity || "",
-        weight: data.weight || "",
-        hardware: data.hardware || "",
-        storage: data.storage || "",
+        display: data.screen_resolution || "--",
+        camera: data.camera || "--",
+        battery: data.battery_capacity || "--",
+        weight: data.weight || "--",
+        hardware: data.hardware || "--",
+        storage: data.storage || "--",
       },
       release_date:
         data.release_date && data.release_date !== "Cancelled"
@@ -119,7 +119,7 @@ const SearchDeviceResult = () => {
                     src={data.images[0].image_url}
                     alt=""
                     fill
-                    className="top-1/2! left-1/2! w-auto! h-full! sm:h-auto! -translate-1/2"
+                    className="top-1/2! left-1/2! w-auto! max-w-none h-full! sm:h-auto! -translate-1/2"
                   />
                 ) : (
                   <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl sm:text-6xl" />

@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineImageNotSupported } from "react-icons/md";
@@ -36,57 +37,27 @@ const DeviceListItem = ({ device }: IDeviceListItem) => {
 
               <div className="flex flex-col gap-1 pb-0.5">
                 <DeviceListItemField title="購入日">
-                  {device.purchase_date || "未登録"}
+                  {device.purchase_date
+                    ? dayjs(device.purchase_date).format("YYYY年MM月DD日")
+                    : "未登録"}
                 </DeviceListItemField>
 
-                <DeviceListItemField title="本体カラー">
+                <DeviceListItemField title="カラー">
                   {device.color || "未登録"}
                 </DeviceListItemField>
 
                 <DeviceListItemField title="ストレージ容量">
                   {device.storage || "未登録"}
                 </DeviceListItemField>
-
-                {/* <DeviceDetailField title="本体カラー">
-                  {device.colors.split(", ").map((color, index) => (
-                    <span
-                      key={color}
-                      className={classNames({
-                        "font-bold italic": color === device.color,
-                      })}
-                    >
-                      {color}
-                      {index === device.colors.split(", ").length - 1
-                        ? ""
-                        : ", "}
-                    </span>
-                  ))}
-                </DeviceDetailField> */}
-
-                {/* <DeviceDetailField title="ストレージ容量">
-                  {device.spec.storage.split(", ").map((storage, index) => (
-                    <span
-                      key={storage}
-                      className={classNames({
-                        "font-bold italic": storage === device.storage,
-                      })}
-                    >
-                      {storage}
-                      {index === device.spec.storage.split(", ").length - 1
-                        ? ""
-                        : ", "}
-                    </span>
-                  ))}
-                </DeviceDetailField> */}
               </div>
             </div>
           }
         >
-          <div className="relative h-36 sm:h-40">
+          <div className="relative overflow-hidden h-36 sm:h-40">
             {device.image_url ? (
               <Image
                 src={device.image_url}
-                className="top-1/2! left-1/2! w-auto! h-11/12! sm:h-10/12! -translate-1/2"
+                className="top-1/2! left-1/2! w-auto! max-w-none h-11/12! sm:h-10/12! -translate-1/2"
                 alt=""
                 fill
               />

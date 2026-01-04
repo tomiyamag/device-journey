@@ -1,6 +1,8 @@
-import { getDeviceById } from "@/actions/devices";
+import { Suspense } from "react";
+
+import ContentLoadingSpinner from "@/components/atoms/ContentLoadingSpinner";
 import BackHome from "@/components/molecules/BackHome";
-import FeatureCostToday from "@/components/molecules/FeatureCostTody";
+import DeviceDetailContainer from "@/components/organisms/DeviceDetailContainer";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -8,23 +10,19 @@ interface Props {
 
 export default async function DeviceDetailPage({ params }: Props) {
   const { id } = await params;
-  const device = await getDeviceById(id);
 
   return (
     <section>
-      <div>デバイス詳細</div>
+      <Suspense fallback={<ContentLoadingSpinner className="py-34" />}>
+        <DeviceDetailContainer id={id} />
+      </Suspense>
 
-      <div>デバイス ID: {id}</div>
-
-      <div>購入日: {device.purchase_date}</div>
-      <div>購入金額: {device.purchase_price}</div>
-
-      <div>売却日: {device.retire_date}</div>
-      <div>売却金額: {device.resale_price}</div>
-
-      <FeatureCostToday device={device} />
-
-      <BackHome />
+      <BackHome
+        prevItem={{
+          href: "/devices",
+          label: "デバイス一覧",
+        }}
+      />
     </section>
   );
 }

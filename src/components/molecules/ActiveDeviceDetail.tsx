@@ -8,8 +8,8 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 
 import { Device } from "@/types";
 
-import ActiveDeviceTag from "../atoms/ActiveDeviceTag";
 import DeviceSpec from "../atoms/DeviceSpec";
+import DeviceTag from "../atoms/DeviceTag";
 
 interface IActiveDeviceDetail {
   device: Device;
@@ -28,7 +28,7 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
               src={device.image_url}
               alt=""
               fill
-              className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
+              className="top-1/2! left-1/2! w-auto! max-w-none h-full! -translate-1/2"
             />
           </Link>
         ) : (
@@ -48,7 +48,7 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
                   src={device.image_url}
                   alt=""
                   fill
-                  className="top-1/2! left-1/2! w-auto! h-full! -translate-1/2"
+                  className="top-1/2! left-1/2! w-auto! max-w-none h-full! -translate-1/2"
                 />
               </Link>
             ) : (
@@ -70,26 +70,26 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
             {(device.storage || device.color || device.purchase_date) && (
               <div className="flex flex-wrap gap-1">
                 {device.storage && (
-                  <ActiveDeviceTag>
+                  <DeviceTag>
                     <GrStorage />
                     <span className="font-bold">{device.storage}</span>
-                  </ActiveDeviceTag>
+                  </DeviceTag>
                 )}
 
                 {device.color && (
-                  <ActiveDeviceTag>
+                  <DeviceTag>
                     <IoMdColorPalette />
                     <span className="font-bold">{device.color}</span>
-                  </ActiveDeviceTag>
+                  </DeviceTag>
                 )}
 
                 {device.purchase_date && (
-                  <ActiveDeviceTag>
+                  <DeviceTag>
                     <FaCalendarDays />
                     <span className="font-bold">
                       {dayjs(device.purchase_date).format("YYYY/MM/DD")} 購入
                     </span>
-                  </ActiveDeviceTag>
+                  </DeviceTag>
                 )}
               </div>
             )}

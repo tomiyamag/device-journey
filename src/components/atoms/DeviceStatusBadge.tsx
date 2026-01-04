@@ -15,7 +15,7 @@ const DEVICE_STATUS_MAP: Record<
   }
 > = {
   is_main: {
-    label: "使用中",
+    label: "メインデバイス",
     theme: "bg-teal-600",
   },
   is_sold: {
