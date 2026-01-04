@@ -16,7 +16,7 @@ const FeaturePeriod = ({ device }: IFeaturePeriod) => {
     if (!purchaseDate) {
       return "--";
     }
-    return dayjs().diff(dayjs(purchaseDate), "day").toLocaleString();
+    return (dayjs().diff(dayjs(purchaseDate), "day") + 1).toLocaleString();
   };
 
   return (
