@@ -10,15 +10,21 @@ interface IFeaturePeriod {
 }
 
 const FeaturePeriod = ({ device }: IFeaturePeriod) => {
-  const purchaseDate = device.purchase_date;
+  const { purchase_date, retire_date } = device;
 
   const days = () => {
-    if (!purchaseDate) {
+    if (!purchase_date) {
       return "--";
     }
-    return (dayjs().diff(dayjs(purchaseDate), "day") + 1).toLocaleString();
-  };
 
+    const start = dayjs(purchase_date).startOf("day");
+    const end = retire_date
+      ? dayjs(retire_date).startOf("day")
+      : dayjs().startOf("day");
+    const diff = (end.diff(start, "day") + 1).toLocaleString();
+
+    return diff;
+  };
   return (
     <Feature icon={FaFire} title="使用期間" className="text-pink-500 w-1/3">
       <div>{days()} 日</div>
