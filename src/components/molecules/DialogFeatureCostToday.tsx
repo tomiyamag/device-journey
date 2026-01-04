@@ -27,7 +27,7 @@ const DialogFeatureCostToday = ({
       <DialogBackdrop className="fixed inset-0 bg-black/30" />
 
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="max-w-lg flex flex-col gap-5 bg-white rounded-lg p-8 sm:p-10">
+        <DialogPanel className="max-w-lg flex flex-col gap-5 bg-white/90 backdrop-blur-sm rounded-lg p-8 sm:p-10">
           <DialogTitle className="font-bold">コストの算出方法</DialogTitle>
 
           <div className="w-full flex flex-col items-start gap-5 text-gray-600">
