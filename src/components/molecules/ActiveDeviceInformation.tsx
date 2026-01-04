@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { IoAddCircleOutline } from "react-icons/io5";
 
-import { getDevices } from "@/actions/devices";
+import { useDevices } from "@/hooks/useDevices";
 
 import InformationCard from "../atoms/InformationCard";
 import ActiveDeviceDetail from "./ActiveDeviceDetail";
@@ -9,8 +11,16 @@ import ActiveDeviceFeatures from "./ActiveDeviceFeatures";
 
 const WELCOME_MESSAGE = "Device Journey へようこそ 👋";
 
-const ActiveDeviceInformation = async () => {
-  const devices = await getDevices();
+const ActiveDeviceInformation = () => {
+  const { data: devices, isLoading } = useDevices();
+
+  if (isLoading) {
+    return <>ロード中</>;
+  }
+
+  if (!devices) {
+    return null;
+  }
 
   if (devices.length < 1) {
     return (

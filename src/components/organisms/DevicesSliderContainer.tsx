@@ -1,9 +1,20 @@
-import { getDevices } from "@/actions/devices";
+"use client";
+
+import { useDevices } from "@/hooks/useDevices";
 
 import DevicesSlider from "./DevicesSlider";
 
-const DevicesSliderContainer = async () => {
-  const devices = await getDevices();
+const DevicesSliderContainer = () => {
+  const { data: devices, isLoading } = useDevices();
+
+  if (isLoading) {
+    return <>ロード中</>;
+  }
+
+  if (!devices) {
+    return null;
+  }
+
   return <DevicesSlider devices={devices} />;
 };
 

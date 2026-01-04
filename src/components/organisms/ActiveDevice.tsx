@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { FaCircle } from "react-icons/fa";
 
 import InformationHeading from "../atoms/InformationHeading";
@@ -13,10 +12,7 @@ const ActiveDevice = () => {
           メインのアクティブデバイス
         </span>
       </InformationHeading>
-
-      <Suspense fallback={"ロード中"}>
-        <ActiveDeviceInformation />
-      </Suspense>
+      <ActiveDeviceInformation />
     </div>
   );
 };

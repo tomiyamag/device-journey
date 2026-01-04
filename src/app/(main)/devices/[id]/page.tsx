@@ -1,6 +1,3 @@
-import { Suspense } from "react";
-
-import ContentLoadingSpinner from "@/components/atoms/ContentLoadingSpinner";
 import BackHome from "@/components/molecules/BackHome";
 import DeviceDetailContainer from "@/components/organisms/DeviceDetailContainer";
 
@@ -13,10 +10,7 @@ export default async function DeviceDetailPage({ params }: Props) {
 
   return (
     <section>
-      <Suspense fallback={<ContentLoadingSpinner className="py-34" />}>
-        <DeviceDetailContainer id={id} />
-      </Suspense>
-
+      <DeviceDetailContainer id={id} />
       <BackHome
         prevItem={{
           href: "/devices",

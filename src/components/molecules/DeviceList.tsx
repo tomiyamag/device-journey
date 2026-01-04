@@ -1,15 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { FiPlus } from "react-icons/fi";
 import { IoAddCircleOutline } from "react-icons/io5";
 
-import { getDevices } from "@/actions/devices";
+import { useDevices } from "@/hooks/useDevices";
 import { Device } from "@/types";
 
 import InformationCard from "../atoms/InformationCard";
 import DeviceListItem from "./DeviceListItem";
 
-const DeviceList = async () => {
-  const devices = await getDevices();
+const DeviceList = () => {
+  const { data: devices, isLoading } = useDevices();
+
+  if (isLoading) {
+    return <>ロード中</>;
+  }
+
+  if (!devices) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-4">

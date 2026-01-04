@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 import AppLink from "../atoms/AppLink";
 import InformationHeading from "../atoms/InformationHeading";
 import DevicesSliderContainer from "./DevicesSliderContainer";
@@ -12,10 +10,7 @@ const OtherDevices = () => {
       >
         その他のデバイス
       </InformationHeading>
-
-      <Suspense fallback={"ロード中"}>
-        <DevicesSliderContainer />
-      </Suspense>
+      <DevicesSliderContainer />
     </>
   );
 };
