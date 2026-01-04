@@ -342,10 +342,10 @@ const AddDeviceForm = () => {
         </>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-4 mt-3">
+      <div className="flex flex-col-reverse sm:flex-row gap-6 sm:gap-4 mt-3">
         <Button
           type="button"
-          variant="secondary"
+          variant="back"
           onClick={() => router.back()}
           disabled={isPending}
         >

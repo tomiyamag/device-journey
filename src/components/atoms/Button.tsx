@@ -3,7 +3,7 @@ import { ComponentProps, ReactNode } from "react";
 
 export interface IButton extends ComponentProps<"button"> {
   className?: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "back";
   size?: "sm" | "full" | "auto";
   disabled?: boolean;
   loading?: boolean;
@@ -22,15 +22,17 @@ const Button = ({
   return (
     <button
       className={classNames(
-        "rounded-lg h-11 block text-white font-bold -bg-linear-210 to-60% cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:from-transparent disabled:to-transparent disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
+        "rounded-lg h-11 block font-bold -bg-linear-210 to-60% cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:from-transparent disabled:to-transparent disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
         {
           "w-full mx-auto": size === "full",
           "w-full sm:w-xs text-sm mx-auto": size === "sm",
           "w-auto text-sm": size === "auto",
         },
         {
-          "from-cyan-600 to-teal-600": variant === "primary",
-          "from-teal-300 to-teal-500": variant === "secondary",
+          "from-cyan-600 to-teal-600 text-white": variant === "primary",
+          "from-teal-300 to-teal-500 text-white": variant === "secondary",
+          "from-white to-white border-2 border-teal-600 text-teal-600":
+            variant === "back",
         },
         className,
       )}
