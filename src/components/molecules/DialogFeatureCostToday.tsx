@@ -27,10 +27,10 @@ const DialogFeatureCostToday = ({
       <DialogBackdrop className="fixed inset-0 bg-black/30" />
 
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="max-w-lg flex flex-col items-start gap-5 bg-white rounded-lg p-10">
+        <DialogPanel className="max-w-lg flex flex-col gap-5 bg-white rounded-lg p-8 sm:p-10">
           <DialogTitle className="font-bold">コストの算出方法</DialogTitle>
 
-          <div className="flex flex-col items-start gap-5 text-gray-600">
+          <div className="w-full flex flex-col items-start gap-5 text-gray-600">
             <p className="text-sm/relaxed">
               デバイスの購入金額を使用期間で日割り計算した金額です。
               <br />
@@ -41,18 +41,19 @@ const DialogFeatureCostToday = ({
               <li>
                 金額が登録されていない場合は、コスト算出が無効になります。
               </li>
-              <li>小数点以下は四捨五入されます。</li>
               <li>購入日（または売却日）当日も1日分としてカウントします。</li>
             </ul>
           </div>
 
-          <Button
-            onClick={() => setIsOpen(false)}
-            className="px-8 self-auto"
-            size="auto"
-          >
-            閉じる
-          </Button>
+          <div className="flex sm:block flex-col w-full sm:w-auto">
+            <Button
+              onClick={() => setIsOpen(false)}
+              className="px-8"
+              size="auto"
+            >
+              閉じる
+            </Button>
+          </div>
         </DialogPanel>
       </div>
     </Dialog>
