@@ -15,7 +15,12 @@ export default function DevicesSearchPage() {
         <SearchDeviceResult />
       </div>
 
-      <BackHome />
+      <BackHome
+        prevItem={{
+          href: "/devices",
+          label: "デバイス一覧",
+        }}
+      />
     </section>
   );
 }
