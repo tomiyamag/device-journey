@@ -72,7 +72,7 @@ const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
 
   // 売却日と売却金額の両方が登録されている場合は差し引く
   if (retire_date && resale_price) {
-    costBasis = costBasis - Number(resale_price);
+    costBasis = Math.max(costBasis - Number(resale_price), 0);
   }
 
   const dailyCost = Math.round(costBasis / diffDays);
