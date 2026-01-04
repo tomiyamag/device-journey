@@ -11,6 +11,7 @@ interface IFormSubmitButton extends IButton {
 const FormSubmitButton = ({
   loading,
   children,
+  type = "submit",
   ...rest
 }: IFormSubmitButton) => {
   const { pending } = useFormStatus();
@@ -18,7 +19,7 @@ const FormSubmitButton = ({
   const isLoading = loading || pending;
 
   return (
-    <Button loading={isLoading} type="submit" {...rest}>
+    <Button loading={isLoading} type={type} {...rest}>
       {children}
     </Button>
   );

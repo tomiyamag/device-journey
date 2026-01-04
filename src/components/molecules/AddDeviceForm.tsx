@@ -128,7 +128,7 @@ const AddDeviceForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
       <FormField htmlFor="name" labelText="機種名">
         <FormInput id="name" value={formData.name} type="text" readOnly />
       </FormField>
@@ -351,7 +351,13 @@ const AddDeviceForm = () => {
         >
           戻る
         </Button>
-        <FormSubmitButton loading={isPending}>登録する</FormSubmitButton>
+        <FormSubmitButton
+          type="button"
+          loading={isPending}
+          onClick={handleSubmit}
+        >
+          登録する
+        </FormSubmitButton>
       </div>
     </form>
   );
