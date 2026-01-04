@@ -12,13 +12,15 @@ import DialogFeatureCostToday from "./DialogFeatureCostToday";
 interface IWrapper {
   title: string;
   dailyCost: string;
+  dashboard?: boolean;
 }
 
 interface IFeatureCostToday {
   device: Device;
+  dashboard?: boolean;
 }
 
-const Wrapper = ({ title, dailyCost }: IWrapper) => {
+const Wrapper = ({ title, dailyCost, dashboard }: IWrapper) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
@@ -33,6 +35,7 @@ const Wrapper = ({ title, dailyCost }: IWrapper) => {
         title={title}
         className="text-amber-900"
         info={{ onClick: handleClick }}
+        dashboard={dashboard}
       >
         <div>¥ {dailyCost}</div>
       </Feature>
@@ -42,13 +45,19 @@ const Wrapper = ({ title, dailyCost }: IWrapper) => {
 
 const DEFAULT_TITLE_LABEL = "今日のコスト";
 
-const FeatureCostToday = ({ device }: IFeatureCostToday) => {
+const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
   const { purchase_date, purchase_price, retire_date, resale_price } = device;
 
   const today = dayjs().startOf("day");
 
   if (!purchase_date || !purchase_price) {
-    return <Wrapper title={DEFAULT_TITLE_LABEL} dailyCost="--" />;
+    return (
+      <Wrapper
+        title={DEFAULT_TITLE_LABEL}
+        dailyCost="--"
+        dashboard={dashboard}
+      />
+    );
   }
 
   const start = dayjs(purchase_date);
@@ -69,7 +78,13 @@ const FeatureCostToday = ({ device }: IFeatureCostToday) => {
   const dailyCost = Math.round(costBasis / diffDays);
   const title = retire_date ? "1日あたりのコスト" : DEFAULT_TITLE_LABEL;
 
-  return <Wrapper title={title} dailyCost={dailyCost.toLocaleString()} />;
+  return (
+    <Wrapper
+      title={title}
+      dailyCost={dailyCost.toLocaleString()}
+      dashboard={dashboard}
+    />
+  );
 };
 
 export default FeatureCostToday;

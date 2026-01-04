@@ -8,29 +8,18 @@ interface IActiveDeviceFeatures {
   device: Device;
 }
 
-const features = [
-  {
-    id: "period",
-    Component: FeaturePeriod,
-  },
-  {
-    id: "costToday",
-    Component: FeatureCostTody,
-  },
-  {
-    id: "price",
-    Component: FeaturePrice,
-  },
-];
-
 const ActiveDeviceFeatures = ({ device }: IActiveDeviceFeatures) => {
   return (
-    <div className="flex gap-3 justify-around sm:justify-between">
-      {features.map(({ id, Component }) => (
-        <div key={id} className="sm:w-1/3">
-          <Component device={device} />
-        </div>
-      ))}
+    <div className="flex gap-2 sm:gap-3 justify-around sm:justify-between [&>div]:w-1/3">
+      <div>
+        <FeaturePeriod device={device} />
+      </div>
+      <div>
+        <FeatureCostTody device={device} dashboard={true} />
+      </div>
+      <div>
+        <FeaturePrice device={device} />
+      </div>
     </div>
   );
 };
