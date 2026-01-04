@@ -66,7 +66,7 @@ const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
   const end = retire_date ? dayjs(retire_date) : today;
 
   // 経過日数
-  const diffDays = Math.max(end.diff(start, "day"), 1);
+  const diffDays = end.diff(start, "day") + 1;
 
   let costBasis = Number(purchase_price);
 
