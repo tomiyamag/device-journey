@@ -2,14 +2,25 @@ import classNames from "classnames";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
+import InfoButton from "./InfoButton";
+
 interface IFeature {
   className?: string;
   icon: IconType;
   title: string;
+  info?: {
+    onClick: () => void;
+  };
   children: ReactNode;
 }
 
-const Feature = ({ className, icon: Icon, title, children }: IFeature) => {
+const Feature = ({
+  className,
+  icon: Icon,
+  title,
+  info,
+  children,
+}: IFeature) => {
   return (
     <div
       className={classNames(
@@ -21,7 +32,10 @@ const Feature = ({ className, icon: Icon, title, children }: IFeature) => {
         <Icon size={16} />
       </div>
       <div className="text-xs sm:text-sm text-black flex-1">
-        <div className="font-bold">{title}</div>
+        <div className="font-bold flex items-center gap-1">
+          <span>{title}</span>
+          {info && <InfoButton onClick={info.onClick} />}
+        </div>
         {children}
       </div>
     </div>

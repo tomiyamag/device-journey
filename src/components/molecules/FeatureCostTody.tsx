@@ -1,9 +1,13 @@
+"use client";
+
 import dayjs from "dayjs";
+import { useState } from "react";
 import { FaCoffee } from "react-icons/fa";
 
 import { Device } from "@/types";
 
 import Feature from "../atoms/Feature";
+import DialogFeatureCostToday from "./DialogFeatureCostToday";
 
 interface IWrapper {
   title: string;
@@ -15,10 +19,24 @@ interface IFeatureCostToday {
 }
 
 const Wrapper = ({ title, dailyCost }: IWrapper) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsOpen(true);
+  };
+
   return (
-    <Feature icon={FaCoffee} title={title} className="text-amber-900">
-      <div>¥ {dailyCost}</div>
-    </Feature>
+    <>
+      <DialogFeatureCostToday isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Feature
+        icon={FaCoffee}
+        title={title}
+        className="text-amber-900"
+        info={{ onClick: handleClick }}
+      >
+        <div>¥ {dailyCost}</div>
+      </Feature>
+    </>
   );
 };
 
