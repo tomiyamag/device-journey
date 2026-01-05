@@ -46,7 +46,7 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
           <Image
             src={device.image_url}
             alt=""
-            className="top-1/2! left-1/2! w-auto! max-w-none h-full! -translate-1/2"
+            className="top-1/2! left-1/2! w-auto! max-h-full h-full! -translate-1/2"
             fill
           />
         ) : (

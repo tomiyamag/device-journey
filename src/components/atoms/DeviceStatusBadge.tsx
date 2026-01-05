@@ -16,7 +16,7 @@ const DEVICE_STATUS_MAP: Record<
 > = {
   is_main: {
     label: "メインデバイス",
-    theme: "bg-teal-600",
+    theme: "-bg-linear-60 from-teal-400 via-teal-500 to-cyan-600",
   },
   is_sold: {
     label: "売却済み",
@@ -40,6 +40,7 @@ const DeviceStatusBadge = ({ className, status }: IDeviceStatusBadge) => {
       className={classNames(
         "text-[0.6875rem] text-white rounded-sm px-2 py-1 font-bold",
         theme,
+        // "from-35%",
         className,
       )}
     >
