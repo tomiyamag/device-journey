@@ -5,7 +5,7 @@ import {
   autocompleteMobileDevices,
   getMobileDevice,
 } from "@/actions/mobile-api";
-import { minLength } from "@/components/molecules/SearchDeviceForm";
+import { minLength } from "@/components/molecules/SearchDeviceFormContent";
 import { AutocompleteMobileApiResult, GetDeviceMobileApiResult } from "@/types";
 
 export const useAutocompleteMobileDevices = (query: string) => {
