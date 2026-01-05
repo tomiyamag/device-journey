@@ -24,7 +24,11 @@ const DeviceList = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-center text-sm">全 {devices.length} 件</div>
+      <div className="text-center text-sm">
+        {devices.length > 0
+          ? `全 ${devices.length} 件`
+          : "デバイスが登録されていません。"}
+      </div>
 
       <div className="text-right text-sm">
         <Link
