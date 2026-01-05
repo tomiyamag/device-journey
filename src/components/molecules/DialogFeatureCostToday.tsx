@@ -37,7 +37,7 @@ const DialogFeatureCostToday = ({
               売却済みのデバイスについては、購入金額から売却金額を差し引いた実質負担額を元に計算しています。
             </p>
 
-            <ul className="text-xs/relaxed pb-1.5 relative [&_li]:pl-2.5 [&_li]:before:content-['※'] [&_li]:before:absolute [&_li]:before:top-auto [&_li]:before:left-0">
+            <ul className="text-xs/relaxed pb-1.5 relative [&_li]:pl-3.5 [&_li]:before:content-['※'] [&_li]:before:absolute [&_li]:before:top-auto [&_li]:before:left-0">
               <li>
                 金額が登録されていない場合は、コスト算出が無効になります。
               </li>
