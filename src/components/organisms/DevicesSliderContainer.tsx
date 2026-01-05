@@ -3,12 +3,13 @@
 import { useDevices } from "@/hooks/useDevices";
 
 import DevicesSlider from "./DevicesSlider";
+import DevicesSliderContainerSkeleton from "./DevicesSliderContainerSkeleton";
 
 const DevicesSliderContainer = () => {
   const { data: devices, isLoading } = useDevices();
 
   if (isLoading) {
-    return <>ロード中</>;
+    return <DevicesSliderContainerSkeleton />;
   }
 
   if (!devices) {

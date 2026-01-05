@@ -2,9 +2,9 @@
 
 import { useDevice } from "@/hooks/useDevice";
 
-import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 import PageHeading from "../atoms/PageHeading";
 import DeviceDetail from "../molecules/DeviceDetail";
+import DeviceDetailContainerSkeleton from "./DeviceDetailContainerSkeleton";
 
 interface IDeviceDetailContainer {
   id: string;
@@ -14,7 +14,7 @@ const DeviceDetailContainer = ({ id }: IDeviceDetailContainer) => {
   const { data: device, isLoading } = useDevice(id);
 
   if (isLoading) {
-    return <ContentLoadingSpinner className="py-34" />;
+    return <DeviceDetailContainerSkeleton />;
   }
 
   if (!device) {

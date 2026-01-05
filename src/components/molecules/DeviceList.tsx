@@ -9,12 +9,13 @@ import { Device } from "@/types";
 
 import InformationCard from "../atoms/InformationCard";
 import DeviceListItem from "./DeviceListItem";
+import DeviceListSkeleton from "./DeviceListSkeleton";
 
 const DeviceList = () => {
   const { data: devices, isLoading } = useDevices();
 
   if (isLoading) {
-    return <>ロード中</>;
+    return <DeviceListSkeleton />;
   }
 
   if (!devices) {
@@ -25,19 +26,17 @@ const DeviceList = () => {
     <div className="flex flex-col gap-4">
       <div className="text-center text-sm">全 {devices.length} 件</div>
 
-      {devices.length > 0 && (
-        <div className="text-right text-sm">
-          <Link
-            href="/devices/search"
-            className="inline-block transition-opacity hover:opacity-80"
-          >
-            <div className="inline-flex items-center gap-1.5 text-teal-600 font-bold">
-              <FiPlus />
-              <span>新規追加</span>
-            </div>
-          </Link>
-        </div>
-      )}
+      <div className="text-right text-sm">
+        <Link
+          href="/devices/search"
+          className="inline-block transition-opacity hover:opacity-80"
+        >
+          <div className="inline-flex items-center gap-1.5 text-teal-600 font-bold">
+            <FiPlus />
+            <span>新規追加</span>
+          </div>
+        </Link>
+      </div>
 
       <div className="flex flex-col gap-9">
         {devices.length > 0 ? (

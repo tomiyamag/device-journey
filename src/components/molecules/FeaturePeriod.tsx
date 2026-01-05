@@ -26,7 +26,7 @@ const FeaturePeriod = ({ device }: IFeaturePeriod) => {
     return diff;
   };
   return (
-    <Feature icon={FaFire} title="使用期間" className="text-pink-500 w-1/3">
+    <Feature icon={FaFire} title="使用期間" className="text-pink-500">
       <div>{days()} 日</div>
     </Feature>
   );
