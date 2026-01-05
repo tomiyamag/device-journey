@@ -10,6 +10,7 @@ import { PiSmileySad } from "react-icons/pi";
 import { useGetMobileDevice } from "@/hooks/useMobileApi";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
 import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
+import { parseMultipleData } from "@/utils/parseMultipleData";
 
 import Button from "../atoms/Button";
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
@@ -39,16 +40,6 @@ const SearchDeviceResult = () => {
   if (!deviceId) {
     return null;
   }
-
-  // "," で区切られた文字列を配列に分解する
-  const parseMultipleData = (multipleDataString: string): string[] => {
-    if (!multipleDataString) return [];
-
-    return multipleDataString
-      .split(",")
-      .map((c) => c.trim()) // 半角スペース削除
-      .filter((c) => c.length > 0); // 空文字を除外
-  };
 
   // 発売日データをフォーマットする
   const formatReleaseDate = (dateString: string) => {

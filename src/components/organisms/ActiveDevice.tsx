@@ -1,5 +1,3 @@
-import { FaCircle } from "react-icons/fa";
-
 import InformationHeading from "../atoms/InformationHeading";
 import ActiveDeviceInformation from "../molecules/ActiveDeviceInformation";
 
@@ -8,7 +6,7 @@ const ActiveDevice = () => {
     <div>
       <InformationHeading>
         <span className="flex gap-2 items-center">
-          <FaCircle size={8} className="text-teal-600" />
+          <span className="-bg-linear-60 from-teal-400 via-teal-500 to-cyan-600 w-2 h-2 rounded-full"></span>
           メインのアクティブデバイス
         </span>
       </InformationHeading>

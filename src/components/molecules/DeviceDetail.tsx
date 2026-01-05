@@ -3,9 +3,11 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 import { GrStorage } from "react-icons/gr";
 import { IoMdColorPalette } from "react-icons/io";
 import { MdOutlineImageNotSupported } from "react-icons/md";
+import { RiEditFill } from "react-icons/ri";
 
 import { Device } from "@/types";
 
@@ -96,51 +98,65 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
         />
       </div>
 
-      <DeviceDetailTable>
-        <DeviceDetailTableRow head="発売日">
-          {device.release_date}
-        </DeviceDetailTableRow>
+      <div className="flex flex-col gap-3">
+        <div className="text-right text-sm">
+          <Link
+            href={`/devices/${device.id}/edit`}
+            className="inline-block transition-opacity hover:opacity-80"
+          >
+            <div className="inline-flex items-center gap-1.5 text-teal-600 font-bold">
+              <RiEditFill />
+              <span>編集</span>
+            </div>
+          </Link>
+        </div>
 
-        <DeviceDetailTableRow head="本体カラー">
-          {device.colors.split(", ").map((color, index) => (
-            <span
-              key={color}
-              className={classNames({
-                "font-bold": color === device.color,
-              })}
-            >
-              {color}
-              {index === device.colors.split(", ").length - 1 ? "" : ", "}
-            </span>
-          ))}
-        </DeviceDetailTableRow>
+        <DeviceDetailTable>
+          <DeviceDetailTableRow head="発売日">
+            {device.release_date}
+          </DeviceDetailTableRow>
 
-        <DeviceDetailTableRow head="購入日">
-          {device.purchase_date
-            ? dayjs(device.purchase_date).format("YYYY年MM月DD日")
-            : "未登録"}
-        </DeviceDetailTableRow>
+          <DeviceDetailTableRow head="本体カラー">
+            {device.colors.split(", ").map((color, index) => (
+              <span
+                key={color}
+                className={classNames({
+                  "font-bold": color === device.color,
+                })}
+              >
+                {color}
+                {index === device.colors.split(", ").length - 1 ? "" : ", "}
+              </span>
+            ))}
+          </DeviceDetailTableRow>
 
-        <DeviceDetailTableRow head="購入金額">
-          {device.purchase_price
-            ? `¥ ${Number(device.purchase_price).toLocaleString()}`
-            : "未登録"}
-        </DeviceDetailTableRow>
+          <DeviceDetailTableRow head="購入日">
+            {device.purchase_date
+              ? dayjs(device.purchase_date).format("YYYY年MM月DD日")
+              : "未登録"}
+          </DeviceDetailTableRow>
 
-        {device.retire_date && (
-          <>
-            <DeviceDetailTableRow head="売却日">
-              {dayjs(device.retire_date).format("YYYY年MM月DD日")}
-            </DeviceDetailTableRow>
+          <DeviceDetailTableRow head="購入金額">
+            {device.purchase_price
+              ? `¥ ${Number(device.purchase_price).toLocaleString()}`
+              : "未登録"}
+          </DeviceDetailTableRow>
 
-            <DeviceDetailTableRow head="売却金額">
-              {device.resale_price
-                ? `¥ ${Number(device.resale_price).toLocaleString()}`
-                : "未登録"}
-            </DeviceDetailTableRow>
-          </>
-        )}
-      </DeviceDetailTable>
+          {device.retire_date && (
+            <>
+              <DeviceDetailTableRow head="売却日">
+                {dayjs(device.retire_date).format("YYYY年MM月DD日")}
+              </DeviceDetailTableRow>
+
+              <DeviceDetailTableRow head="売却金額">
+                {device.resale_price
+                  ? `¥ ${Number(device.resale_price).toLocaleString()}`
+                  : "未登録"}
+              </DeviceDetailTableRow>
+            </>
+          )}
+        </DeviceDetailTable>
+      </div>
     </div>
   );
 };

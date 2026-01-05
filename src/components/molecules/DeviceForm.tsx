@@ -1,131 +1,39 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { Fragment } from "react/jsx-runtime";
 
-import { registerDevice } from "@/actions/devices";
-import Button from "@/components/atoms/Button";
-import FormInput from "@/components/atoms/FormInput";
-import FormOptionGroup from "@/components/atoms/FormOptionGroup";
-import FormRadio from "@/components/atoms/FormRadio";
-import FormSubmitButton from "@/components/atoms/FormSubmitButton";
-import FormField from "@/components/molecules/FormField";
-import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
-import { useDeviceSearchStore } from "@/store/useDeviceSearchStore";
 import { DeviceInput } from "@/types";
 
-import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
+import Button from "../atoms/Button";
+import FormInput from "../atoms/FormInput";
+import FormOptionGroup from "../atoms/FormOptionGroup";
+import FormRadio from "../atoms/FormRadio";
+import FormSubmitButton from "../atoms/FormSubmitButton";
+import FormField from "./FormField";
 
-const AddDeviceForm = () => {
+interface IDeviceForm {
+  formData: DeviceInput;
+  setFormData: Dispatch<SetStateAction<DeviceInput>>;
+  candidateColors: string[];
+  candidateStorages: string[];
+  handleSubmit: () => void;
+  submitLabel: string;
+  isPending: boolean;
+}
+
+const DeviceForm = ({
+  formData,
+  setFormData,
+  candidateColors,
+  candidateStorages,
+  handleSubmit,
+  submitLabel,
+  isPending,
+}: IDeviceForm) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const draft = useDeviceDraftStore((state) => state.draft);
-  const { clearDraft } = useDeviceDraftStore();
-  const { clearSearch } = useDeviceSearchStore();
-
-  const initialDeviceState: DeviceInput = {
-    name: "",
-    brand: "",
-    purchase_price: "",
-    purchase_date: null,
-    retire_date: null,
-    image_url: null,
-    spec: {
-      display: "",
-      camera: "",
-      battery: "",
-      weight: "",
-      hardware: "",
-      storage: "",
-    },
-    release_date: "",
-    colors: "",
-    color: "",
-    storage: "",
-    is_sub: false,
-    is_main: false,
-    resale_price: "",
-  };
-
-  const [formData, setFormData] = useState<DeviceInput>(() => {
-    if (draft) {
-      return {
-        name: draft.name,
-        brand: draft.brand,
-        purchase_price: draft.purchase_price,
-        purchase_date: toDateOrNull(draft.purchase_date),
-        retire_date: toDateOrNull(draft.retire_date),
-        image_url: draft.image_url,
-        spec: {
-          display: draft.spec.display,
-          camera: draft.spec.camera,
-          battery: draft.spec.battery,
-          weight: draft.spec.weight,
-          hardware: draft.spec.hardware,
-          storage: draft.spec.storage,
-        },
-        release_date: draft.release_date,
-        colors: draft.colors,
-        color: draft.color,
-        storage: draft.storage,
-        is_sub: draft.is_sub,
-        is_main: draft.is_main,
-        resale_price: draft.resale_price,
-      };
-    }
-
-    return initialDeviceState;
-  });
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: DeviceInput) => registerDevice(data),
-    onSuccess: async (result) => {
-      if (result?.error) {
-        alert(result.error);
-        return;
-      }
-
-      alert("デバイスを登録しました");
-
-      // クライアント側のキャッシュを無効化
-      await queryClient.invalidateQueries({ queryKey: ["devices"] });
-
-      /**
-       * NOTE:
-       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス一覧へ遷移させる）
-       */
-      setIsSubmitting(true);
-
-      router.push("/dashboard");
-
-      clearDraft();
-      clearSearch();
-    },
-    onError: (err) => {
-      console.error(err);
-      alert("予期せぬエラーが発生しました");
-    },
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // console.log("DB に保存するデータ: ", { ...formData });
-    mutate(formData);
-  };
-
-  useEffect(() => {
-    if (!draft && !isSubmitting) {
-      router.push("/devices/search");
-    }
-  }, [draft, isSubmitting, router]);
-
-  if (!draft) {
-    return <ContentLoadingSpinner className="py-8" />;
-  }
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
@@ -150,14 +58,14 @@ const AddDeviceForm = () => {
         htmlFor="color"
         labelText="本体カラー"
         description={
-          draft.candidate_colors.length > 0
+          candidateColors.length > 0
             ? undefined
             : "本体カラー名を入力してください。"
         }
       >
-        {draft.candidate_colors.length > 0 ? (
+        {candidateColors.length > 0 ? (
           <FormOptionGroup>
-            {draft.candidate_colors.map((color, index) => (
+            {candidateColors.map((color, index) => (
               <Fragment key={index}>
                 <FormRadio
                   label={color}
@@ -168,6 +76,7 @@ const AddDeviceForm = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, color: e.target.value })
                   }
+                  disabled={isPending}
                 />
               </Fragment>
             ))}
@@ -182,6 +91,7 @@ const AddDeviceForm = () => {
             }
             type="text"
             autoComplete="off"
+            disabled={isPending}
           />
         )}
       </FormField>
@@ -190,14 +100,14 @@ const AddDeviceForm = () => {
         htmlFor="storage"
         labelText="ストレージ容量"
         description={
-          draft.candidate_storages.length > 0
+          candidateStorages.length > 0
             ? undefined
             : "ストレージ容量を入力してください。"
         }
       >
-        {draft.candidate_storages.length > 0 ? (
+        {candidateStorages.length > 0 ? (
           <FormOptionGroup>
-            {draft.candidate_storages.map((storage, index) => (
+            {candidateStorages.map((storage, index) => (
               <Fragment key={index}>
                 <FormRadio
                   label={storage}
@@ -208,6 +118,7 @@ const AddDeviceForm = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, storage: e.target.value })
                   }
+                  disabled={isPending}
                 />
               </Fragment>
             ))}
@@ -222,6 +133,7 @@ const AddDeviceForm = () => {
             }
             type="text"
             autoComplete="off"
+            disabled={isPending}
           />
         )}
       </FormField>
@@ -241,7 +153,7 @@ const AddDeviceForm = () => {
             name="status"
             value="main"
             checked={formData.is_main}
-            disabled={!!formData.retire_date}
+            disabled={!!formData.retire_date || isPending}
             onChange={() => {
               setFormData({ ...formData, is_main: true, is_sub: false });
             }}
@@ -252,7 +164,7 @@ const AddDeviceForm = () => {
             name="status"
             value="sub"
             checked={formData.is_sub}
-            disabled={!!formData.retire_date}
+            disabled={!!formData.retire_date || isPending}
             onChange={() => {
               setFormData({ ...formData, is_main: false, is_sub: true });
             }}
@@ -263,6 +175,7 @@ const AddDeviceForm = () => {
             name="status"
             value="none"
             checked={!formData.is_main && !formData.is_sub}
+            disabled={isPending}
             onChange={() => {
               setFormData({ ...formData, is_main: false, is_sub: false });
             }}
@@ -282,6 +195,7 @@ const AddDeviceForm = () => {
           }
           max={dayjs().format("YYYY-MM-DD")}
           type="date"
+          disabled={isPending}
         />
       </FormField>
 
@@ -297,6 +211,7 @@ const AddDeviceForm = () => {
           type="number"
           autoComplete="off"
           placeholder="159800"
+          disabled={isPending}
         />
       </FormField>
 
@@ -320,6 +235,7 @@ const AddDeviceForm = () => {
               }
               max={dayjs().format("YYYY-MM-DD")}
               type="date"
+              disabled={isPending}
             />
           </FormField>
 
@@ -336,6 +252,7 @@ const AddDeviceForm = () => {
                 type="number"
                 autoComplete="off"
                 placeholder="65000"
+                disabled={isPending}
               />
             </FormField>
           )}
@@ -356,18 +273,11 @@ const AddDeviceForm = () => {
           loading={isPending}
           onClick={handleSubmit}
         >
-          登録する
+          {submitLabel}
         </FormSubmitButton>
       </div>
     </form>
   );
 };
 
-function toDateOrNull(dateStr: string | null) {
-  if (!dateStr || dateStr.trim() === "") {
-    return null;
-  }
-  return dateStr;
-}
-
-export default AddDeviceForm;
+export default DeviceForm;
