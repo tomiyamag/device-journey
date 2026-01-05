@@ -33,6 +33,10 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.7.4",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recess-order": "^7.4.0",
+    "stylelint-config-recommended": "^17.0.0",
+    "stylelint-config-tailwindcss": "^1.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
