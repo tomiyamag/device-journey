@@ -24,7 +24,7 @@ export const getDevices = cache(async () => {
 
   if (error) {
     console.error("DB Error: ", error);
-    throw new Error("デバイス一覧の取得に失敗しました");
+    throw new Error("登録済みデバイスの取得に失敗しました");
   }
 
   // NOTE: 購入日が登録されていない場合は登録順、そうでない場合は購入日順に並べ替える

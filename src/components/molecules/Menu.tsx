@@ -35,7 +35,7 @@ const Menu = () => {
     {
       pathname: "devices",
       icon: HiDeviceTablet,
-      label: "登録デバイス一覧",
+      label: "デバイス管理",
     },
     {
       pathname: "",

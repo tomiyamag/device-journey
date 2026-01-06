@@ -90,7 +90,7 @@ const AddDeviceForm = () => {
 
       /**
        * NOTE:
-       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス一覧へ遷移させる）
+       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス管理へ遷移させる）
        */
       setIsSubmitting(true);
 
