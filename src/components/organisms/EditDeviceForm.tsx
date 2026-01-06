@@ -100,7 +100,9 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
           deviceData.colors ? parseMultipleData(deviceData.colors) : []
         }
         candidateStorages={
-          deviceData.storage ? parseMultipleData(deviceData.spec.storage) : []
+          deviceData.spec.storage
+            ? parseMultipleData(deviceData.spec.storage)
+            : []
         }
         handleSubmit={handleUpdate}
         submitLabel="変更する"
