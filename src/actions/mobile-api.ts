@@ -90,7 +90,7 @@ export async function autocompleteMobileDevices(query: string) {
     },
   ] as AutocompleteMobileApiResult[];
 
-  // return mockApi;
+  return mockApi;
 
   if (!query) {
     return [];
@@ -281,7 +281,7 @@ export async function getMobileDevice(id: number) {
     },
   } as GetDeviceMobileApiResult;
 
-  // return mockApi;
+  return mockApi;
 
   if (!id) {
     return null;

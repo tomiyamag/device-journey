@@ -41,12 +41,16 @@ const SearchDeviceFormContent = () => {
       <Combobox
         value={selectedDevice}
         onChange={(value) => {
+          // NOTE: サジェストクリック時（ComboboxOptions の onClick ではなくここ）
           setSelectedDevice(value);
 
           if (value) {
             setQuery(value.name);
             setSelectedDeviceId(value.id);
           }
+
+          // 表示中の入力キーボードを閉じる
+          (document.activeElement as HTMLElement | null)?.blur();
         }}
       >
         <div className="relative">
