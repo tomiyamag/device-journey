@@ -34,7 +34,7 @@ const DialogFeatureCostToday = ({
             <p className="text-sm/relaxed">
               デバイスの購入金額を使用期間で日割り計算した金額です。
               <br />
-              売却済みのデバイスについては、購入金額から売却金額を差し引いた実質負担額を元に計算しています。
+              売却済みのデバイスについては、購入金額から売却金額を差し引いた実質負担額を元に計算されます。
             </p>
 
             <ul className="text-xs/relaxed pb-1.5 relative [&_li]:pl-3.5 [&_li]:before:content-['※'] [&_li]:before:absolute [&_li]:before:top-auto [&_li]:before:left-0">
