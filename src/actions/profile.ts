@@ -11,10 +11,14 @@ export const getUserProfile = cache(async () => {
   const supabase = await createClient();
   const user = await getUser();
 
+  if (!user) {
+    throw new Error();
+  }
+
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", user?.id)
+    .eq("id", user.id)
     .single();
 
   if (error) {
