@@ -6,12 +6,16 @@ import AccountFormContainer from "@/components/organisms/AccountFormContainer";
 export default async function AccountPage() {
   const user = await getUser();
 
-  console.log(user);
+  if (!user) {
+    return null;
+  }
+
+  const email = user.email ?? "";
 
   return (
     <section>
       <PageHeading label="ユーザー設定" />
-      <AccountFormContainer />
+      <AccountFormContainer email={email} />
       <BackHome />
     </section>
   );

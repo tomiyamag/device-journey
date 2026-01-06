@@ -13,9 +13,10 @@ import Avatar from "../../app/(main)/account/avatar";
 
 interface IAccountForm {
   profile: UserProfile;
+  email: string;
 }
 
-export default function AccountForm({ profile }: IAccountForm) {
+export default function AccountForm({ profile, email }: IAccountForm) {
   const queryClient = useQueryClient();
 
   const [username, setUsername] = useState<string | null>(profile.username);
@@ -74,17 +75,10 @@ export default function AccountForm({ profile }: IAccountForm) {
           <>
             メールアドレスを変更する場合は、
             <span className="underline hover:no-underline">こちら</span>
-            から再設定用のメールを受け取ってください。
           </>
         }
       >
-        <FormInput
-          id="email"
-          name="email"
-          type="text"
-          value={"メールアドレスが表示されます"}
-          readOnly
-        />
+        <FormInput id="email" name="email" type="text" value={email} readOnly />
       </FormField>
 
       <div className="mt-3">

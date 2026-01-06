@@ -5,7 +5,11 @@ import { useProfile } from "@/hooks/useProfile";
 
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 
-const AccountFormContainer = () => {
+interface IAccountFormContainer {
+  email: string;
+}
+
+const AccountFormContainer = ({ email }: IAccountFormContainer) => {
   const { data: userProfile, isLoading } = useProfile();
 
   if (isLoading) {
@@ -16,7 +20,7 @@ const AccountFormContainer = () => {
     return null;
   }
 
-  return <AccountForm profile={userProfile} />;
+  return <AccountForm profile={userProfile} email={email} />;
 };
 
 export default AccountFormContainer;
