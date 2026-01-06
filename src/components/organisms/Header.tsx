@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { UserProfile } from "@/types";
+
+import Menu from "../molecules/Menu";
 
 interface IHeader {
   profile: UserProfile;
@@ -15,7 +18,9 @@ const Header = ({ profile }: IHeader) => {
   return (
     <header className="bg-white h-24 sticky top-0 -left-5 z-30 w-full px-5 sm:px-16 flex items-center justify-between gap-8">
       <div className="flex gap-6 sm:gap-8 items-center">
-        <div>三</div>
+        <div>
+          <Menu />
+        </div>
         <h1>
           {isDashboard && (
             <>
@@ -23,7 +28,17 @@ const Header = ({ profile }: IHeader) => {
               <br />
             </>
           )}
-          <strong>{profile.username}</strong>
+          <span className="flex items-center gap-3">
+            {!isDashboard && (
+              <Link
+                href="/dashboard"
+                className="transition-opacity hover:opacity-80"
+              >
+                🏠
+              </Link>
+            )}
+            <strong>{profile.username}</strong>
+          </span>
         </h1>
       </div>
 
