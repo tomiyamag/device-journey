@@ -47,6 +47,7 @@ const DialogFeatureCostToday = ({
 
           <div className="flex sm:block flex-col w-full sm:w-auto">
             <Button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="px-8"
               size="auto"

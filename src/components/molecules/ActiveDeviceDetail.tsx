@@ -101,10 +101,10 @@ const ActiveDeviceDetail = ({ device }: IActiveDeviceDetail) => {
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          <DeviceSpec title="📱 Display" detail={device.spec.display || "--"} />
-          <DeviceSpec title="📷 Camera" detail={device.spec.camera || "--"} />
-          <DeviceSpec title="🔋 Battery" detail={device.spec.battery || "--"} />
-          <DeviceSpec title="⚖️ Weight" detail={device.spec.weight || "--"} />
+          <DeviceSpec title="📱 Display" detail={device.spec.display} />
+          <DeviceSpec title="📷 Camera" detail={device.spec.camera} />
+          <DeviceSpec title="🔋 Battery" detail={device.spec.battery} />
+          <DeviceSpec title="⚖️ Weight" detail={device.spec.weight} />
         </div>
       </div>
     </div>

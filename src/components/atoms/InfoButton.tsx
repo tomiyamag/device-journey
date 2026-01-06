@@ -9,6 +9,7 @@ interface IInfoButton {
 const InfoButton = ({ onClick }: IInfoButton) => {
   return (
     <button
+      type="button"
       className="text-sm text-gray-500 -mt-1.5 cursor-pointer outline-none"
       onClick={onClick}
     >

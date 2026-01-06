@@ -33,13 +33,13 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
         <DeviceTag size="lg">
           <GrStorage />
           <span className="font-bold">
-            {device.storage || "ストレージ容量未登録"}
+            {device.storage ?? "ストレージ容量未登録"}
           </span>
         </DeviceTag>
 
         <DeviceTag size="lg">
           <IoMdColorPalette />
-          <span className="font-bold">{device.color || "カラー未登録"}</span>
+          <span className="font-bold">{device.color ?? "カラー未登録"}</span>
         </DeviceTag>
       </div>
 

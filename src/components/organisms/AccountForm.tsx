@@ -5,11 +5,11 @@ import { useState } from "react";
 
 import { updateUserProfile } from "@/actions/profile";
 import FormInput from "@/components/atoms/FormInput";
-import FormSubmitButton from "@/components/atoms/FormSubmitButton";
 import FormField from "@/components/molecules/FormField";
 import { UserProfile, UserProfileInput } from "@/types";
 
 import Avatar from "../../app/(main)/account/avatar";
+import Button from "../atoms/Button";
 
 interface IAccountForm {
   profile: UserProfile;
@@ -44,7 +44,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
   });
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+    <form className="flex flex-col gap-6">
       <div>
         <Avatar
           uid={profile.id ?? null}
@@ -60,7 +60,6 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       <FormField htmlFor="username" labelText="あなたの名前">
         <FormInput
           id="username"
-          name="username"
           type="text"
           value={username || ""}
           onChange={(e) => setUsername(e.target.value)}
@@ -82,13 +81,13 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       </FormField>
 
       <div className="mt-3">
-        <FormSubmitButton
+        <Button
           type="button"
           loading={isPending}
           onClick={() => mutate({ username, avatar_url })}
         >
           更新する
-        </FormSubmitButton>
+        </Button>
       </div>
     </form>
   );

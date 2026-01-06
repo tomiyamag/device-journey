@@ -43,11 +43,11 @@ const DeviceListItem = ({ device }: IDeviceListItem) => {
                 </DeviceListItemField>
 
                 <DeviceListItemField title="カラー">
-                  {device.color || "未登録"}
+                  {device.color ?? "未登録"}
                 </DeviceListItemField>
 
                 <DeviceListItemField title="ストレージ容量">
-                  {device.storage || "未登録"}
+                  {device.storage ?? "未登録"}
                 </DeviceListItemField>
               </div>
             </div>

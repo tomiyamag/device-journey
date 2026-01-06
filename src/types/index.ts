@@ -37,18 +37,18 @@ export type DeviceSpec = {
 export type DeviceInput = {
   name: string;
   brand: string;
-  purchase_price: string;
+  purchase_price: string | null;
   purchase_date: string | null;
   retire_date: string | null;
   image_url: string | null;
   spec: DeviceSpec;
-  release_date: string;
+  release_date: string | null;
   colors: string;
-  color: string;
-  storage: string;
+  color: string | null;
+  storage: string | null;
   is_sub: boolean;
   is_main: boolean;
-  resale_price: string;
+  resale_price: string | null;
 };
 
 export type DeviceInputDraft = DeviceInput & {

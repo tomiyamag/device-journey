@@ -1,6 +1,7 @@
 "use client";
 
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,6 +20,9 @@ import DeviceSpec from "../atoms/DeviceSpec";
 interface IStatusMessage {
   message: string;
 }
+
+// NOTE: iOS Safari でも日付文字列をパースするため拡張
+dayjs.extend(customParseFormat);
 
 const StatusMessage = ({ message }: IStatusMessage) => {
   return (
@@ -46,7 +50,14 @@ const SearchDeviceResult = () => {
     if (!dateString) return "";
 
     const cleanedDate = dateString.replace("Released ", "");
-    return dayjs(cleanedDate).format("YYYY年MM月DD日");
+    const parsed = dayjs(cleanedDate, "YYYY, MMMM D", true);
+
+    if (parsed.isValid()) {
+      return parsed.format("YYYY年MM月DD日");
+    }
+
+    // フォーマットに失敗した場合は cleanedDate をそのまま返す
+    return cleanedDate;
   };
 
   const handleProceed = () => {
@@ -55,32 +66,32 @@ const SearchDeviceResult = () => {
     setIsNavigating(true);
 
     setDraft({
-      name: data.name || "",
-      brand: data.manufacturer_name || "",
-      purchase_price: "",
+      name: data?.name ?? "",
+      brand: data?.manufacturer_name ?? "",
+      purchase_price: null,
       purchase_date: null,
       retire_date: null,
-      image_url: data?.images[0]?.image_url || null,
+      image_url: data?.images[0]?.image_url ?? null,
       spec: {
-        display: data.screen_resolution || "--",
-        camera: data.camera || "--",
-        battery: data.battery_capacity || "--",
-        weight: data.weight || "--",
-        hardware: data.hardware || "--",
-        storage: data.storage || "--",
+        display: data?.screen_resolution || "--",
+        camera: data?.camera || "--",
+        battery: data?.battery_capacity || "--",
+        weight: data?.weight || "--",
+        hardware: data?.hardware || "--",
+        storage: data?.storage || "--",
       },
       release_date:
-        data.release_date && data.release_date !== "Cancelled"
+        data?.release_date && data?.release_date !== "Cancelled"
           ? formatReleaseDate(data.release_date)
-          : "不明",
-      candidate_colors: parseMultipleData(data.colors || ""),
-      colors: data.colors || "不明",
-      color: "",
-      candidate_storages: parseMultipleData(data.storage || ""),
-      storage: "",
+          : "--",
+      candidate_colors: parseMultipleData(data?.colors ?? ""),
+      colors: data?.colors || "不明",
+      color: null,
+      candidate_storages: parseMultipleData(data?.storage ?? ""),
+      storage: null,
       is_sub: false,
       is_main: false,
-      resale_price: "",
+      resale_price: null,
     });
 
     router.push("/devices/add");
@@ -119,37 +130,37 @@ const SearchDeviceResult = () => {
 
               <div className="flex-1 flex flex-col gap-2 text-center sm:text-left w-full">
                 <div className="font-bold text-lg">
-                  {data.manufacturer_name} {data.name}
+                  {data?.manufacturer_name} {data?.name}
                 </div>
 
                 <div className="flex flex-col gap-1 text-xs text-gray-500 font-bold">
                   <div>
                     発売日 :{" "}
-                    {data.release_date && data.release_date !== "Cancelled"
+                    {data?.release_date && data?.release_date !== "Cancelled"
                       ? formatReleaseDate(data.release_date)
                       : "不明"}
                   </div>
-                  <div>色 : {data.colors || "不明"}</div>
+                  <div>色 : {data?.colors || "不明"}</div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 mt-3 sm:mt-2 text-left">
                   <DeviceSpec
                     title="📱 Display"
-                    detail={data.screen_resolution || "--"}
+                    detail={data?.screen_resolution || "--"}
                   />
-                  <DeviceSpec title="📷 Camera" detail={data.camera || "--"} />
+                  <DeviceSpec title="📷 Camera" detail={data?.camera || "--"} />
                   <DeviceSpec
                     title="🔋 Battery"
-                    detail={data.battery_capacity || "--"}
+                    detail={data?.battery_capacity || "--"}
                   />
-                  <DeviceSpec title="⚖️ Weight" detail={data.weight || "--"} />
+                  <DeviceSpec title="⚖️ Weight" detail={data?.weight || "--"} />
                   <DeviceSpec
                     title="⚙️ Hardware"
-                    detail={data.hardware || "--"}
+                    detail={data?.hardware || "--"}
                   />
                   <DeviceSpec
                     title="💾 Storage"
-                    detail={data.storage || "--"}
+                    detail={data?.storage || "--"}
                   />
                 </div>
               </div>

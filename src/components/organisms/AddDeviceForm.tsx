@@ -16,9 +16,9 @@ export const initialDeviceState: DeviceInput = {
   name: "",
   brand: "",
   purchase_price: "",
-  purchase_date: null,
-  retire_date: null,
-  image_url: null,
+  purchase_date: "",
+  retire_date: "",
+  image_url: "",
   spec: {
     display: "",
     camera: "",
@@ -51,8 +51,8 @@ const AddDeviceForm = () => {
         name: draft.name,
         brand: draft.brand,
         purchase_price: draft.purchase_price,
-        purchase_date: toDateOrNull(draft.purchase_date),
-        retire_date: toDateOrNull(draft.retire_date),
+        purchase_date: draft.purchase_date,
+        retire_date: draft.retire_date,
         image_url: draft.image_url,
         spec: {
           display: draft.spec.display,
@@ -131,12 +131,5 @@ const AddDeviceForm = () => {
     />
   );
 };
-
-function toDateOrNull(dateStr: string | null) {
-  if (!dateStr || dateStr.trim() === "") {
-    return null;
-  }
-  return dateStr;
-}
 
 export default AddDeviceForm;

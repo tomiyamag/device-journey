@@ -96,21 +96,15 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
       <DeviceForm
         formData={formData}
         setFormData={setFormData}
-        candidateColors={
-          deviceData.colors ? parseMultipleData(deviceData.colors) : []
-        }
-        candidateStorages={
-          deviceData.spec.storage
-            ? parseMultipleData(deviceData.spec.storage)
-            : []
-        }
+        candidateColors={parseMultipleData(deviceData.colors)}
+        candidateStorages={parseMultipleData(deviceData.spec.storage)}
         handleSubmit={handleUpdate}
         submitLabel="変更する"
         isPending={isUpdating || isDeleting}
       />
 
       <div className="mt-9 text-center">
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form>
           <button
             type="button"
             className="group inline-block cursor-pointer transition-opacity hover:opacity-80 disabled:cursor-auto disabled:text-gray-400 disabled:opacity-100"

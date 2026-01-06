@@ -11,7 +11,6 @@ import Button from "../atoms/Button";
 import FormInput from "../atoms/FormInput";
 import FormOptionGroup from "../atoms/FormOptionGroup";
 import FormRadio from "../atoms/FormRadio";
-import FormSubmitButton from "../atoms/FormSubmitButton";
 import FormField from "./FormField";
 
 interface IDeviceForm {
@@ -36,7 +35,7 @@ const DeviceForm = ({
   const router = useRouter();
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+    <form className="flex flex-col gap-6">
       <FormField htmlFor="name" labelText="機種名">
         <FormInput id="name" value={formData.name} type="text" readOnly />
       </FormField>
@@ -48,7 +47,7 @@ const DeviceForm = ({
       <FormField htmlFor="release-date" labelText="発売日">
         <FormInput
           id="release-date"
-          value={formData.release_date}
+          value={formData.release_date ?? ""}
           type="text"
           readOnly
         />
@@ -85,7 +84,7 @@ const DeviceForm = ({
           <FormInput
             id="color"
             placeholder="Midnight Black"
-            value={formData.color}
+            value={formData.color ?? ""}
             onChange={(e) =>
               setFormData({ ...formData, color: e.target.value })
             }
@@ -127,7 +126,7 @@ const DeviceForm = ({
           <FormInput
             id="storage"
             placeholder="256GB"
-            value={formData.storage}
+            value={formData.storage ?? ""}
             onChange={(e) =>
               setFormData({ ...formData, storage: e.target.value })
             }
@@ -190,7 +189,7 @@ const DeviceForm = ({
           onChange={(e) =>
             setFormData({
               ...formData,
-              purchase_date: e.target.value || null,
+              purchase_date: e.target.value,
             })
           }
           max={dayjs().format("YYYY-MM-DD")}
@@ -202,7 +201,7 @@ const DeviceForm = ({
       <FormField htmlFor="purchase-price" labelText="購入金額">
         <FormInput
           id="purchase-price"
-          value={formData.purchase_price}
+          value={formData.purchase_price ?? ""}
           onChange={(e) =>
             setFormData({ ...formData, purchase_price: e.target.value })
           }
@@ -228,9 +227,8 @@ const DeviceForm = ({
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  retire_date: e.target.value || null,
-                  resale_price:
-                    e.target.value === "" ? "" : formData.resale_price,
+                  retire_date: e.target.value,
+                  resale_price: !e.target.value ? "" : formData.resale_price,
                 })
               }
               max={dayjs().format("YYYY-MM-DD")}
@@ -243,7 +241,7 @@ const DeviceForm = ({
             <FormField htmlFor="sold-price" labelText="売却金額">
               <FormInput
                 id="sold-price"
-                value={formData.resale_price}
+                value={formData.resale_price ?? ""}
                 onChange={(e) =>
                   setFormData({ ...formData, resale_price: e.target.value })
                 }
@@ -268,13 +266,9 @@ const DeviceForm = ({
         >
           戻る
         </Button>
-        <FormSubmitButton
-          type="button"
-          loading={isPending}
-          onClick={handleSubmit}
-        >
+        <Button type="button" loading={isPending} onClick={handleSubmit}>
           {submitLabel}
-        </FormSubmitButton>
+        </Button>
       </div>
     </form>
   );
