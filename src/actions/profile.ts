@@ -1,9 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
 import { createClient } from "@/lib/supabase/server";
-import { UserProfile } from "@/types";
+import { UserProfile, UserProfileInput } from "@/types";
 
 import { getUser } from "./user";
 
@@ -28,3 +29,31 @@ export const getUserProfile = cache(async () => {
 
   return data as UserProfile;
 });
+
+export const updateUserProfile = cache(
+  async (userProfileData: UserProfileInput) => {
+    const supabase = await createClient();
+    const user = await getUser();
+
+    if (!user) {
+      throw new Error();
+    }
+
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
+      ...userProfileData,
+    });
+
+    if (error) {
+      console.error("DB Error: ", error);
+      return {
+        error: "プロフィールの更新に失敗しました",
+      };
+    }
+
+    // キャッシュの更新
+    revalidatePath("/", "layout");
+
+    return { success: true };
+  },
+);

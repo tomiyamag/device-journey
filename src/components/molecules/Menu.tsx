@@ -16,9 +16,7 @@ import { HiDeviceTablet } from "react-icons/hi2";
 import { TbMenuDeep, TbSettings } from "react-icons/tb";
 import { TiChartLineOutline } from "react-icons/ti";
 
-import { signout } from "@/actions/auth";
-
-import FormSubmitButton from "../atoms/FormSubmitButton";
+import SignoutButton from "../atoms/SignoutButton";
 
 const Menu = () => {
   const segment = useSelectedLayoutSegment();
@@ -77,7 +75,7 @@ const Menu = () => {
       <PopoverPanel
         transition
         anchor="bottom start"
-        className="z-50 w-xs p-1 bg-black/20 backdrop-blur-sm mt-4 rounded-xl shadow-sm transition ease-out data-closed:scale-95 data-closed:opacity-0"
+        className="z-50 w-xs p-1 bg-black/30 backdrop-blur-sm mt-5 rounded-xl shadow-sm transition ease-out data-closed:scale-95 data-closed:opacity-0"
       >
         <div className="bg-white rounded-lg">
           <ul className="flex flex-col gap-2 p-2">
@@ -119,22 +117,13 @@ const Menu = () => {
                 href="https://github.com/tomiyamag/device-journey/issues"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-sm font-bold text-gray-700 hover:underline"
+                className="text-sm font-bold text-white text-shadow-sm hover:underline"
               >
                 問題を報告
               </a>
             </div>
 
-            <form>
-              <FormSubmitButton
-                formAction={signout}
-                size="auto"
-                variant="tertiary"
-                className="w-28!"
-              >
-                ログアウト
-              </FormSubmitButton>
-            </form>
+            <SignoutButton />
           </div>
         </div>
       </PopoverPanel>

@@ -14,13 +14,15 @@ import {
   Sound,
 } from "./mobile-api";
 
-export type UserProfile = {
-  id: string;
-  updated_at: Date;
+export type UserProfileInput = {
   username: string | null;
-  full_name: string | null;
   avatar_url: string | null;
-  website: string | null;
+};
+
+export type UserProfile = UserProfileInput & {
+  readonly id: string;
+  readonly created_at: Date;
+  readonly updated_at: Date;
 };
 
 export type DeviceSpec = {

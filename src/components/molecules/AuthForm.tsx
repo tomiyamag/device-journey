@@ -1,3 +1,7 @@
+"use client";
+
+import { useActionState, useEffect } from "react";
+
 import { login, signup } from "@/actions/auth";
 
 import FormInput from "../atoms/FormInput";
@@ -11,8 +15,19 @@ export interface IAuthForm {
 }
 
 const AuthForm = ({ type }: IAuthForm) => {
+  const actionFn = type === "login" ? login : signup;
+  const initialFormState = { errorMessage: "" };
+
+  const [formState, formAction] = useActionState(actionFn, initialFormState);
+
+  useEffect(() => {
+    if (formState.errorMessage) {
+      alert(formState.errorMessage);
+    }
+  }, [formState]);
+
   return (
-    <form className="flex flex-col gap-6 max-w-sm mx-auto">
+    <form action={formAction} className="flex flex-col gap-6 max-w-sm mx-auto">
       <FormField labelText="メールアドレス" htmlFor="email">
         <FormInput
           id="email"
@@ -27,11 +42,9 @@ const AuthForm = ({ type }: IAuthForm) => {
         <FormInput id="password" name="password" type="password" required />
       </FormField>
 
-      {type === "login" ? (
-        <FormSubmitButton formAction={login}>ログイン</FormSubmitButton>
-      ) : (
-        <FormSubmitButton formAction={signup}>新規登録</FormSubmitButton>
-      )}
+      <FormSubmitButton>
+        {type === "login" ? "ログイン" : "新規登録"}
+      </FormSubmitButton>
     </form>
   );
 };

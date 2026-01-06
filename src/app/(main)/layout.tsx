@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { getUserProfile } from "@/actions/profile";
 import { getUser } from "@/actions/user";
 import Footer from "@/components/organisms/Footer";
 import Header from "@/components/organisms/Header";

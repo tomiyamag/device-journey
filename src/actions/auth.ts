@@ -5,7 +5,10 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 
-export async function login(formData: FormData) {
+export async function login(
+  prevSate: { errorMessage: string },
+  formData: FormData,
+) {
   const supabase = await createClient();
 
   // type-casting here for convenience
@@ -18,7 +21,9 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/error");
+    return {
+      errorMessage: "アカウントが存在しないか、ログイン情報が間違っています。",
+    };
   }
 
   revalidatePath("/", "layout");
@@ -38,7 +43,10 @@ export async function signout() {
   redirect("/login");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(
+  prevSate: { errorMessage: string },
+  formData: FormData,
+) {
   const supabase = await createClient();
 
   // type-casting here for convenience
@@ -51,7 +59,9 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/error");
+    return {
+      errorMessage: "アカウントの作成に失敗しました。",
+    };
   }
 
   revalidatePath("/", "layout");

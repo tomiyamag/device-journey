@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { useProfile } from "@/hooks/useProfile";
 
 import HeaderUserNameSkeleton from "./HeaderUserNameSkeleton";
@@ -27,17 +25,7 @@ const HeaderUserName = ({ isDashboard }: IHeaderUserName) => {
           <br />
         </>
       )}
-      <span className="flex items-center gap-3">
-        {!isDashboard && (
-          <Link
-            href="/dashboard"
-            className="transition-opacity hover:opacity-80"
-          >
-            🏠
-          </Link>
-        )}
-        <strong>{userProfile.username}</strong>
-      </span>
+      <strong>{userProfile.username || "No Name"}</strong>
     </h1>
   );
 };

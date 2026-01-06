@@ -1,13 +1,18 @@
-import { createClient } from "@/lib/supabase/server";
-
-import AccountForm from "./account-form";
+import { getUser } from "@/actions/user";
+import PageHeading from "@/components/atoms/PageHeading";
+import BackHome from "@/components/molecules/BackHome";
+import AccountFormContainer from "@/components/organisms/AccountFormContainer";
 
 export default async function AccountPage() {
-  const supabase = await createClient();
+  const user = await getUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  console.log(user);
 
-  return <AccountForm user={user} />;
+  return (
+    <section>
+      <PageHeading label="ユーザー設定" />
+      <AccountFormContainer />
+      <BackHome />
+    </section>
+  );
 }
