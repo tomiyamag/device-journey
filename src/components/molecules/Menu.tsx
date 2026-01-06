@@ -88,8 +88,7 @@ const Menu = () => {
                     "flex gap-2 items-center p-3 rounded-md transition",
                     {
                       "border-transparent": segment !== item.pathname,
-                      "bg-gray-100 border-gray-200 pointer-events-none":
-                        segment === item.pathname,
+                      "bg-gray-100 border-gray-200": segment === item.pathname,
                       "hover:bg-gray-100 hover:border-gray-200": !item.disabled,
                       "text-gray-400 pointer-events-none": item.disabled,
                     },
