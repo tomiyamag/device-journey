@@ -9,7 +9,7 @@ interface IFormInput extends ComponentProps<"input"> {
 }
 
 export const InputClassNames =
-  "border border-gray-300 rounded-lg h-11 w-full block px-3.5 bg-white shadow-xs placeholder:text-gray-300 focus:outline-2 focus:outline-teal-600";
+  "appearance-none border border-gray-300 rounded-lg h-11 w-full block px-3.5 py-0 bg-white shadow-xs placeholder:text-gray-300 focus:outline-2 focus:outline-teal-600";
 
 const FormInput = forwardRef<HTMLInputElement, IFormInput>(
   ({ className, id, type, isError, ...rest }, ref) => {

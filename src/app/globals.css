@@ -8,3 +8,9 @@
 @theme inline {
   --font-sans: var(--font-inter), var(--font-noto-sans-jp);
 }
+
+@layer base {
+  input[type="date"] {
+    @apply flex! items-center justify-between relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-3.5;
+  }
+}

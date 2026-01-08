@@ -79,6 +79,7 @@ const DeviceForm = ({
   // UI 制御用
   const status = useWatch({ control, name: "status" });
   const retireDate = useWatch({ control, name: "retire_date" });
+  const purchaseDate = useWatch({ control, name: "purchase_date" });
   const isActiveDevice = status === "main" || status === "sub";
   const isRetired = !!retireDate;
   const isAlreadyMainDevice =
@@ -239,7 +240,9 @@ const DeviceForm = ({
           status === "main" && isAlreadyMainDevice ? (
             "現在登録されているメインデバイス設定が上書きされます。"
           ) : isRetired ? (
-            <>変更する場合は、指定した売却日を削除してください。</>
+            <>
+              変更する場合は、指定した売却日を削除またはリセットしてください。
+            </>
           ) : undefined
         }
       >
@@ -268,13 +271,18 @@ const DeviceForm = ({
         </FormOptionGroup>
       </FormField>
 
-      <FormField htmlFor="purchase-date" labelText="購入日">
+      <FormField
+        htmlFor="purchase-date"
+        labelText="購入日"
+        error={errors?.purchase_date?.message}
+      >
         <FormInput
           id="purchase-date"
           max={dayjs().format("YYYY-MM-DD")}
           type="date"
           disabled={isPending}
           {...register("purchase_date")}
+          isError={!!errors.purchase_date}
         />
       </FormField>
 
@@ -305,13 +313,16 @@ const DeviceForm = ({
             htmlFor="retire-date"
             labelText="売却日"
             description="デバイスを売却済みの場合は、売却日を指定してください。"
+            error={errors?.retire_date?.message}
           >
             <FormInput
               id="retire-date"
+              min={purchaseDate || undefined}
               max={dayjs().format("YYYY-MM-DD")}
               type="date"
               disabled={isPending}
               {...register("retire_date")}
+              isError={!!errors.retire_date}
             />
           </FormField>
 
