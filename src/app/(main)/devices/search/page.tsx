@@ -18,7 +18,7 @@ export default function DevicesSearchPage() {
       <BackHome
         prevItem={{
           href: "/devices",
-          label: "デバイス管理",
+          label: "マイデバイス",
         }}
       />
     </section>

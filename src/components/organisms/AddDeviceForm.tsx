@@ -12,30 +12,6 @@ import { DeviceInput } from "@/types";
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 import DeviceForm from "../molecules/DeviceForm";
 
-export const initialDeviceState: DeviceInput = {
-  name: "",
-  brand: "",
-  purchase_price: "",
-  purchase_date: "",
-  retire_date: "",
-  image_url: "",
-  spec: {
-    display: "",
-    camera: "",
-    battery: "",
-    weight: "",
-    hardware: "",
-    storage: "",
-  },
-  release_date: "",
-  colors: "",
-  color: "",
-  storage: "",
-  is_sub: false,
-  is_main: false,
-  resale_price: "",
-};
-
 const AddDeviceForm = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -44,36 +20,6 @@ const AddDeviceForm = () => {
   const draft = useDeviceDraftStore((state) => state.draft);
   const { clearDraft } = useDeviceDraftStore();
   const { clearSearch } = useDeviceSearchStore();
-
-  const [formData, setFormData] = useState<DeviceInput>(() => {
-    if (draft) {
-      return {
-        name: draft.name,
-        brand: draft.brand,
-        purchase_price: draft.purchase_price,
-        purchase_date: draft.purchase_date,
-        retire_date: draft.retire_date,
-        image_url: draft.image_url,
-        spec: {
-          display: draft.spec.display,
-          camera: draft.spec.camera,
-          battery: draft.spec.battery,
-          weight: draft.spec.weight,
-          hardware: draft.spec.hardware,
-          storage: draft.spec.storage,
-        },
-        release_date: draft.release_date,
-        colors: draft.colors,
-        color: draft.color,
-        storage: draft.storage,
-        is_sub: draft.is_sub,
-        is_main: draft.is_main,
-        resale_price: draft.resale_price,
-      };
-    }
-
-    return initialDeviceState;
-  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: DeviceInput) => registerDevice(data),
@@ -90,7 +36,7 @@ const AddDeviceForm = () => {
 
       /**
        * NOTE:
-       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス管理へ遷移させる）
+       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はダッシュボードへ遷移させる）
        */
       setIsSubmitting(true);
 
@@ -105,10 +51,6 @@ const AddDeviceForm = () => {
     },
   });
 
-  const handleSubmit = () => {
-    mutate(formData);
-  };
-
   useEffect(() => {
     if (!draft && !isSubmitting) {
       router.push("/devices/search");
@@ -119,13 +61,16 @@ const AddDeviceForm = () => {
     return <ContentLoadingSpinner className="py-8" />;
   }
 
+  const handleSubmit = (data: DeviceInput) => {
+    mutate(data);
+  };
+
   return (
     <DeviceForm
-      formData={formData}
-      setFormData={setFormData}
+      initialData={draft}
       candidateColors={draft.candidate_colors}
       candidateStorages={draft.candidate_storages}
-      handleSubmit={handleSubmit}
+      onSubmit={(data) => handleSubmit(data)}
       submitLabel="登録する"
       isPending={isPending}
     />

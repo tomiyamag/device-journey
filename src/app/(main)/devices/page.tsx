@@ -5,7 +5,7 @@ import DeviceList from "@/components/molecules/DeviceList";
 export default function DevicesPage() {
   return (
     <section>
-      <PageHeading label="デバイス管理" />
+      <PageHeading label="マイデバイス" />
       <DeviceList />
       <BackHome />
     </section>

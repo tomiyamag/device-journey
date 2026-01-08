@@ -14,7 +14,7 @@ export default async function DeviceDetailPage({ params }: Props) {
       <BackHome
         prevItem={{
           href: "/devices",
-          label: "デバイス管理",
+          label: "マイデバイス",
         }}
       />
     </section>

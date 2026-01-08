@@ -35,7 +35,7 @@ const Menu = () => {
     {
       pathname: "devices",
       icon: HiDeviceTablet,
-      label: "デバイス管理",
+      label: "マイデバイス",
     },
     {
       pathname: "",
@@ -69,7 +69,7 @@ const Menu = () => {
   return (
     <Popover className="relative">
       <PopoverButton className="cursor-pointer outline-none">
-        <TbMenuDeep size={22} />
+        <TbMenuDeep size={22} className="-scale-x-100" />
       </PopoverButton>
 
       <PopoverPanel

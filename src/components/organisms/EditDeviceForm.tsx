@@ -2,7 +2,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 import { deleteDevice, updateDevice } from "@/actions/devices";
@@ -12,7 +11,6 @@ import { parseMultipleData } from "@/utils/parseMultipleData";
 
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 import DeviceForm from "../molecules/DeviceForm";
-import { initialDeviceState } from "./AddDeviceForm";
 
 interface IEditDeviceForm {
   id: string;
@@ -23,13 +21,6 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
   const queryClient = useQueryClient();
 
   const { data: deviceData, isLoading } = useDevice(id);
-
-  const [formData, setFormData] = useState<DeviceInput>(() => {
-    if (deviceData) {
-      return deviceData;
-    }
-    return initialDeviceState;
-  });
 
   // 更新用 Mutation
   const { mutate: updateMutate, isPending: isUpdating } = useMutation({
@@ -45,7 +36,7 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
 
-      router.push(`/devices/${id}`);
+      router.push("/dashboard");
     },
     onError: (err) => {
       console.error(err);
@@ -73,8 +64,8 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
     },
   });
 
-  const handleUpdate = () => {
-    updateMutate(formData);
+  const handleUpdate = (data: DeviceInput) => {
+    updateMutate(data);
   };
 
   const handleDelete = () => {
@@ -94,38 +85,41 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
   return (
     <>
       <DeviceForm
-        formData={formData}
-        setFormData={setFormData}
-        candidateColors={parseMultipleData(deviceData.colors)}
-        candidateStorages={parseMultipleData(deviceData.spec.storage)}
-        handleSubmit={handleUpdate}
+        initialData={deviceData}
+        candidateColors={
+          deviceData.colors !== "--" ? parseMultipleData(deviceData.colors) : []
+        }
+        candidateStorages={
+          deviceData.spec.storage !== "--"
+            ? parseMultipleData(deviceData.spec.storage)
+            : []
+        }
+        onSubmit={(data) => handleUpdate(data)}
         submitLabel="変更する"
         isPending={isUpdating || isDeleting}
       />
 
       <div className="mt-9 text-center">
-        <form>
-          <button
-            type="button"
-            className="group inline-block cursor-pointer transition-opacity hover:opacity-80 disabled:cursor-auto disabled:text-gray-400 disabled:opacity-100"
-            onClick={handleDelete}
-            disabled={isUpdating || isDeleting}
-          >
-            <div className="inline-flex items-center gap-1.5 text-sm underline group-hover:no-underline group-disabled:no-underline">
-              {isDeleting ? (
-                <>
-                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-transparent"></div>
-                  <span>デバイスを削除しています...</span>
-                </>
-              ) : (
-                <>
-                  <FaRegTrashCan />
-                  <span>デバイスを削除する</span>
-                </>
-              )}
-            </div>
-          </button>
-        </form>
+        <button
+          type="button"
+          className="group inline-block cursor-pointer transition-opacity hover:opacity-80 disabled:cursor-auto disabled:text-gray-400 disabled:opacity-100"
+          onClick={handleDelete}
+          disabled={isUpdating || isDeleting}
+        >
+          <div className="inline-flex items-center gap-1.5 text-sm underline group-hover:no-underline group-disabled:no-underline">
+            {isDeleting ? (
+              <>
+                <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-transparent"></div>
+                <span>デバイスを削除しています...</span>
+              </>
+            ) : (
+              <>
+                <FaRegTrashCan />
+                <span>デバイスを削除する</span>
+              </>
+            )}
+          </div>
+        </button>
       </div>
     </>
   );

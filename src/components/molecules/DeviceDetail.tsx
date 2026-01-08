@@ -137,7 +137,7 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
           </DeviceDetailTableRow>
 
           <DeviceDetailTableRow head="購入金額">
-            {device.purchase_price
+            {device.purchase_price !== null
               ? `¥ ${Number(device.purchase_price).toLocaleString()}`
               : "未登録"}
           </DeviceDetailTableRow>
@@ -149,7 +149,7 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
               </DeviceDetailTableRow>
 
               <DeviceDetailTableRow head="売却金額">
-                {device.resale_price
+                {device.resale_price !== null
                   ? `¥ ${Number(device.resale_price).toLocaleString()}`
                   : "未登録"}
               </DeviceDetailTableRow>

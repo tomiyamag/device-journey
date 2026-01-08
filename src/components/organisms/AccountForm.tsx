@@ -32,7 +32,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
         return;
       }
 
-      alert("プロフィールを更新しました。");
+      alert("ユーザー設定を更新しました");
 
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
@@ -44,7 +44,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
   });
 
   return (
-    <form className="flex flex-col gap-6">
+    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
       <div>
         <Avatar
           uid={profile.id ?? null}

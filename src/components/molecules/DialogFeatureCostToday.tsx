@@ -39,7 +39,7 @@ const DialogFeatureCostToday = ({
 
             <ul className="text-xs/relaxed pb-1.5 relative [&_li]:pl-3.5 [&_li]:before:content-['※'] [&_li]:before:absolute [&_li]:before:top-auto [&_li]:before:left-0">
               <li>
-                金額が登録されていない場合は、コスト算出が無効になります。
+                購入日と金額が未登録の場合は、コストは算出が無効になります。
               </li>
               <li>購入日（または売却日）当日も1日分としてカウントします。</li>
             </ul>

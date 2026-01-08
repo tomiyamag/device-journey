@@ -22,7 +22,6 @@ export type UserProfileInput = {
 export type UserProfile = UserProfileInput & {
   readonly id: string;
   readonly created_at: Date;
-  readonly updated_at: Date;
 };
 
 export type DeviceSpec = {
@@ -37,7 +36,7 @@ export type DeviceSpec = {
 export type DeviceInput = {
   name: string;
   brand: string;
-  purchase_price: string | null;
+  purchase_price: number | null;
   purchase_date: string | null;
   retire_date: string | null;
   image_url: string | null;
@@ -48,7 +47,7 @@ export type DeviceInput = {
   storage: string | null;
   is_sub: boolean;
   is_main: boolean;
-  resale_price: string | null;
+  resale_price: number | null;
 };
 
 export type DeviceInputDraft = DeviceInput & {

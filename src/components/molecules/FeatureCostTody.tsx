@@ -50,7 +50,7 @@ const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
 
   const today = dayjs().startOf("day");
 
-  if (!purchase_date || !purchase_price) {
+  if (!purchase_date || purchase_price === null) {
     return (
       <Wrapper
         title={DEFAULT_TITLE_LABEL}
@@ -71,7 +71,7 @@ const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
   let costBasis = Number(purchase_price);
 
   // 売却日と売却金額の両方が登録されている場合は差し引く
-  if (retire_date && resale_price) {
+  if (retire_date && resale_price !== null) {
     costBasis = Math.max(costBasis - Number(resale_price), 0);
   }
 

@@ -5,12 +5,14 @@ import FormLabel, { IFormLabel } from "../atoms/FormLabel";
 interface IFromField extends IFormLabel {
   description?: string | ReactNode;
   children: ReactNode;
+  error?: string;
 }
 
 const FormField = ({
   htmlFor,
   labelText,
   description,
+  error,
   children,
 }: IFromField) => {
   return (
@@ -20,6 +22,7 @@ const FormField = ({
         <p className="text-xs text-gray-600 mb-3">{description}</p>
       )}
       {children}
+      {error && <p className="text-xs text-red-600 font-bold mt-3">{error}</p>}
     </div>
   );
 };
