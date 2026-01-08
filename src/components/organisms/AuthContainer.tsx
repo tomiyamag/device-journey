@@ -1,7 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-
-import { getUser } from "@/actions/user";
 
 import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 
@@ -21,22 +18,16 @@ const AUTH_META: Record<
   login: {
     switchText: "アカウントをお持ちではありませんか？",
     linkText: "新規登録",
-    href: "/signup",
+    href: "/auth/signup",
   },
   signup: {
     switchText: "すでにアカウントをお持ちですか？",
     linkText: "ログイン",
-    href: "/login",
+    href: "/auth/login",
   },
 };
 
-const AuthContainer = async ({ type, title, description }: IAuthContainer) => {
-  const user = await getUser();
-
-  if (user) {
-    redirect("/dashboard");
-  }
-
+const AuthContainer = ({ type, title, description }: IAuthContainer) => {
   const meta = AUTH_META[type];
 
   return (

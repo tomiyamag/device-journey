@@ -12,15 +12,15 @@ import DialogFeatureCostToday from "./DialogFeatureCostToday";
 interface IWrapper {
   title: string;
   dailyCost: string;
-  dashboard?: boolean;
+  isHome?: boolean;
 }
 
 interface IFeatureCostToday {
   device: Device;
-  dashboard?: boolean;
+  isHome?: boolean;
 }
 
-const Wrapper = ({ title, dailyCost, dashboard }: IWrapper) => {
+const Wrapper = ({ title, dailyCost, isHome }: IWrapper) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
@@ -35,7 +35,7 @@ const Wrapper = ({ title, dailyCost, dashboard }: IWrapper) => {
         title={title}
         className="text-amber-900"
         info={{ onClick: handleClick }}
-        dashboard={dashboard}
+        isHome={isHome}
       >
         <div>¥ {dailyCost}</div>
       </Feature>
@@ -45,18 +45,14 @@ const Wrapper = ({ title, dailyCost, dashboard }: IWrapper) => {
 
 const DEFAULT_TITLE_LABEL = "今日のコスト";
 
-const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
+const FeatureCostToday = ({ device, isHome }: IFeatureCostToday) => {
   const { purchase_date, purchase_price, retire_date, resale_price } = device;
 
   const today = dayjs().startOf("day");
 
   if (!purchase_date || purchase_price === null) {
     return (
-      <Wrapper
-        title={DEFAULT_TITLE_LABEL}
-        dailyCost="--"
-        dashboard={dashboard}
-      />
+      <Wrapper title={DEFAULT_TITLE_LABEL} dailyCost="--" isHome={isHome} />
     );
   }
 
@@ -82,7 +78,7 @@ const FeatureCostToday = ({ device, dashboard }: IFeatureCostToday) => {
     <Wrapper
       title={title}
       dailyCost={dailyCost.toLocaleString()}
-      dashboard={dashboard}
+      isHome={isHome}
     />
   );
 };

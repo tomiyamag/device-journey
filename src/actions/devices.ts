@@ -124,7 +124,7 @@ export async function registerDevice(deviceData: DeviceInput) {
   }
 
   // キャッシュの更新
-  revalidatePath("/dashboard");
+  revalidatePath("/");
   revalidatePath("/devices");
 
   return { success: true };
@@ -165,10 +165,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
     };
   }
 
-  // キャッシュの更新
-  revalidatePath("/dashboard");
-  revalidatePath("/devices");
-  revalidatePath(`/devices/${deviceId}`);
+  revalidatePath("/", "layout");
 
   return { success: true };
 }
@@ -195,9 +192,7 @@ export async function deleteDevice(deviceId: string) {
   }
 
   // キャッシュの更新
-  revalidatePath("/dashboard");
-  revalidatePath("/devices");
-  revalidatePath(`/devices/${deviceId}`);
+  revalidatePath("/", "layout");
 
   return { success: true };
 }

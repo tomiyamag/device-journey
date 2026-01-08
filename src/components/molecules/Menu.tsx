@@ -18,6 +18,16 @@ import { TiChartLineOutline } from "react-icons/ti";
 
 import SignoutButton from "../atoms/SignoutButton";
 
+const IconWrapper = ({
+  className,
+  icon: Icon,
+}: {
+  className?: string;
+  icon: IconType;
+}) => {
+  return <Icon size={18} className={classNames(className)} />;
+};
+
 const Menu = () => {
   const segment = useSelectedLayoutSegment();
 
@@ -28,7 +38,7 @@ const Menu = () => {
     disabled?: boolean;
   }[] = [
     {
-      pathname: "dashboard",
+      pathname: "",
       icon: BiHome,
       label: "ホーム",
     },
@@ -38,13 +48,13 @@ const Menu = () => {
       label: "マイデバイス",
     },
     {
-      pathname: "",
+      pathname: "#",
       icon: HiOutlineLocationMarker,
       label: "訪れた場所",
       disabled: true,
     },
     {
-      pathname: "",
+      pathname: "#",
       icon: TiChartLineOutline,
       label: "コスト推移",
       disabled: true,
@@ -52,19 +62,9 @@ const Menu = () => {
     {
       pathname: "account",
       icon: TbSettings,
-      label: "ユーザー設定",
+      label: "アカウント設定",
     },
   ];
-
-  const IconWrapper = ({
-    className,
-    icon: Icon,
-  }: {
-    className?: string;
-    icon: IconType;
-  }) => {
-    return <Icon size={18} className={classNames(className)} />;
-  };
 
   return (
     <Popover className="relative">
@@ -79,33 +79,37 @@ const Menu = () => {
       >
         <div className="bg-white rounded-lg">
           <ul className="flex flex-col gap-2 p-2">
-            {items.map((item) => (
-              <li key={item.label}>
-                <CloseButton
-                  as={Link}
-                  href={`/${item.pathname}`}
-                  className={classNames(
-                    "flex gap-2 items-center p-3 rounded-md transition",
-                    {
-                      "border-transparent": segment !== item.pathname,
-                      "bg-gray-100 border-gray-200": segment === item.pathname,
-                      "hover:bg-gray-100 hover:border-gray-200": !item.disabled,
-                      "text-gray-400 pointer-events-none": item.disabled,
-                    },
-                  )}
-                >
-                  {item.icon && (
-                    <IconWrapper
-                      icon={item.icon}
-                      className={classNames(
-                        item.disabled ? "text-gray-300" : "text-gray-600",
-                      )}
-                    />
-                  )}
-                  {item.label}
-                </CloseButton>
-              </li>
-            ))}
+            {items.map((item) => {
+              const path = item.pathname || null;
+              return (
+                <li key={item.label}>
+                  <CloseButton
+                    as={Link}
+                    href={path ? `/${path}` : "/"}
+                    className={classNames(
+                      "flex gap-2 items-center p-3 rounded-md transition",
+                      {
+                        "border-transparent": segment !== path,
+                        "bg-gray-100 border-gray-200": segment === path,
+                        "hover:bg-gray-100 hover:border-gray-200":
+                          !item.disabled,
+                        "text-gray-400 pointer-events-none": item.disabled,
+                      },
+                    )}
+                  >
+                    {item.icon && (
+                      <IconWrapper
+                        icon={item.icon}
+                        className={classNames(
+                          item.disabled ? "text-gray-300" : "text-gray-600",
+                        )}
+                      />
+                    )}
+                    {item.label}
+                  </CloseButton>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

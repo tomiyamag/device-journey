@@ -3,14 +3,14 @@ import { useProfile } from "@/hooks/useProfile";
 import HeaderUserNameSkeleton from "./HeaderUserNameSkeleton";
 
 export interface IHeaderUserName {
-  isDashboard?: boolean;
+  isHome?: boolean;
 }
 
-const HeaderUserName = ({ isDashboard }: IHeaderUserName) => {
+const HeaderUserName = ({ isHome }: IHeaderUserName) => {
   const { data: userProfile, isLoading } = useProfile();
 
   if (isLoading) {
-    return <HeaderUserNameSkeleton isDashboard={isDashboard} />;
+    return <HeaderUserNameSkeleton isHome={isHome} />;
   }
 
   if (!userProfile) {
@@ -19,7 +19,7 @@ const HeaderUserName = ({ isDashboard }: IHeaderUserName) => {
 
   return (
     <h1>
-      {isDashboard && (
+      {isHome && (
         <>
           おかえりなさい、
           <br />

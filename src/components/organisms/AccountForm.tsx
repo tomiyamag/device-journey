@@ -9,7 +9,7 @@ import FormInput from "@/components/atoms/FormInput";
 import FormField from "@/components/molecules/FormField";
 import { UserProfile, UserProfileInput } from "@/types";
 
-import Avatar from "../../app/(main)/account/avatar";
+import Avatar from "../../app/(protected)/account/avatar";
 import Button from "../atoms/Button";
 
 interface IAccountForm {
@@ -36,11 +36,11 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
 
-      toast.success("ユーザー設定を更新しました");
+      toast.success("アカウント情報を更新しました。");
     },
     onError: (err) => {
       console.error(err);
-      toast.error("予期せぬエラーが発生しました");
+      toast.error("予期せぬエラーが発生しました。");
     },
   });
 

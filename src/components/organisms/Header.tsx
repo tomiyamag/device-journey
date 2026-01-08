@@ -7,7 +7,7 @@ import Menu from "../molecules/Menu";
 
 const Header = () => {
   const pathname = usePathname();
-  const isDashboard = pathname === "/dashboard";
+  const isHome = pathname === "/";
 
   return (
     <header className="bg-white h-20 sm:h-24 sticky top-0 -left-5 z-30 w-full px-5 sm:px-16 flex items-center justify-between gap-8">
@@ -16,7 +16,7 @@ const Header = () => {
         <div>
           <Menu />
         </div>
-        <HeaderUserName isDashboard={isDashboard} />
+        <HeaderUserName isHome={isHome} />
       </div>
 
       <div className="w-13 shrink-0">

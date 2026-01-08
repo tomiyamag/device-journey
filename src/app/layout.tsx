@@ -57,7 +57,7 @@ export default function RootLayout({
             position="top-center"
             toastOptions={{
               classNames: {
-                toast: "rounded-xl! p-6!",
+                toast: "rounded-xl! p-6! opacity-95!",
                 title: "text-sm! sm:text-base!",
               },
             }}

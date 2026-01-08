@@ -11,7 +11,7 @@ interface IFeature {
   info?: {
     onClick: () => void;
   };
-  dashboard?: boolean;
+  isHome?: boolean;
   children: ReactNode;
 }
 
@@ -20,7 +20,7 @@ const Feature = ({
   icon: Icon,
   title,
   info,
-  dashboard = false,
+  isHome = false,
   children,
 }: IFeature) => {
   return (
@@ -36,7 +36,7 @@ const Feature = ({
       <div className="text-xs sm:text-sm text-black flex-1">
         <div className="font-bold relative inline-block">
           <span>{title}</span>
-          {info && !dashboard && (
+          {info && !isHome && (
             <div className="absolute -top-1 -right-4">
               <InfoButton onClick={info.onClick} />
             </div>

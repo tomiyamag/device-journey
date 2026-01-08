@@ -10,11 +10,11 @@ export default async function AccountPage() {
     return null;
   }
 
-  const email = user.email ?? "";
+  const email = user?.email ?? "";
 
   return (
     <section>
-      <PageHeading label="ユーザー設定" />
+      <PageHeading label="アカウント設定" />
       <AccountFormContainer email={email} />
       <BackHome />
     </section>

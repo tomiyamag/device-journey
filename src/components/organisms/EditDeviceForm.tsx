@@ -35,7 +35,7 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
 
-      router.push("/dashboard");
+      router.push("/");
       toast.success("デバイス情報を変更しました。");
     },
     onError: (err) => {

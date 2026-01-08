@@ -15,7 +15,7 @@ const ActiveDeviceFeatures = ({ device }: IActiveDeviceFeatures) => {
         <FeaturePeriod device={device} />
       </div>
       <div>
-        <FeatureCostTody device={device} dashboard={true} />
+        <FeatureCostTody device={device} isHome={true} />
       </div>
       <div>
         <FeaturePrice device={device} />

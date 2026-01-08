@@ -27,7 +27,7 @@ export async function login(
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirect("/");
 }
 
 export async function signout() {
@@ -40,7 +40,7 @@ export async function signout() {
   }
 
   revalidatePath("/", "layout");
-  redirect("/login");
+  redirect("/auth/login");
 }
 
 export async function signup(

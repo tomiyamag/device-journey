@@ -48,9 +48,6 @@ const SearchDeviceFormContent = () => {
             setQuery(value.name);
             setSelectedDeviceId(value.id);
           }
-
-          // 表示中の入力キーボードを閉じる
-          (document.activeElement as HTMLElement | null)?.blur();
         }}
       >
         <div className="relative">

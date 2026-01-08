@@ -2,7 +2,7 @@ import Pickups from "@/components/molecules/Pickups";
 import ActiveDevice from "@/components/organisms/ActiveDevice";
 import OtherDevices from "@/components/organisms/OtherDevices";
 
-export default function DashboardPage() {
+export default function Home() {
   return (
     <div className="flex flex-col gap-9">
       <section>
