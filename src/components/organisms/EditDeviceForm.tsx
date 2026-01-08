@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { toast } from "sonner";
 
 import { deleteDevice, updateDevice } from "@/actions/devices";
 import { useDevice } from "@/hooks/useDevice";
@@ -27,20 +28,19 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
     mutationFn: (data: DeviceInput) => updateDevice(id, data),
     onSuccess: async (result) => {
       if (result?.error) {
-        alert(result.error);
+        toast.error(result.error);
         return;
       }
-
-      alert("デバイス情報を変更しました");
 
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
 
       router.push("/dashboard");
+      toast.success("デバイス情報を変更しました。");
     },
     onError: (err) => {
       console.error(err);
-      alert("予期せぬエラーが発生しました");
+      toast.error("予期せぬエラーが発生しました。");
     },
   });
 
@@ -49,7 +49,7 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
     mutationFn: () => deleteDevice(id),
     onSuccess: async (result) => {
       if (result?.error) {
-        alert(result.error);
+        toast.error(result.error);
         return;
       }
 
@@ -57,10 +57,11 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
 
       router.push("/devices");
+      toast.success("デバイスを削除しました。");
     },
     onError: (err) => {
       console.error(err);
-      alert("予期せぬエラーが発生しました");
+      toast.error("予期せぬエラーが発生しました。");
     },
   });
 

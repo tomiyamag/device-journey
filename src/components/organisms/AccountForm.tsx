@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { updateUserProfile } from "@/actions/profile";
 import FormInput from "@/components/atoms/FormInput";
@@ -28,18 +29,18 @@ export default function AccountForm({ profile, email }: IAccountForm) {
     mutationFn: (data: UserProfileInput) => updateUserProfile(data),
     onSuccess: async (result) => {
       if (result?.error) {
-        alert(result.error);
+        toast.error(result.error);
         return;
       }
 
-      alert("ユーザー設定を更新しました");
-
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
+
+      toast.success("ユーザー設定を更新しました");
     },
     onError: (err) => {
       console.error(err);
-      alert("予期せぬエラーが発生しました");
+      toast.error("予期せぬエラーが発生しました");
     },
   });
 

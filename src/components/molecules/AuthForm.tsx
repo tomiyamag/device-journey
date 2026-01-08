@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 
 import { login, signup } from "@/actions/auth";
 
@@ -22,7 +23,7 @@ const AuthForm = ({ type }: IAuthForm) => {
 
   useEffect(() => {
     if (formState.errorMessage) {
-      alert(formState.errorMessage);
+      toast.error(formState.errorMessage);
     }
   }, [formState]);
 

@@ -3,6 +3,7 @@ import "./globals.css";
 import classNames from "classnames";
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
+import { Toaster } from "sonner";
 
 import QueryProvider from "@/providers/QueryProvider";
 
@@ -51,6 +52,16 @@ export default function RootLayout({
         )}
       >
         <QueryProvider>
+          <Toaster
+            richColors
+            position="top-center"
+            toastOptions={{
+              classNames: {
+                toast: "rounded-xl! p-6!",
+                title: "text-sm! sm:text-base!",
+              },
+            }}
+          />
           <div className="flex min-h-screen items-center justify-center bg-slate-50 font-sans">
             <div className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between bg-white sm:items-start">
               <div className="w-full relative">{children}</div>

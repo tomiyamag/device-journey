@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { registerDevice } from "@/actions/devices";
 import { useDeviceDraftStore } from "@/store/useDeviceDraftStore";
@@ -25,11 +26,9 @@ const AddDeviceForm = () => {
     mutationFn: (data: DeviceInput) => registerDevice(data),
     onSuccess: async (result) => {
       if (result?.error) {
-        alert(result.error);
+        toast.error(result.error);
         return;
       }
-
-      alert("デバイスを登録しました");
 
       // クライアント側のキャッシュを無効化
       await queryClient.invalidateQueries({ queryKey: ["devices"] });
@@ -41,13 +40,14 @@ const AddDeviceForm = () => {
       setIsSubmitting(true);
 
       router.push("/dashboard");
+      toast.success("デバイスを登録しました。");
 
       clearDraft();
       clearSearch();
     },
     onError: (err) => {
       console.error(err);
-      alert("予期せぬエラーが発生しました");
+      toast.error("予期せぬエラーが発生しました");
     },
   });
 
