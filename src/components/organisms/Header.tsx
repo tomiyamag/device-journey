@@ -10,7 +10,7 @@ const Header = () => {
   const isDashboard = pathname === "/dashboard";
 
   return (
-    <header className="bg-white h-24 sticky top-0 -left-5 z-30 w-full px-5 sm:px-16 flex items-center justify-between gap-8">
+    <header className="bg-white h-20 sm:h-24 sticky top-0 -left-5 z-30 w-full px-5 sm:px-16 flex items-center justify-between gap-8">
       <div className="flex gap-6 sm:gap-8 items-center flex-1 relative truncate">
         <span className="absolute right-0 z-10 block h-full w-10 bg-linear-to-r from-transparent to-white"></span>
         <div>

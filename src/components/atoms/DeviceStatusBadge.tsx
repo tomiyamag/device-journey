@@ -20,11 +20,11 @@ const DEVICE_STATUS_MAP: Record<
   },
   is_sold: {
     label: "売却済み",
-    theme: "bg-stone-400",
+    theme: "border border-stone-400 bg-stone-400/80",
   },
   is_sub: {
     label: "サブ機",
-    theme: "bg-yellow-500",
+    theme: "border border-yellow-500 bg-yellow-500/80",
   },
 };
 
