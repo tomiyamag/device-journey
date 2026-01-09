@@ -90,7 +90,7 @@ export async function autocompleteMobileDevices(query: string) {
     },
   ] as AutocompleteMobileApiResult[];
 
-  return mockApi;
+  // return mockApi;
 
   if (!query) {
     return [];
@@ -107,7 +107,7 @@ export async function autocompleteMobileDevices(query: string) {
     const data = await res.json();
     return data as AutocompleteMobileApiResult[];
   } catch (error) {
-    console.error("Autocomplete failed:", error);
+    console.error("Autocomplete failed: ", error);
     throw error;
   }
 }
@@ -281,7 +281,7 @@ export async function getMobileDevice(id: number) {
     },
   } as GetDeviceMobileApiResult;
 
-  return mockApi;
+  // return mockApi;
 
   if (!id) {
     return null;
@@ -298,7 +298,7 @@ export async function getMobileDevice(id: number) {
     const data = await res.json();
     return data as GetDeviceMobileApiResult;
   } catch (error) {
-    console.error("Get device failed:", error);
+    console.error("Get device failed: ", error);
     throw error;
   }
 }

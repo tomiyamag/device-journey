@@ -39,11 +39,11 @@ const AddDeviceForm = () => {
        */
       setIsSubmitting(true);
 
-      router.push("/");
-      toast.success("デバイスを登録しました。");
-
       clearDraft();
       clearSearch();
+
+      router.push("/");
+      toast.success("デバイスを登録しました。");
     },
     onError: (err) => {
       console.error(err);
