@@ -21,6 +21,17 @@ export async function login(
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
+    // メールアドレス未確認の場合
+    if (error.code === "email_not_confirmed") {
+      await supabase.auth.signOut();
+
+      return {
+        errorMessage:
+          "送信された確認メールからアカウントを有効化してください。",
+      };
+    }
+
+    // それ以外
     return {
       errorMessage: "アカウントが存在しないか、ログイン情報が間違っています。",
     };
@@ -56,7 +67,14 @@ export async function signup(
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { data: signUpData, error } = await supabase.auth.signUp(data);
+
+  // 既存ユーザーの場合
+  if (signUpData.user && signUpData.user.identities?.length === 0) {
+    return {
+      errorMessage: "このメールアドレスは既に登録されています。",
+    };
+  }
 
   if (error) {
     return {
