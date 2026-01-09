@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { getUser } from "@/actions/user";
 
 import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 
@@ -27,7 +30,13 @@ const AUTH_META: Record<
   },
 };
 
-const AuthContainer = ({ type, title, description }: IAuthContainer) => {
+const AuthContainer = async ({ type, title, description }: IAuthContainer) => {
+  const user = await getUser();
+
+  if (user) {
+    redirect("/");
+  }
+
   const meta = AUTH_META[type];
 
   return (
