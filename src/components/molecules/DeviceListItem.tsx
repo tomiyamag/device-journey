@@ -6,10 +6,10 @@ import Link from "next/link";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
 import { Device } from "@/types";
+import { getDeviceStatus } from "@/utils/getDeviceStatus";
 
 import DeviceStatusBadge from "../atoms/DeviceStatusBadge";
 import InformationCard from "../atoms/InformationCard";
-import { getDeviceStatus } from "../organisms/DevicesSlider";
 import DeviceListItemField from "./DeviceListItemField";
 
 interface IDeviceListItem {

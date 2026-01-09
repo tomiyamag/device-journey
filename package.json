@@ -41,7 +41,9 @@
     "stylelint-config-recess-order": "^7.4.0",
     "stylelint-config-recommended": "^17.0.0",
     "stylelint-config-tailwindcss": "^1.0.0",
+    "supabase": "^2.72.2",
     "tailwindcss": "^4",
+    "type-fest": "^5.3.1",
     "typescript": "^5"
   }
 }

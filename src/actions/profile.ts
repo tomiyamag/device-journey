@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
 import { createClient } from "@/lib/supabase/server";
-import { UserProfile, UserProfileInput } from "@/types";
+import { UserProfileInput } from "@/types";
 
 import { getUser } from "./user";
 
@@ -27,7 +27,7 @@ export const getUserProfile = cache(async () => {
     throw new Error("プロフィールの取得に失敗しました");
   }
 
-  return data as UserProfile;
+  return data;
 });
 
 export const updateUserProfile = cache(

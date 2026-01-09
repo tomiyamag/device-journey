@@ -12,7 +12,7 @@ interface IDeviceSearchStore {
  * デバイス追加画面での入力状態および結果から選択したデバイス id を保持するストア
  *
  * @remarks
- * クエリ（入力内容）とサジェストから選択したデバイスの id を保持する（検索結果は非同期処理のため TanStack Query で状態管理）
+ * クエリとサジェストから選択したデバイスの id を保持（検索結果は非同期処理のため TanStack Query で状態管理）
  */
 export const useDeviceSearchStore = create<IDeviceSearchStore>((set) => ({
   query: "",

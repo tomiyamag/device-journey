@@ -1,3 +1,5 @@
+import { MergeDeep } from "type-fest";
+
 import {
   Battery,
   Body,
@@ -13,16 +15,7 @@ import {
   Platform,
   Sound,
 } from "./mobile-api";
-
-export type UserProfileInput = {
-  username: string | null;
-  avatar_url: string | null;
-};
-
-export type UserProfile = UserProfileInput & {
-  readonly id: string;
-  readonly created_at: Date;
-};
+import { Database as DatabaseGenerated } from "./supabase";
 
 export type DeviceSpec = {
   display: string;
@@ -33,32 +26,45 @@ export type DeviceSpec = {
   storage: string;
 };
 
-export type DeviceInput = {
-  name: string;
-  brand: string;
-  purchase_price: number | null;
-  purchase_date: string | null;
-  retire_date: string | null;
-  image_url: string | null;
-  spec: DeviceSpec;
-  release_date: string | null;
-  colors: string;
-  color: string | null;
-  storage: string | null;
-  is_sub: boolean;
-  is_main: boolean;
-  resale_price: number | null;
+export type Database = MergeDeep<
+  DatabaseGenerated,
+  {
+    public: {
+      Tables: {
+        devices: {
+          Row: {
+            spec: DeviceSpec;
+          };
+          Insert: {
+            spec: DeviceSpec;
+          };
+          Update: {
+            spec?: DeviceSpec;
+          };
+        };
+      };
+    };
+  }
+>;
+
+export type Device = Database["public"]["Tables"]["devices"]["Row"];
+export type DeviceInput = Database["public"]["Tables"]["devices"]["Insert"];
+export type DeviceInputDraft = MergeDeep<
+  DeviceInput,
+  {
+    candidate_colors: string[];
+    candidate_storages: string[];
+  }
+>;
+
+export type UserProfileInput = {
+  username: string | null;
+  avatar_url: string | null;
 };
 
-export type DeviceInputDraft = DeviceInput & {
-  candidate_colors: string[];
-  candidate_storages: string[];
-};
-
-export type Device = DeviceInput & {
+export type UserProfile = UserProfileInput & {
   readonly id: string;
   readonly created_at: Date;
-  readonly user_id: string;
 };
 
 export type AutocompleteMobileApiResult = {

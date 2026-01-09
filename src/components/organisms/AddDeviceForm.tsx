@@ -35,7 +35,7 @@ const AddDeviceForm = () => {
 
       /**
        * NOTE:
-       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はダッシュボードへ遷移させる）
+       * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はホームへ遷移させる）
        */
       setIsSubmitting(true);
 

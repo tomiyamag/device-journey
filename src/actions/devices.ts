@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
 import { createClient } from "@/lib/supabase/server";
-import { Device, DeviceInput } from "@/types";
+import { DeviceInput } from "@/types";
 
 import { getUser } from "./user";
 
@@ -52,7 +52,7 @@ export const getDevices = cache(async () => {
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
-  return data as Device[];
+  return data;
 });
 
 export const getDeviceById = cache(async (id: string) => {
@@ -75,7 +75,7 @@ export const getDeviceById = cache(async (id: string) => {
     throw new Error("デバイス情報の取得に失敗しました");
   }
 
-  return data as Device;
+  return data;
 });
 
 // 全デバイスの is_main フラグを false にリセットする

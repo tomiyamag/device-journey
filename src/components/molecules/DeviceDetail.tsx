@@ -10,11 +10,11 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 import { RiEditFill } from "react-icons/ri";
 
 import { Device } from "@/types";
+import { getDeviceStatus } from "@/utils/getDeviceStatus";
 
 import DeviceSpec from "../atoms/DeviceSpec";
 import DeviceStatusBadge from "../atoms/DeviceStatusBadge";
 import DeviceTag from "../atoms/DeviceTag";
-import { getDeviceStatus } from "../organisms/DevicesSlider";
 import DeviceDetailTable from "./DeviceDetailTable";
 import DeviceDetailTableRow from "./DeviceDetailTableRow";
 import FeatureCostToday from "./FeatureCostTody";

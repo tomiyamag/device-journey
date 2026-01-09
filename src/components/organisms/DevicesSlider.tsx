@@ -9,30 +9,14 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Device } from "@/types";
+import { getDeviceStatus } from "@/utils/getDeviceStatus";
 
-import { DeviceStatusType } from "../atoms/DeviceStatusBadge";
 import InformationCard from "../atoms/InformationCard";
 import OthersDeviceDetails from "../molecules/OthersDeviceDetails";
 
 interface IDevicesSlider {
   devices: Device[];
 }
-
-export const getDeviceStatus = (device: Device): DeviceStatusType | null => {
-  if (device.is_main) {
-    return "is_main";
-  }
-
-  if (device.is_sub) {
-    return "is_sub";
-  }
-
-  if (device.retire_date) {
-    return "is_sold";
-  }
-
-  return null;
-};
 
 const DevicesSlider = ({ devices }: IDevicesSlider) => {
   const displayDevices = devices.filter((device) => !device.is_main);
