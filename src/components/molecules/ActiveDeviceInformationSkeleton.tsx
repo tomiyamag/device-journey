@@ -4,14 +4,23 @@ const ActiveDeviceInformationSkeleton = () => {
   return (
     <div className="rounded-xl p-1 relative bg-gray-200">
       <div className="flex gap-3.5 items-center bg-white py-5 px-4 rounded-lg">
-        <Skeleton className="rounded-lg w-48 h-44 hidden sm:block" />
+        <Skeleton
+          className="rounded-lg w-48 h-44 hidden sm:block"
+          theme="darkgray"
+        />
 
         <div className="flex-1">
           <div className="mb-4 sm:mb-2.5 flex items-center gap-3">
-            <Skeleton className="rounded-lg w-30 h-28 sm:hidden" />
+            <Skeleton
+              className="rounded-lg w-30 h-28 sm:hidden"
+              theme="darkgray"
+            />
 
             <div className="flex-1">
-              <Skeleton className="mb-1.5 h-6 w-full sm:w-1/2 rounded-sm" />
+              <Skeleton
+                className="mb-1.5 h-6 w-full sm:w-1/2 rounded-sm"
+                theme="darkgray"
+              />
 
               <div className="flex flex-wrap gap-1">
                 <Skeleton className="h-4 w-14 rounded-sm" />

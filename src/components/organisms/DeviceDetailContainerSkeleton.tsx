@@ -5,7 +5,7 @@ const DeviceDetailContainerSkeleton = () => {
   return (
     <div>
       <div className="flex flex-col gap-4 mb-8">
-        <Skeleton className="h-7 w-3xs rounded-sm mx-auto" />
+        <Skeleton className="h-7 w-3xs rounded-sm mx-auto" theme="darkgray" />
         <span className="border-b border-b-teal-600 w-7 mx-auto"></span>
       </div>
 
@@ -16,7 +16,7 @@ const DeviceDetailContainerSkeleton = () => {
           <Skeleton className="w-28 h-6 rounded-sm" />
         </div>
 
-        <Skeleton className="w-54 h-54 mx-auto rounded-lg" />
+        <Skeleton className="w-54 h-54 mx-auto rounded-lg" theme="darkgray" />
 
         <div className="flex gap-4 justify-center">
           {Array.from({ length: 2 }).map((_, i) => (
