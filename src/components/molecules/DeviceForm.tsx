@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -28,6 +28,31 @@ interface IDeviceForm {
 }
 
 type DeviceSchemaType = z.input<typeof deviceFormSchema>;
+
+// デバイス用途の説明テキスト出し分け
+const deviceStatusDescription = (
+  initialData: DeviceInputDraft | Device,
+  selectedMainDevice: boolean,
+  isAlreadyMainDevice: boolean | undefined,
+  isRetired: boolean,
+): string | ReactNode | undefined => {
+  // メインデバイス未登録＆売却日を指定していない場合
+  if (!isAlreadyMainDevice && !isRetired) {
+    return "メインデバイスが未登録です。この端末を登録しませんか？";
+  }
+
+  // 別のデバイスをメインデバイスにする場合
+  if (isAlreadyMainDevice && selectedMainDevice && !initialData.is_main) {
+    return "現在登録されているメインデバイス設定が上書きされます。";
+  }
+
+  // 売却日の指定を行った場合
+  if (isRetired && !selectedMainDevice) {
+    return "変更する場合は、指定した売却日を削除またはリセットしてください。";
+  }
+
+  return undefined;
+};
 
 const DeviceForm = ({
   initialData,
@@ -83,9 +108,7 @@ const DeviceForm = ({
   const isActiveDevice = status === "main" || status === "sub";
   const isRetired = !!retireDate;
   const isAlreadyMainDevice =
-    devices &&
-    devices?.filter((device) => device.is_main).length > 0 &&
-    !initialData.is_main;
+    devices && devices.filter((device) => device.is_main).length > 0;
 
   // 売却日が削除された場合は売却金額を空にする
   useEffect(() => {
@@ -236,15 +259,12 @@ const DeviceForm = ({
 
       <FormField
         labelText="デバイスの用途"
-        description={
-          status === "main" && isAlreadyMainDevice ? (
-            "現在登録されているメインデバイス設定が上書きされます。"
-          ) : isRetired ? (
-            <>
-              変更する場合は、指定した売却日を削除またはリセットしてください。
-            </>
-          ) : undefined
-        }
+        description={deviceStatusDescription(
+          initialData,
+          status === "main",
+          isAlreadyMainDevice,
+          isRetired,
+        )}
       >
         <FormOptionGroup>
           <FormRadio
