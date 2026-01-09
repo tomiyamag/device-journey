@@ -22,7 +22,7 @@ const FormField = ({
         <p className="text-xs text-gray-600 mb-3">{description}</p>
       )}
       {children}
-      {error && <p className="text-xs text-red-600 font-bold mt-3">{error}</p>}
+      {error && <p className="text-xs text-red-500 font-bold mt-3">{error}</p>}
     </div>
   );
 };
