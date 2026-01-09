@@ -27,7 +27,7 @@ export async function login(
 
       return {
         errorMessage:
-          "送信された確認メールからアカウントを有効化してください。",
+          "メールアドレスの認証が完了していません。送信されたメールをご確認ください。",
       };
     }
 
@@ -39,19 +39,6 @@ export async function login(
 
   revalidatePath("/", "layout");
   redirect("/");
-}
-
-export async function signout() {
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    redirect("/error");
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/auth/login");
 }
 
 export async function signup(
@@ -83,5 +70,23 @@ export async function signup(
   }
 
   revalidatePath("/", "layout");
-  redirect("/account");
+
+  const message = encodeURIComponent(
+    "確認メールを送信しました。メール内のリンクから登録を完了してください。",
+  );
+
+  redirect(`/auth/login?message=${message}`);
+}
+
+export async function signout() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    redirect("/error");
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/auth/login");
 }

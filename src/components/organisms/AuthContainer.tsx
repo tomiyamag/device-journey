@@ -8,6 +8,7 @@ import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 interface IAuthContainer extends IAuthForm {
   title: string;
   description?: string;
+  successMessage?: string;
 }
 
 const AUTH_META: Record<
@@ -30,10 +31,15 @@ const AUTH_META: Record<
   },
 };
 
-const AuthContainer = async ({ type, title, description }: IAuthContainer) => {
+const AuthContainer = async ({
+  type,
+  title,
+  description,
+  successMessage,
+}: IAuthContainer) => {
   const user = await getUser();
 
-  if (user) {
+  if (user && user.email_confirmed_at) {
     redirect("/");
   }
 
@@ -57,7 +63,7 @@ const AuthContainer = async ({ type, title, description }: IAuthContainer) => {
           </div>
 
           <div className="w-full">
-            <AuthForm type={type} />
+            <AuthForm type={type} successMessage={successMessage} />
           </div>
 
           <div className="flex gap-4 justify-center text-sm text-gray-600">

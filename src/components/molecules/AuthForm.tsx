@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -13,19 +14,36 @@ export type AuthType = "login" | "signup";
 
 export interface IAuthForm {
   type: AuthType;
+  successMessage?: string;
 }
 
-const AuthForm = ({ type }: IAuthForm) => {
+const AuthForm = ({ type, successMessage }: IAuthForm) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const actionFn = type === "login" ? login : signup;
   const initialFormState = { errorMessage: "" };
 
   const [formState, formAction] = useActionState(actionFn, initialFormState);
 
+  // エラー
   useEffect(() => {
     if (formState.errorMessage) {
       toast.error(formState.errorMessage);
     }
   }, [formState]);
+
+  // 成功
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage, {
+        // NOTE: 開発時にトーストが二つ表示されないよう id を指定
+        id: "auth-success",
+      });
+
+      router.replace(pathname);
+    }
+  }, [successMessage, router, pathname]);
 
   return (
     <form action={formAction} className="flex flex-col gap-6 max-w-sm mx-auto">

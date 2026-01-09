@@ -1,5 +1,17 @@
 import AuthContainer from "@/components/organisms/AuthContainer";
 
-export default function LoginPage() {
-  return <AuthContainer type="login" title="Device Journey にログイン" />;
+interface ILoginPage {
+  searchParams: Promise<{
+    message: string;
+  }>;
+}
+
+export default async function LoginPage({ searchParams }: ILoginPage) {
+  return (
+    <AuthContainer
+      type="login"
+      title="Device Journey にログイン"
+      successMessage={(await searchParams).message}
+    />
+  );
 }
