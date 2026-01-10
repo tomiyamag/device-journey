@@ -103,6 +103,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
         const fileExt = file.name.split(".").pop();
         const filePath = `${profile.id}-${randomValue}.${fileExt}`;
 
+        // 画像をストレージにアップ
         await uploadAvatarMutate({ filePath, file });
 
         finalAvatarUrl = filePath;
@@ -113,6 +114,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
         username: data.username,
       } as UserProfileInput;
 
+      // プロフィール更新
       await updateProfileMutate(submitData);
     } catch (err) {
       console.error(err);
