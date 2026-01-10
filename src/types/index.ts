@@ -57,15 +57,9 @@ export type DeviceInputDraft = MergeDeep<
   }
 >;
 
-export type UserProfileInput = {
-  username: string | null;
-  avatar_url: string | null;
-};
-
-export type UserProfile = UserProfileInput & {
-  readonly id: string;
-  readonly created_at: Date;
-};
+export type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
+export type UserProfileInput =
+  Database["public"]["Tables"]["profiles"]["Insert"];
 
 export type AutocompleteMobileApiResult = {
   id: number;

@@ -1,70 +1,144 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import z from "zod";
 
-import { updateUserProfile } from "@/actions/profile";
+import { updateUserProfile, uploadUserAvatar } from "@/actions/profile";
 import FormInput from "@/components/atoms/FormInput";
 import FormField from "@/components/molecules/FormField";
+import { accountFormSchema } from "@/schemas/accountForm";
 import { UserProfile, UserProfileInput } from "@/types";
 
-import Avatar from "../../app/(protected)/account/avatar";
 import Button from "../atoms/Button";
+import FormAvatarField from "../molecules/FormAvatarField";
+
+type AccountSchemaType = z.input<typeof accountFormSchema>;
 
 interface IAccountForm {
   profile: UserProfile;
   email: string;
 }
 
+const randomValue = Math.random();
+
 export default function AccountForm({ profile, email }: IAccountForm) {
   const queryClient = useQueryClient();
 
-  const [username, setUsername] = useState<string | null>(profile.username);
-  const [avatar_url, setAvatarUrl] = useState<string | null>(
-    profile.avatar_url,
-  );
+  // 初期値の生成
+  const defaultValues = useMemo(() => {
+    return {
+      avatar_url: profile.avatar_url,
+      username: profile.username,
+    } as AccountSchemaType;
+  }, [profile.avatar_url, profile.username]);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: UserProfileInput) => updateUserProfile(data),
-    onSuccess: async (result) => {
-      if (result?.error) {
-        toast.error(result.error);
-        return;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AccountSchemaType>({
+    resolver: zodResolver(accountFormSchema),
+    defaultValues,
+  });
+
+  // 画像アップロード用 Mutation
+  const { mutateAsync: uploadAvatarMutate, isPending: isAvatarUploading } =
+    useMutation({
+      mutationFn: async ({
+        filePath,
+        file,
+      }: {
+        filePath: string;
+        file: File;
+      }) => {
+        return await uploadUserAvatar(filePath, file);
+      },
+      onSuccess: async (result) => {
+        if (result?.error) {
+          toast.error(result?.error);
+          return;
+        }
+      },
+      onError: (err) => {
+        console.error(err);
+        toast.error("予期せぬエラーが発生しました。");
+      },
+    });
+
+  // プロフィール更新用 Mutation
+  const { mutateAsync: updateProfileMutate, isPending: isProfileUpdating } =
+    useMutation({
+      mutationFn: (data: UserProfileInput) => updateUserProfile(data),
+      onSuccess: async (result) => {
+        if (result?.error) {
+          toast.error(result.error);
+          return;
+        }
+
+        // クライアント側のキャッシュを無効化
+        await queryClient.invalidateQueries({ queryKey: ["profile"] });
+
+        toast.success("アカウント情報を変更しました。");
+      },
+      onError: (err) => {
+        console.error(err);
+        toast.error("予期せぬエラーが発生しました。");
+      },
+    });
+
+  const handleFormSubmit = async (data: AccountSchemaType) => {
+    try {
+      let finalAvatarUrl: string | null = defaultValues.avatar_url as string;
+
+      const { avatar_url: avatar_files } = data;
+
+      // アバター画像が選択された場合はファイル名を生成して送信
+      if (avatar_files instanceof FileList && data.avatar_url.length > 0) {
+        const file = avatar_files[0];
+        console.log(avatar_files[0]);
+        const fileExt = file.name.split(".").pop();
+        const filePath = `${profile.id}-${randomValue}.${fileExt}`;
+
+        await uploadAvatarMutate({ filePath, file });
+
+        finalAvatarUrl = filePath;
       }
 
-      // クライアント側のキャッシュを無効化
-      await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      const submitData: UserProfileInput = {
+        avatar_url: finalAvatarUrl,
+        username: data.username,
+      } as UserProfileInput;
 
-      toast.success("アカウント情報を更新しました。");
-    },
-    onError: (err) => {
+      await updateProfileMutate(submitData);
+    } catch (err) {
       console.error(err);
-      toast.error("予期せぬエラーが発生しました。");
-    },
-  });
+    }
+  };
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
-      <div>
-        <Avatar
-          uid={profile.id ?? null}
-          url={avatar_url}
-          size={150}
-          onUpload={(url) => {
-            setAvatarUrl(url);
-            mutate({ username, avatar_url: url });
-          }}
-        />
-      </div>
+      <FormAvatarField
+        key={profile.avatar_url}
+        {...register("avatar_url")}
+        error={errors?.avatar_url?.message}
+      />
 
-      <FormField htmlFor="username" labelText="あなたの名前">
+      <FormField
+        htmlFor="username"
+        labelText="あなたのお名前"
+        error={errors?.username?.message}
+      >
         <FormInput
           id="username"
           type="text"
-          value={username || ""}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="お名前を入力してください"
           autoComplete="off"
+          {...register("username")}
+          isError={!!errors.username}
         />
       </FormField>
 
@@ -73,21 +147,39 @@ export default function AccountForm({ profile, email }: IAccountForm) {
         labelText="メールアドレス"
         description={
           <>
-            メールアドレスを変更する場合は、
+            メールアドレスの変更は
             <span className="underline hover:no-underline">こちら</span>
           </>
         }
       >
-        <FormInput id="email" name="email" type="text" value={email} readOnly />
+        <FormInput id="email" type="text" value={email} readOnly />
+      </FormField>
+
+      <FormField
+        htmlFor="password"
+        labelText="パスワード"
+        description={
+          <>
+            セキュリティ上、パスワードは表示できません。変更は
+            <span className="underline hover:no-underline">こちら</span>
+          </>
+        }
+      >
+        <FormInput
+          id="password"
+          type="password"
+          value="************"
+          readOnly
+        />
       </FormField>
 
       <div className="mt-3">
         <Button
           type="button"
-          loading={isPending}
-          onClick={() => mutate({ username, avatar_url })}
+          loading={isAvatarUploading || isProfileUpdating}
+          onClick={handleSubmit(handleFormSubmit)}
         >
-          更新する
+          変更を保存
         </Button>
       </div>
     </form>

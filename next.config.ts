@@ -7,7 +7,15 @@ const nextConfig: NextConfig = {
       {
         hostname: "fdn2.gsmarena.com",
       },
+      {
+        hostname: "ehpunsxqhgqaxslwojjj.supabase.co",
+      },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "3mb",
+    },
   },
 };
 

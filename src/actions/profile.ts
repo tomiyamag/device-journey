@@ -40,8 +40,8 @@ export const updateUserProfile = cache(
     }
 
     const { error } = await supabase.from("profiles").upsert({
-      id: user.id,
       ...userProfileData,
+      id: user.id,
     });
 
     if (error) {
@@ -57,3 +57,28 @@ export const updateUserProfile = cache(
     return { success: true };
   },
 );
+
+export const uploadUserAvatar = cache(async (filePath: string, file: File) => {
+  const supabase = await createClient();
+  const user = await getUser();
+
+  if (!user) {
+    throw new Error();
+  }
+
+  const { error } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file);
+
+  if (error) {
+    console.error("DB Error: ", error);
+    return {
+      error: "プロフィール画像のアップロードに失敗しました",
+    };
+  }
+
+  // キャッシュの更新
+  revalidatePath("/", "layout");
+
+  return { success: true };
+});

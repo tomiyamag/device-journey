@@ -17,12 +17,12 @@ const FormInput = forwardRef<HTMLInputElement, IFormInput>(
         ref={ref}
         className={classNames(
           InputClassNames,
-          className,
           "read-only:bg-gray-50 read-only:text-gray-500 read-only:cursor-default read-only:focus:outline-none",
           {
             "text-red-600 bg-red-100! border-red-400! focus:outline-red-300! placeholder:text-red-300":
               isError,
           },
+          className,
         )}
         id={id}
         {...rest}
