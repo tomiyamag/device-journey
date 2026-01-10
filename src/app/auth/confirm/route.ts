@@ -25,6 +25,10 @@ export async function GET(request: NextRequest) {
     });
     if (!error) {
       redirectTo.searchParams.delete("next");
+      redirectTo.searchParams.set(
+        "message",
+        "メールアドレスの確認が完了しました。",
+      );
       return NextResponse.redirect(redirectTo);
     }
   }

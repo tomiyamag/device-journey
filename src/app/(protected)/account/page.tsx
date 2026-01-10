@@ -3,7 +3,13 @@ import PageHeading from "@/components/atoms/PageHeading";
 import BackHome from "@/components/molecules/BackHome";
 import AccountFormContainer from "@/components/organisms/AccountFormContainer";
 
-export default async function AccountPage() {
+interface IAccountPage {
+  searchParams: Promise<{
+    message: string;
+  }>;
+}
+
+export default async function AccountPage({ searchParams }: IAccountPage) {
   const user = await getUser();
 
   if (!user) {
@@ -15,7 +21,10 @@ export default async function AccountPage() {
   return (
     <section>
       <PageHeading label="アカウント設定" />
-      <AccountFormContainer email={email} />
+      <AccountFormContainer
+        email={email}
+        confirmSuccessMessage={(await searchParams).message}
+      />
       <BackHome />
     </section>
   );
