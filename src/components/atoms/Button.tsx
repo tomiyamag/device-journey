@@ -22,7 +22,7 @@ const Button = ({
   return (
     <button
       className={classNames(
-        "rounded-lg h-11 block font-bold -bg-linear-210 to-60% shadow-sm cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:from-transparent disabled:to-transparent disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed disabled:hover:opacity-100",
+        "rounded-lg h-11 block font-bold -bg-linear-210 to-60% shadow-sm cursor-pointer transition-opacity hover:opacity-80 disabled:text-gray-100 disabled:from-transparent disabled:to-transparent disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-auto disabled:hover:opacity-100",
         {
           "w-full mx-auto": size === "full",
           "w-full sm:w-xs text-sm mx-auto": size === "sm",

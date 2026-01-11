@@ -39,7 +39,8 @@ export default function AccountForm({ profile, email }: IAccountForm) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isDirty },
   } = useForm<AccountSchemaType>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -116,6 +117,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
 
       // プロフィール更新
       await updateProfileMutate(submitData);
+      reset(submitData as AccountSchemaType);
     } catch (err) {
       console.error(err);
     }
@@ -178,8 +180,9 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       <div className="mt-3">
         <Button
           type="button"
-          loading={isAvatarUploading || isProfileUpdating}
           onClick={handleSubmit(handleFormSubmit)}
+          loading={isAvatarUploading || isProfileUpdating}
+          disabled={!isDirty}
         >
           変更を保存
         </Button>

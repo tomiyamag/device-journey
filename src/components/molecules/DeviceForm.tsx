@@ -95,7 +95,8 @@ const DeviceForm = ({
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    reset,
+    formState: { errors, isDirty },
   } = useForm<DeviceSchemaType>({
     resolver: zodResolver(deviceFormSchema),
     defaultValues,
@@ -150,6 +151,7 @@ const DeviceForm = ({
     } as DeviceInput;
 
     onSubmit(submitData);
+    reset(data);
   };
 
   return (
@@ -384,6 +386,7 @@ const DeviceForm = ({
           type="button"
           onClick={handleSubmit(handleFormSubmit)}
           loading={isPending}
+          disabled={!isDirty}
         >
           {submitLabel}
         </Button>
