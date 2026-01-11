@@ -30,35 +30,33 @@ export const getUserProfile = cache(async () => {
   return data;
 });
 
-export const updateUserProfile = cache(
-  async (userProfileData: UserProfileInput) => {
-    const supabase = await createClient();
-    const user = await getUser();
+export const updateUserProfile = async (userProfileData: UserProfileInput) => {
+  const supabase = await createClient();
+  const user = await getUser();
 
-    if (!user) {
-      throw new Error();
-    }
+  if (!user) {
+    throw new Error();
+  }
 
-    const { error } = await supabase.from("profiles").upsert({
-      ...userProfileData,
-      id: user.id,
-    });
+  const { error } = await supabase.from("profiles").upsert({
+    ...userProfileData,
+    id: user.id,
+  });
 
-    if (error) {
-      console.error("DB Error: ", error);
-      return {
-        error: "プロフィールの更新に失敗しました",
-      };
-    }
+  if (error) {
+    console.error("DB Error: ", error);
+    return {
+      error: "プロフィールの更新に失敗しました",
+    };
+  }
 
-    // キャッシュの更新
-    revalidatePath("/", "layout");
+  // キャッシュの更新
+  revalidatePath("/", "layout");
 
-    return { success: true };
-  },
-);
+  return { success: true };
+};
 
-export const uploadUserAvatar = cache(async (filePath: string, file: File) => {
+export const uploadUserAvatar = async (filePath: string, file: File) => {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -81,4 +79,4 @@ export const uploadUserAvatar = cache(async (filePath: string, file: File) => {
   revalidatePath("/", "layout");
 
   return { success: true };
-});
+};
