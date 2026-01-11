@@ -50,15 +50,16 @@ const AuthContainer = async ({
   return (
     <main className="min-h-svh flex flex-col items-center justify-center py-10 px-5 sm:px-16">
       <div className="flex flex-col gap-10 w-full">
-        <div className="flex flex-col gap-6 items-center">
+        <div className="flex flex-col gap-8 items-center">
           <TbDeviceMobileCheck className="text-6xl text-teal-600" />
 
-          <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>
-          {description && (
-            <p className="text-center text-sm text-gray-600">{description}</p>
-          )}
+          <div className="flex flex-col gap-5">
+            <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>
+            {description && (
+              <p className="text-center text-sm text-gray-600">{description}</p>
+            )}
+          </div>
         </div>
-
         <div className="w-full">
           <AuthForm type={type} successMessage={successMessage} />
         </div>
