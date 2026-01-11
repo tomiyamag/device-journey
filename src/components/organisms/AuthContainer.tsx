@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ReactNode } from "react";
+import { TbDeviceMobileCheck } from "react-icons/tb";
 
 import { getUser } from "@/actions/user";
 
 import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 
 interface IAuthContainer extends IAuthForm {
-  title: string;
+  title: string | ReactNode;
   description?: string;
   successMessage?: string;
 }
@@ -46,15 +48,11 @@ const AuthContainer = async ({
   const meta = AUTH_META[type];
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center py-5 px-5 sm:px-16">
+    <main className="min-h-svh flex flex-col items-center justify-center py-10 px-5 sm:px-16">
       <div className="flex flex-col gap-10 w-full">
-        <div className="flex flex-col gap-7 items-center">
-          {/* TODO: ロゴ指定 */}
-          <img
-            src="https://placehold.jp/40x40.png"
-            alt=""
-            className="w-10 h-10"
-          />
+        <div className="flex flex-col gap-6 items-center">
+          <TbDeviceMobileCheck className="text-6xl text-teal-600" />
+
           <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>
           {description && (
             <p className="text-center text-sm text-gray-600">{description}</p>

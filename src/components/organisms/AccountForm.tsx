@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import z from "zod";
 
 import { updateUserProfile, uploadUserAvatar } from "@/actions/profile";
+import { updateUserEmail } from "@/actions/user";
 import FormInput from "@/components/atoms/FormInput";
 import FormField from "@/components/molecules/FormField";
 import { accountFormSchema } from "@/schemas/accountForm";
@@ -149,12 +150,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       <FormField
         htmlFor="email"
         labelText="メールアドレス"
-        description={
-          <>
-            メールアドレスの変更は
-            <span className="underline hover:no-underline">こちら</span>
-          </>
-        }
+        description="現在、メールアドレスの変更は行えません。"
       >
         <FormInput id="email" type="text" value={email} readOnly />
       </FormField>
@@ -162,12 +158,7 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       <FormField
         htmlFor="password"
         labelText="パスワード"
-        description={
-          <>
-            セキュリティ上、パスワードは表示できません。変更は
-            <span className="underline hover:no-underline">こちら</span>
-          </>
-        }
+        description="現在、パスワードの変更は行えません。"
       >
         <FormInput
           id="password"

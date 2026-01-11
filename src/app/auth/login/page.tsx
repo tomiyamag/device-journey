@@ -11,6 +11,7 @@ export default async function LoginPage({ searchParams }: ILoginPage) {
     <AuthContainer
       type="login"
       title="Device Journey にログイン"
+      description="あなたのモバイル遍歴を、スマートに管理。"
       successMessage={(await searchParams).message}
     />
   );
