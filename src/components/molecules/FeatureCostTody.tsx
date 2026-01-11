@@ -23,18 +23,22 @@ interface IFeatureCostToday {
 const Wrapper = ({ title, dailyCost, isHome }: IWrapper) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleOpen = () => {
     setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   return (
     <>
-      <DialogFeatureCostToday isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DialogFeatureCostToday isOpen={isOpen} onClose={handleClose} />
       <Feature
         icon={FaCoffee}
         title={title}
         className="text-amber-900"
-        info={{ onClick: handleClick }}
+        info={{ onClick: handleOpen }}
         isHome={isHome}
       >
         <div>¥ {dailyCost}</div>
