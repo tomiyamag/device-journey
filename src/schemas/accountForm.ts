@@ -31,8 +31,8 @@ export const accountFormSchema = z.object({
 
   username: z
     .string()
-    .min(1, "お名前を入力してください。")
-    .max(20, "お名前は 20 文字以内で入力してください。"),
+    .min(1, "名前を入力してください。")
+    .max(20, "名前は 20 文字以内で入力してください。"),
 });
 
 export const accountFormEmailSchema = z.object();

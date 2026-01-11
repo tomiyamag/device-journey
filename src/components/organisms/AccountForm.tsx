@@ -133,13 +133,13 @@ export default function AccountForm({ profile, email }: IAccountForm) {
 
       <FormField
         htmlFor="username"
-        labelText="あなたのお名前"
+        labelText="あなたの名前"
         error={errors?.username?.message}
       >
         <FormInput
           id="username"
           type="text"
-          placeholder="お名前を入力してください"
+          placeholder="名前を入力してください"
           autoComplete="off"
           {...register("username")}
           isError={!!errors.username}
