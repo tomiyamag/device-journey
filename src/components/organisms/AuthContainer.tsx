@@ -53,7 +53,7 @@ const AuthContainer = async ({
         <div className="flex flex-col gap-8 items-center">
           <TbDeviceMobileCheck className="text-6xl text-teal-600" />
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col justify-center text-center gap-5">
             <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>
             {description && (
               <p className="text-center text-sm text-gray-600">{description}</p>
