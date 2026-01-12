@@ -8,6 +8,7 @@ import AccountForm from "@/components/organisms/AccountForm";
 import { useProfile } from "@/hooks/useProfile";
 
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
+import ErrorText from "../atoms/ErrorText";
 
 interface IAccountFormContainer {
   email: string;
@@ -21,7 +22,7 @@ const AccountFormContainer = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data: userProfile, isLoading } = useProfile();
+  const { data: userProfile, isLoading, isError, error } = useProfile();
 
   // メールアドレス確認成功時
   useEffect(() => {
@@ -37,6 +38,10 @@ const AccountFormContainer = ({
 
   if (isLoading) {
     return <ContentLoadingSpinner className="py-32" />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!userProfile) {

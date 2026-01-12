@@ -6,7 +6,7 @@ import InformationCard from "../atoms/InformationCard";
 
 interface IActiveDeviceInformationNotFound {
   href: string;
-  content: string | ReactNode;
+  content: ReactNode;
 }
 
 const ActiveDeviceInformationNotFound = ({

@@ -11,6 +11,7 @@ import { DeviceInput } from "@/types";
 import { parseMultipleData } from "@/utils/parseMultipleData";
 
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
+import ErrorText from "../atoms/ErrorText";
 import DeviceForm from "../molecules/DeviceForm";
 
 interface IEditDeviceForm {
@@ -21,7 +22,7 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: deviceData, isLoading } = useDevice(id);
+  const { data: deviceData, isLoading, isError, error } = useDevice(id);
 
   // 更新用 Mutation
   const { mutate: updateMutate, isPending: isUpdating } = useMutation({
@@ -77,6 +78,10 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
 
   if (isLoading) {
     return <ContentLoadingSpinner className="py-8" />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!deviceData) {

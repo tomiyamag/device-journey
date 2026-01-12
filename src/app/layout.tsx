@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
-  title: "Device Journey | あなたのモバイル遍歴を、スマートに管理。",
+  title: "Device Journey - あなたのモバイル遍歴を、スマートに管理。",
   description: "あなたのモバイル遍歴を、スマートに管理。",
 };
 

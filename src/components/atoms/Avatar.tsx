@@ -16,7 +16,7 @@ export interface IAvatar {
 }
 
 const Avatar = ({ size = "full", preview }: IAvatar) => {
-  const { data: userProfile, isLoading } = useProfile();
+  const { data: userProfile, isLoading, isError } = useProfile();
 
   const url = useMemo(() => {
     if (!userProfile) {
@@ -25,7 +25,7 @@ const Avatar = ({ size = "full", preview }: IAvatar) => {
     return getAvatarUrl(userProfile.avatar_url);
   }, [userProfile]);
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return <AvatarSkeleton size={size} />;
   }
 

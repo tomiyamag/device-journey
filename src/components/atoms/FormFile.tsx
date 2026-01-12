@@ -3,7 +3,7 @@ import { ComponentProps, forwardRef, ReactNode } from "react";
 
 export interface IFormFile extends ComponentProps<"input"> {
   id: string;
-  label: string | ReactNode;
+  label: ReactNode;
   className?: string;
 }
 

@@ -8,7 +8,7 @@ const apiKey = process.env.MOBILE_API_KEY;
  * @see https://mobileapi.dev/docs/
  */
 export async function autocompleteMobileDevices(query: string) {
-  // TODO: 仮 response。あとで消す
+  // NOTE: テスト用 response
   const mockApi = [
     {
       id: 862,
@@ -113,7 +113,7 @@ export async function autocompleteMobileDevices(query: string) {
 }
 
 export async function getMobileDevice(id: number) {
-  // TODO: 仮 response。あとで消す
+  // NOTE: テスト用 response
   const mockApi = {
     id: 755,
     name: "iPhone 13 Pro",

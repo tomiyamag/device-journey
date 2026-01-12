@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -35,20 +35,29 @@ const deviceStatusDescription = (
   selectedMainDevice: boolean,
   isAlreadyMainDevice: boolean | undefined,
   isRetired: boolean,
-): string | ReactNode | undefined => {
-  // メインデバイス未登録＆売却日を指定していない場合
-  if (!isAlreadyMainDevice && !isRetired) {
-    return "メインデバイスが未登録です。この端末を登録しませんか？";
-  }
+  isDevicesLoading: boolean,
+  isDevicesError: boolean,
+): string | undefined => {
+  if (!isDevicesLoading) {
+    // メインデバイス設定の有無を取得できなかった場合
+    if (isDevicesError) {
+      return "現在、デバイスの用途は変更できません。時間をおいて再設定してください。";
+    }
 
-  // 別のデバイスをメインデバイスにする場合
-  if (isAlreadyMainDevice && selectedMainDevice && !initialData.is_main) {
-    return "現在登録されているメインデバイス設定が上書きされます。";
-  }
+    // メインデバイス未登録＆売却日を指定していない場合
+    if (!isAlreadyMainDevice && !isRetired) {
+      return "メインデバイスが未登録です。この端末を登録しませんか？";
+    }
 
-  // 売却日の指定を行った場合
-  if (isRetired && !selectedMainDevice) {
-    return "変更する場合は、指定した売却日を削除またはリセットしてください。";
+    // 別のデバイスをメインデバイスにする場合
+    if (isAlreadyMainDevice && selectedMainDevice && !initialData.is_main) {
+      return "現在登録されているメインデバイス設定が上書きされます。";
+    }
+
+    // 売却日の指定を行った場合
+    if (isRetired && !selectedMainDevice) {
+      return "変更する場合は、指定した売却日を削除またはリセットしてください。";
+    }
   }
 
   return undefined;
@@ -63,7 +72,13 @@ const DeviceForm = ({
   isPending,
 }: IDeviceForm) => {
   const router = useRouter();
-  const { data: devices } = useDevices();
+
+  // NOTE: メインデバイス設定の有無を判定するため全てのデバイスを取得
+  const {
+    data: devices,
+    isLoading: isDevicesLoading,
+    isError: isDevicesError,
+  } = useDevices();
 
   // 初期値の生成
   const defaultValues = useMemo<DeviceSchemaType>(() => {
@@ -266,6 +281,8 @@ const DeviceForm = ({
           status === "main",
           isAlreadyMainDevice,
           isRetired,
+          isDevicesLoading,
+          isDevicesError,
         )}
       >
         <FormOptionGroup>
@@ -273,21 +290,25 @@ const DeviceForm = ({
             id="is-status-main"
             label="メインデバイス"
             value="main"
-            disabled={isRetired || isPending}
+            disabled={
+              isDevicesLoading || isDevicesError || isRetired || isPending
+            }
             {...register("status")}
           />
           <FormRadio
             id="is-status-sub"
             label="サブ機"
             value="sub"
-            disabled={isRetired || isPending}
+            disabled={
+              isDevicesLoading || isDevicesError || isRetired || isPending
+            }
             {...register("status")}
           />
           <FormRadio
             id="is-status-null"
             label="指定しない"
             value="none"
-            disabled={isPending}
+            disabled={isDevicesLoading || isDevicesError || isPending}
             {...register("status")}
           />
         </FormOptionGroup>

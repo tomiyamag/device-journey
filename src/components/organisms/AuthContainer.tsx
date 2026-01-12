@@ -8,7 +8,7 @@ import { getUser } from "@/actions/user";
 import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
 
 interface IAuthContainer extends IAuthForm {
-  title: string | ReactNode;
+  title: ReactNode;
   description?: string;
   successMessage?: string;
 }
