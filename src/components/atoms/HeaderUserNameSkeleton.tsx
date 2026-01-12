@@ -1,7 +1,13 @@
-import { IHeaderUserName } from "./HeaderUserName";
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import Skeleton from "./Skeleton";
 
-const HeaderUserNameSkeleton = ({ isHome }: IHeaderUserName) => {
+const HeaderUserNameSkeleton = () => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <div className="flex flex-col gap-1">
       {isHome && <Skeleton className="w-32 h-6 rounded-sm" />}

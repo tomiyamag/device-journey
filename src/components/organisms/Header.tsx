@@ -1,11 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import Avatar from "../atoms/Avatar";
-import HeaderUserName from "../atoms/HeaderUserName";
+import HeaderUserNameSkeleton from "../atoms/HeaderUserNameSkeleton";
 import Menu from "../molecules/Menu";
+
+// ハイドレーションエラー防止
+const HeaderUserName = dynamic(() => import("../atoms/HeaderUserName"), {
+  ssr: false,
+  loading: () => <HeaderUserNameSkeleton />,
+});
 
 const Header = () => {
   const pathname = usePathname();
