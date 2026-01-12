@@ -76,13 +76,13 @@ https://device-journey.vercel.app/
 - React Hook Form
 - Zod
 
-### コンポーネントライブラリ
+### コンポーネント／ユーティリティー
 
 - Swiper
-- Day.js
 - Sonner
 - Headless UI
 - React Icons
+- Day.js
 
 ### バックエンド／インフラ
 
