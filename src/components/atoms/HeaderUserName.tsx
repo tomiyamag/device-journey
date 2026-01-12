@@ -10,7 +10,7 @@ const HeaderUserName = ({ isHome }: IHeaderUserName) => {
   const { data: userProfile, isLoading, isError } = useProfile();
 
   if (isLoading || isError) {
-    return <HeaderUserNameSkeleton isHome={isHome} />;
+    return <HeaderUserNameSkeleton />;
   }
 
   if (!userProfile) {
