@@ -8,7 +8,7 @@ export default async function MainLayout({
 }>) {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <main className="px-4 sm:px-16 py-5 sm:py-10 overflow-x-hidden">
         {children}
       </main>
