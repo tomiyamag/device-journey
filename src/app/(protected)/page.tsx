@@ -12,9 +12,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section>
-        <OtherDevices />
-      </section>
+      <section>{/* <OtherDevices /> */}</section>
     </div>
   );
 }
