@@ -7,12 +7,14 @@ export default function HomePage() {
     <div className="flex flex-col gap-9">
       <section>
         <div className="flex flex-col gap-2">
-          <ActiveDevice />
+          {/* <ActiveDevice /> */}
           <Pickups />
         </div>
       </section>
 
-      <section>{/* <OtherDevices /> */}</section>
+      <section>
+        <OtherDevices />
+      </section>
     </div>
   );
 }
