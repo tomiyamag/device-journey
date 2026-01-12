@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 interface DeviceSpec {
   title: string;
-  detail: string | ReactNode;
+  detail: ReactNode;
   size?: "base" | "lg";
 }
 

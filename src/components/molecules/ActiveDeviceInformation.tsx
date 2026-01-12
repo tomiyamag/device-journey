@@ -2,6 +2,7 @@
 
 import { useDevices } from "@/hooks/useDevices";
 
+import ErrorText from "../atoms/ErrorText";
 import InformationCard from "../atoms/InformationCard";
 import ActiveDeviceDetail from "./ActiveDeviceDetail";
 import ActiveDeviceFeatures from "./ActiveDeviceFeatures";
@@ -9,10 +10,14 @@ import ActiveDeviceInformationNotFound from "./ActiveDeviceInformationNotFound";
 import ActiveDeviceInformationSkeleton from "./ActiveDeviceInformationSkeleton";
 
 const ActiveDeviceInformation = () => {
-  const { data: devices, isLoading } = useDevices();
+  const { data: devices, isLoading, isError, error } = useDevices();
 
   if (isLoading) {
     return <ActiveDeviceInformationSkeleton />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!devices) {

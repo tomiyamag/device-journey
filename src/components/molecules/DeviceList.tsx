@@ -7,15 +7,20 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { useDevices } from "@/hooks/useDevices";
 import { Device } from "@/types";
 
+import ErrorText from "../atoms/ErrorText";
 import InformationCard from "../atoms/InformationCard";
 import DeviceListItem from "./DeviceListItem";
 import DeviceListSkeleton from "./DeviceListSkeleton";
 
 const DeviceList = () => {
-  const { data: devices, isLoading } = useDevices();
+  const { data: devices, isLoading, isError, error } = useDevices();
 
   if (isLoading) {
     return <DeviceListSkeleton />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!devices) {

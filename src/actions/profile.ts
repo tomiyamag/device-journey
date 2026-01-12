@@ -13,7 +13,7 @@ export const getUserProfile = cache(async () => {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   const { data, error } = await supabase
@@ -24,7 +24,7 @@ export const getUserProfile = cache(async () => {
 
   if (error) {
     console.error("DB Error: ", error);
-    throw new Error("プロフィールの取得に失敗しました");
+    throw new Error("アカウント情報の取得に失敗しました。");
   }
 
   return data;
@@ -35,7 +35,7 @@ export const updateUserProfile = async (userProfileData: UserProfileInput) => {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   const { error } = await supabase.from("profiles").upsert({
@@ -46,7 +46,7 @@ export const updateUserProfile = async (userProfileData: UserProfileInput) => {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "プロフィールの更新に失敗しました",
+      error: "アカウント情報の更新に失敗しました。",
     };
   }
 
@@ -61,7 +61,7 @@ export const uploadUserAvatar = async (filePath: string, file: File) => {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   const { error } = await supabase.storage
@@ -71,7 +71,7 @@ export const uploadUserAvatar = async (filePath: string, file: File) => {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "プロフィール画像のアップロードに失敗しました",
+      error: "プロフィール画像のアップロードに失敗しました。",
     };
   }
 
