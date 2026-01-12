@@ -2,6 +2,7 @@
 
 import { useDevice } from "@/hooks/useDevice";
 
+import ErrorText from "../atoms/ErrorText";
 import PageHeading from "../atoms/PageHeading";
 import DeviceEditContainerSkeleton from "./DeviceEditContainerSkeleton";
 import EditDeviceForm from "./EditDeviceForm";
@@ -11,10 +12,14 @@ interface IDeviceEditContainer {
 }
 
 const DeviceEditContainer = ({ id }: IDeviceEditContainer) => {
-  const { data: device, isLoading } = useDevice(id);
+  const { data: device, isLoading, isError, error } = useDevice(id);
 
   if (isLoading) {
     return <DeviceEditContainerSkeleton />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!device) {

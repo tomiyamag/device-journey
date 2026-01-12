@@ -35,7 +35,7 @@ export const updateUserEmail = async (newEmail: string) => {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "メールアドレスの変更リクエストに失敗しました",
+      error: "メールアドレスの変更リクエストに失敗しました。",
     };
   }
 

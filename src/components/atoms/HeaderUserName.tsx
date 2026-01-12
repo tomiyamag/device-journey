@@ -7,9 +7,9 @@ export interface IHeaderUserName {
 }
 
 const HeaderUserName = ({ isHome }: IHeaderUserName) => {
-  const { data: userProfile, isLoading } = useProfile();
+  const { data: userProfile, isLoading, isError } = useProfile();
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return <HeaderUserNameSkeleton isHome={isHome} />;
   }
 

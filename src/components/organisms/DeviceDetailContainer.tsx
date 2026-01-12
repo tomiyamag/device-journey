@@ -2,6 +2,7 @@
 
 import { useDevice } from "@/hooks/useDevice";
 
+import ErrorText from "../atoms/ErrorText";
 import PageHeading from "../atoms/PageHeading";
 import DeviceDetail from "../molecules/DeviceDetail";
 import DeviceDetailContainerSkeleton from "./DeviceDetailContainerSkeleton";
@@ -11,10 +12,14 @@ interface IDeviceDetailContainer {
 }
 
 const DeviceDetailContainer = ({ id }: IDeviceDetailContainer) => {
-  const { data: device, isLoading } = useDevice(id);
+  const { data: device, isLoading, isError, error } = useDevice(id);
 
   if (isLoading) {
     return <DeviceDetailContainerSkeleton />;
+  }
+
+  if (isError) {
+    return <ErrorText>{error.message}</ErrorText>;
   }
 
   if (!device) {

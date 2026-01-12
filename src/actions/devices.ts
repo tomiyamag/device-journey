@@ -24,7 +24,7 @@ export const getDevices = cache(async () => {
 
   if (error) {
     console.error("DB Error: ", error);
-    throw new Error("登録済みデバイスの取得に失敗しました");
+    throw new Error("登録済みデバイスの取得に失敗しました。");
   }
 
   // NOTE: 購入日が登録されていない場合は登録順、そうでない場合は購入日順に並べ替える
@@ -60,7 +60,7 @@ export const getDeviceById = cache(async (id: string) => {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   const { data, error } = await supabase
@@ -72,7 +72,7 @@ export const getDeviceById = cache(async (id: string) => {
 
   if (error) {
     console.error("DB Error: ", error);
-    throw new Error("デバイス情報の取得に失敗しました");
+    throw new Error("デバイス情報の取得に失敗しました。");
   }
 
   return data;
@@ -96,7 +96,7 @@ export async function registerDevice(deviceData: DeviceInput) {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   // メインデバイスとして登録された場合
@@ -105,7 +105,7 @@ export async function registerDevice(deviceData: DeviceInput) {
 
     if (error) {
       console.error("DB Error: ", error);
-      return { error: "メインデバイスの切り替えに失敗しました" };
+      return { error: "メインデバイスの切り替えに失敗しました。" };
     }
   }
 
@@ -119,7 +119,7 @@ export async function registerDevice(deviceData: DeviceInput) {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "デバイスの登録に失敗しました",
+      error: "デバイスの登録に失敗しました。",
     };
   }
 
@@ -135,7 +135,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   // メインデバイスとして登録された場合
@@ -144,7 +144,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
 
     if (error) {
       console.error("DB Error: ", error);
-      return { error: "メインデバイスの切り替えに失敗しました" };
+      return { error: "メインデバイスの切り替えに失敗しました。" };
     }
   }
 
@@ -161,7 +161,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "デバイス情報の更新に失敗しました",
+      error: "デバイス情報の更新に失敗しました。",
     };
   }
 
@@ -175,7 +175,7 @@ export async function deleteDevice(deviceId: string) {
   const user = await getUser();
 
   if (!user) {
-    throw new Error();
+    throw new Error("ユーザーが見つかりません。");
   }
 
   const { error } = await supabase
@@ -187,7 +187,7 @@ export async function deleteDevice(deviceId: string) {
   if (error) {
     console.error("DB Error: ", error);
     return {
-      error: "デバイスの削除に失敗しました",
+      error: "デバイスの削除に失敗しました。",
     };
   }
 

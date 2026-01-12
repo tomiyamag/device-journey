@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import z from "zod";
 
 import { updateUserProfile, uploadUserAvatar } from "@/actions/profile";
-import { updateUserEmail } from "@/actions/user";
 import FormInput from "@/components/atoms/FormInput";
 import FormField from "@/components/molecules/FormField";
 import { accountFormSchema } from "@/schemas/accountForm";
@@ -101,7 +100,6 @@ export default function AccountForm({ profile, email }: IAccountForm) {
       // アバター画像が選択された場合はファイル名を生成して送信
       if (avatar_files instanceof FileList && data.avatar_url.length > 0) {
         const file = avatar_files[0];
-        console.log(avatar_files[0]);
         const fileExt = file.name.split(".").pop();
         const filePath = `${profile.id}-${randomValue}.${fileExt}`;
 
