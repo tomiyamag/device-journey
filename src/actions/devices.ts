@@ -91,6 +91,39 @@ const resetMainDeviceFlags = async (
   return error;
 };
 
+// デバイス画像を Base64 に変換
+async function resolveDeviceImage(endpoint: string | null | undefined) {
+  if (!endpoint) {
+    return null;
+  }
+
+  // デバイス ID 抽出
+  const id = endpoint.split("/").pop();
+  console.log(id);
+
+  if (!id) {
+    return null;
+  }
+
+  const apiKey = process.env.MOBILE_API_KEY;
+  const url = `https://api.mobileapi.dev/devices/${id}/image/?key=${apiKey}`;
+
+  try {
+    const res = await fetch(url, {
+      next: { revalidate: 300 },
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const buffer = Buffer.from(await res.arrayBuffer());
+    return `data:${res.headers.get("Content-Type") || "image/jpeg"};base64,${buffer.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
 export async function registerDevice(deviceData: DeviceInput) {
   const supabase = await createClient();
   const user = await getUser();
@@ -112,6 +145,7 @@ export async function registerDevice(deviceData: DeviceInput) {
   const payload = {
     ...deviceData,
     user_id: user.id,
+    image_url: await resolveDeviceImage(deviceData.image_url),
   };
 
   const { error } = await supabase.from("devices").insert(payload);
