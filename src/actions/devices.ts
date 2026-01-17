@@ -99,7 +99,6 @@ async function resolveDeviceImage(endpoint: string | null | undefined) {
 
   // デバイス ID 抽出
   const id = endpoint.split("/").pop();
-  console.log(id);
 
   if (!id) {
     return null;
