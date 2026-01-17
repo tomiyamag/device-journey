@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
 
-const InteractiveFormContent = dynamic(
+const SearchDeviceFormContent = dynamic(
   () => import("./SearchDeviceFormContent"),
   {
     ssr: false,
@@ -13,7 +13,7 @@ const InteractiveFormContent = dynamic(
 );
 
 const SearchDeviceForm = () => {
-  return <InteractiveFormContent />;
+  return <SearchDeviceFormContent />;
 };
 
 export default SearchDeviceForm;
