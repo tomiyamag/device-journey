@@ -25,6 +25,7 @@ interface IDeviceForm {
   onSubmit: (data: DeviceInput) => void;
   submitLabel: string;
   isPending: boolean;
+  isEdit?: boolean;
 }
 
 type DeviceSchemaType = z.input<typeof deviceFormSchema>;
@@ -70,6 +71,7 @@ const DeviceForm = ({
   onSubmit,
   submitLabel,
   isPending,
+  isEdit = false,
 }: IDeviceForm) => {
   const router = useRouter();
 
@@ -407,7 +409,7 @@ const DeviceForm = ({
           type="button"
           onClick={handleSubmit(handleFormSubmit)}
           loading={isPending}
-          disabled={!isDirty}
+          disabled={isEdit && !isDirty}
         >
           {submitLabel}
         </Button>

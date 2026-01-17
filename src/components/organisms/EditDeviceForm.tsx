@@ -103,6 +103,7 @@ const EditDeviceForm = ({ id }: IEditDeviceForm) => {
         onSubmit={(data) => handleUpdate(data)}
         submitLabel="変更する"
         isPending={isUpdating || isDeleting}
+        isEdit
       />
 
       <div className="mt-9 text-center">

@@ -52,11 +52,12 @@ const SearchDeviceResult = () => {
       purchase_price: null,
       purchase_date: null,
       retire_date: null,
-      image_url: data.images[0]?.image_url
-        ? data.images[0].image_url
-        : data.main_image_b64
-          ? `data:image/png;base64,${data.main_image_b64}`
-          : null,
+      // image_url: data.images[0]?.image_url
+      //   ? data.images[0].image_url
+      //   : data.main_image_b64
+      //     ? `data:image/png;base64,${data.main_image_b64}`
+      //     : null,
+      image_url: `/api/device-image/${deviceId}`,
       spec: {
         display: data.screen_resolution || "--",
         camera: data.camera || "--",
@@ -78,7 +79,7 @@ const SearchDeviceResult = () => {
       is_main: false,
       resale_price: null,
     };
-  }, [data]);
+  }, [data, deviceId]);
 
   if (!deviceId) {
     return null;
@@ -111,11 +112,11 @@ const SearchDeviceResult = () => {
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center">
           <div className="w-full sm:w-52 h-42 sm:h-72 relative overflow-hidden">
             {result.image_url ? (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={result.image_url}
                 alt=""
-                fill
-                className="top-1/2! left-1/2! w-auto! max-h-full h-full! sm:h-auto! -translate-1/2"
+                className="absolute top-1/2 left-1/2 w-auto max-h-full h-full sm:h-auto -translate-1/2"
               />
             ) : (
               <MdOutlineImageNotSupported className="absolute top-1/2 left-1/2 -translate-1/2 text-gray-300 text-5xl sm:text-6xl" />
