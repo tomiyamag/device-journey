@@ -40,7 +40,6 @@ const DeviceStatusBadge = ({ className, status }: IDeviceStatusBadge) => {
       className={cn(
         "text-[0.6875rem] text-white rounded-sm px-2 py-1 font-bold",
         theme,
-        // "from-35%",
         className,
       )}
     >

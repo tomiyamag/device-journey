@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { registerDevice } from "@/actions/devices";
-import { useDeviceDraftStore } from "@/app/(protected)/devices/_stores/useDeviceDraftStore";
-import { useDeviceSearchStore } from "@/app/(protected)/devices/_stores/useDeviceSearchStore";
-import { DeviceInput } from "@/types";
+import Spinner from "@/components/ui/Spinner";
 
-import ContentLoadingSpinner from "../atoms/ContentLoadingSpinner";
-import DeviceForm from "../molecules/DeviceForm";
+import { registerDevice } from "../../_actions/device";
+import DeviceForm from "../../_components/DeviceForm";
+import { useDeviceDraftStore } from "../../_stores/useDeviceDraftStore";
+import { useDeviceSearchStore } from "../../_stores/useDeviceSearchStore";
+import { DeviceInput } from "../../_types";
 
 const AddDeviceForm = () => {
   const router = useRouter();
@@ -58,7 +58,7 @@ const AddDeviceForm = () => {
   }, [draft, isSubmitting, router]);
 
   if (!draft) {
-    return <ContentLoadingSpinner className="py-8" />;
+    return <Spinner className="py-8" />;
   }
 
   const handleSubmit = (data: DeviceInput) => {

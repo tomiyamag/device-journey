@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { DeviceInputDraft } from "@/types";
+import { DeviceInputDraft } from "../_types";
 
 interface IDeviceDraftStore {
   draft: DeviceInputDraft | null;

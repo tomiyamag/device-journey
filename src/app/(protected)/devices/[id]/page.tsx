@@ -1,5 +1,9 @@
-import BackHome from "@/components/molecules/BackHome";
-import DeviceDetailContainer from "@/components/organisms/DeviceDetailContainer";
+import { Suspense } from "react";
+
+import BackHome from "@/components/common/BackHome";
+
+import DeviceDetailContainer from "./_components/DeviceDetailContainer";
+import DeviceDetailSkeleton from "./_components/DeviceDetailSkeleton";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -10,7 +14,10 @@ export default async function DeviceDetailPage({ params }: Props) {
 
   return (
     <section>
-      <DeviceDetailContainer id={id} />
+      <Suspense fallback={<DeviceDetailSkeleton />}>
+        <DeviceDetailContainer id={id} />
+      </Suspense>
+
       <BackHome
         prevItem={{
           href: "/devices",

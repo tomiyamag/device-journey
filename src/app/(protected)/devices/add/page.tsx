@@ -1,5 +1,6 @@
-import PageHeading from "@/components/atoms/PageHeading";
-import AddDeviceForm from "@/components/organisms/AddDeviceForm";
+import PageHeading from "@/components/common/PageHeading";
+
+import AddDeviceForm from "./_components/AddDeviceForm";
 
 export default function DeviceAddPage() {
   return (
