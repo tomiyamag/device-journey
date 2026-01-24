@@ -4,8 +4,8 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
+import { DeviceInput } from "@/app/(protected)/devices/_types";
 import { createClient } from "@/lib/supabase/server";
-import { DeviceInput } from "@/types";
 
 import { getUser } from "./user";
 
