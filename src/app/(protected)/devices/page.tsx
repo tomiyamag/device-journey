@@ -1,12 +1,20 @@
-import PageHeading from "@/components/atoms/PageHeading";
-import BackHome from "@/components/molecules/BackHome";
-import DeviceList from "@/components/molecules/DeviceList";
+import { Suspense } from "react";
+
+import BackHome from "@/components/common/BackHome";
+import PageHeading from "@/components/common/PageHeading";
+
+import DevicesContainer from "./_components/DevicesContainer";
+import DevicesSkeleton from "./_components/DevicesSkeleton";
 
 export default function DevicesPage() {
   return (
     <section>
       <PageHeading label="マイデバイス" />
-      <DeviceList />
+
+      <Suspense fallback={<DevicesSkeleton />}>
+        <DevicesContainer />
+      </Suspense>
+
       <BackHome />
     </section>
   );
