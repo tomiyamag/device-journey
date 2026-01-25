@@ -17,7 +17,7 @@ import { TiChartLineOutline } from "react-icons/ti";
 
 import { cn } from "@/lib/utils/cn";
 
-import SignoutButton from "../atoms/SignoutButton";
+import SignoutButton from "../common/SignoutButton";
 
 const IconWrapper = ({
   className,
