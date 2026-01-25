@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { Suspense } from "react";
+
+import { UserNameSkeleton } from "../common/UserName";
+import UserNameContainer from "../common/UserNameContainer";
+import { AvatarContainer, AvatarSkeleton } from "../ui/Avatar";
+import Menu from "./Menu";
+
+const Header = () => {
+  return (
+    <header className="bg-white h-20 sm:h-24 sticky top-0 -left-5 z-30 w-full px-5 sm:px-16 flex items-center justify-between gap-8">
+      <div className="flex gap-5 sm:gap-8 items-center flex-1 relative truncate">
+        <div className="absolute right-0 z-10 h-full w-10 bg-linear-to-r from-transparent to-white pointer-events-none"></div>
+
+        <Menu />
+
+        <Suspense fallback={<UserNameSkeleton />}>
+          <UserNameContainer />
+        </Suspense>
+      </div>
+
+      <div className="shrink-0">
+        <Suspense fallback={<AvatarSkeleton size="small" />}>
+          <Link href="/account" className="block">
+            <AvatarContainer size="small" />
+          </Link>
+        </Suspense>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
