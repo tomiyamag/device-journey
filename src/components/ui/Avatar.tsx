@@ -8,21 +8,20 @@ import { UserProfile } from "@/types";
 
 import Skeleton from "./Skeleton";
 
-interface IAvatarContainer {
-  size?: "full" | "small";
-  preview?: string | null;
-}
+type AvatarContainerProps = Omit<IAvatar, "userProfile">;
 
 export const AvatarContainer = async ({
   size = "full",
   preview,
-}: IAvatarContainer) => {
+}: AvatarContainerProps) => {
   const userProfile = await getUserProfile();
   return <Avatar userProfile={userProfile} size={size} preview={preview} />;
 };
 
-interface IAvatar extends IAvatarContainer {
+interface IAvatar {
   userProfile: UserProfile;
+  size?: "full" | "small";
+  preview?: string | null;
 }
 
 export const Avatar = ({ userProfile, size = "full", preview }: IAvatar) => {
@@ -53,7 +52,9 @@ export const Avatar = ({ userProfile, size = "full", preview }: IAvatar) => {
   );
 };
 
-export const AvatarSkeleton = ({ size }: IAvatarContainer) => {
+type AvatarSkeletonProps = Omit<IAvatar, "userProfile" | "preview">;
+
+export const AvatarSkeleton = ({ size }: AvatarSkeletonProps) => {
   return (
     <Skeleton
       className={cn("rounded-full border border-gray-200", {

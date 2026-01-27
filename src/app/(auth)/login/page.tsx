@@ -1,14 +1,14 @@
-import AuthContainer from "@/components/organisms/AuthContainer";
+import AuthLayoutContainer from "../_components/AuthLayoutContainer";
 
-interface ILoginPage {
+interface Props {
   searchParams: Promise<{
     message: string;
   }>;
 }
 
-export default async function LoginPage({ searchParams }: ILoginPage) {
+export default async function LoginPage({ searchParams }: Props) {
   return (
-    <AuthContainer
+    <AuthLayoutContainer
       type="login"
       title="Device Journey にログイン"
       description="あなたのモバイル遍歴を、スマートに管理。"

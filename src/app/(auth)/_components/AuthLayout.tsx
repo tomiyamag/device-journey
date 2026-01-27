@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import { TbDeviceMobileCheck } from "react-icons/tb";
 
-import { getUser } from "@/actions/user";
+import AuthForm, { AuthType, IAuthForm } from "@/components/molecules/AuthForm";
 
-import AuthForm, { AuthType, IAuthForm } from "../molecules/AuthForm";
-
-interface IAuthContainer extends IAuthForm {
+export interface IAuthLayout extends IAuthForm {
   title: ReactNode;
   description?: string;
   successMessage?: string;
@@ -33,18 +30,12 @@ const AUTH_META: Record<
   },
 };
 
-const AuthContainer = async ({
+const AuthLayout = ({
   type,
   title,
   description,
   successMessage,
-}: IAuthContainer) => {
-  const user = await getUser();
-
-  if (user && user.email_confirmed_at) {
-    redirect("/");
-  }
-
+}: IAuthLayout) => {
   const meta = AUTH_META[type];
 
   return (
@@ -75,4 +66,4 @@ const AuthContainer = async ({
   );
 };
 
-export default AuthContainer;
+export default AuthLayout;
