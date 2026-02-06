@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
-import Button from "@/components/atoms/Button";
-import DeviceSpec from "@/components/atoms/DeviceSpec";
+import DeviceSpec from "@/components/common/DeviceSpec";
+import Button from "@/components/ui/Button";
 import Spinner from "@/components/ui/Spinner";
 import { parseMultipleData } from "@/lib/utils/parseMultipleData";
 
