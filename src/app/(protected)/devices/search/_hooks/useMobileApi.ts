@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
+import {
+  autocompleteMobileDevicesAction,
+  getMobileDeviceAction,
+} from "../_actions/search";
 import { minLength } from "../_components/SearchDeviceContent";
-import { autocompleteMobileDevices, getMobileDevice } from "../_lib/fetcher";
 import {
   AutocompleteDeviceMobileApiResult,
   GetDeviceMobileApiResult,
@@ -23,7 +26,7 @@ export const useAutocompleteMobileDevices = (query: string) => {
 
   const result = useQuery<AutocompleteDeviceMobileApiResult[]>({
     queryKey: ["autocompleteMobileDevices", debouncedQuery],
-    queryFn: () => autocompleteMobileDevices(debouncedQuery),
+    queryFn: () => autocompleteMobileDevicesAction(debouncedQuery),
     enabled: debouncedQuery.length > minLength,
     staleTime: Infinity,
   });
@@ -39,7 +42,7 @@ export const useGetMobileDevice = (id: number | null) => {
     queryKey: ["getMobileDevice", id],
     queryFn: async () => {
       if (!id) return null;
-      return getMobileDevice(id);
+      return getMobileDeviceAction(id);
     },
     staleTime: Infinity,
     enabled: !!id,

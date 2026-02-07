@@ -1,5 +1,3 @@
-"use server";
-
 import {
   AutocompleteDeviceMobileApiResult,
   GetDeviceMobileApiResult,
