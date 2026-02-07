@@ -5,9 +5,8 @@ import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
 import { DeviceInput } from "@/app/(protected)/devices/_types";
+import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
-
-import { getUser } from "./user";
 
 export const getDevices = cache(async () => {
   const supabase = await createClient();
