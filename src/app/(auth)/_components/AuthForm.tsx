@@ -7,12 +7,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
+import { login, signup } from "@/actions/auth";
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
 import FormInput from "@/components/ui/FormInput";
 import FormPassword from "@/components/ui/FormPassword";
 
-import { login, signup } from "../_actions/auth";
 import { authFormSchema } from "../_lib/schema";
 
 export type AuthType = "login" | "signup";
