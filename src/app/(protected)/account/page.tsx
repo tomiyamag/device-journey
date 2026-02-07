@@ -6,13 +6,13 @@ import Spinner from "@/components/ui/Spinner";
 
 import AccountFormContainer from "./_components/AccountFormContainer";
 
-interface IAccountPage {
+interface Props {
   searchParams: Promise<{
     message: string;
   }>;
 }
 
-export default async function AccountPage({ searchParams }: IAccountPage) {
+export default async function AccountPage({ searchParams }: Props) {
   return (
     <section>
       <PageHeading label="アカウント設定" />
