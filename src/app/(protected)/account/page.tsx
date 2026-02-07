@@ -1,7 +1,10 @@
-import { getUser } from "@/actions/user";
-import PageHeading from "@/components/atoms/PageHeading";
-import BackHome from "@/components/molecules/BackHome";
-import AccountFormContainer from "@/components/organisms/AccountFormContainer";
+import { Suspense } from "react";
+
+import BackHome from "@/components/common/BackHome";
+import PageHeading from "@/components/common/PageHeading";
+import Spinner from "@/components/ui/Spinner";
+
+import AccountFormContainer from "./_components/AccountFormContainer";
 
 interface IAccountPage {
   searchParams: Promise<{
@@ -10,21 +13,16 @@ interface IAccountPage {
 }
 
 export default async function AccountPage({ searchParams }: IAccountPage) {
-  const user = await getUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const email = user?.email ?? "";
-
   return (
     <section>
       <PageHeading label="アカウント設定" />
-      <AccountFormContainer
-        email={email}
-        confirmSuccessMessage={(await searchParams).message}
-      />
+
+      <Suspense fallback={<Spinner className="py-32" />}>
+        <AccountFormContainer
+          confirmSuccessMessage={(await searchParams).message}
+        />
+      </Suspense>
+
       <BackHome />
     </section>
   );

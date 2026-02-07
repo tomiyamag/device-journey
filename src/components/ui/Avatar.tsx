@@ -1,24 +1,13 @@
 import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
 
-import { getUserProfile } from "@/lib/queries/userProfile";
 import { cn } from "@/lib/utils/cn";
 import { getAvatarUrl } from "@/lib/utils/getAvatarUrl";
 import { UserProfile } from "@/types";
 
 import Skeleton from "./Skeleton";
 
-type AvatarContainerProps = Omit<IAvatar, "userProfile">;
-
-export const AvatarContainer = async ({
-  size = "full",
-  preview,
-}: AvatarContainerProps) => {
-  const userProfile = await getUserProfile();
-  return <Avatar userProfile={userProfile} size={size} preview={preview} />;
-};
-
-interface IAvatar {
+export interface IAvatar {
   userProfile: UserProfile;
   size?: "full" | "small";
   preview?: string | null;

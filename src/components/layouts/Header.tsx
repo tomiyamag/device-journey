@@ -3,7 +3,8 @@ import { Suspense } from "react";
 
 import { UserNameSkeleton } from "../common/UserName";
 import UserNameContainer from "../common/UserNameContainer";
-import { AvatarContainer, AvatarSkeleton } from "../ui/Avatar";
+import { AvatarSkeleton } from "../ui/Avatar";
+import { AvatarContainer } from "../ui/AvatarContainer";
 import Menu from "./Menu";
 
 const Header = () => {

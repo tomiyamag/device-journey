@@ -33,7 +33,4 @@ export type Database = MergeDeep<
 >;
 
 export type Device = Database["public"]["Tables"]["devices"]["Row"];
-
 export type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
-export type UserProfileInput =
-  Database["public"]["Tables"]["profiles"]["Insert"];
