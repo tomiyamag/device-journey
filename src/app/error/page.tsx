@@ -1,6 +1,6 @@
 import { PiSmileySad } from "react-icons/pi";
 
-import AppLink from "@/components/atoms/AppLink";
+import AppLink from "@/components/ui/AppLink";
 
 export default function ErrorPage() {
   return (
