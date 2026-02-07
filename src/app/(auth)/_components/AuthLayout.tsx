@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { TbDeviceMobileCheck } from "react-icons/tb";
 
-import AuthForm, { AuthType, IAuthForm } from "@/components/molecules/AuthForm";
+import AuthForm, { AuthType, IAuthForm } from "./AuthForm";
 
 export interface IAuthLayout extends IAuthForm {
   title: ReactNode;

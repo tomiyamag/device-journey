@@ -1,4 +1,4 @@
-import { getDevices } from "@/actions/devices";
+import { getDevices } from "@/lib/queries/devices";
 
 import ActiveDevice from "./ActiveDevice";
 
