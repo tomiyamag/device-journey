@@ -13,7 +13,6 @@ import FormField from "@/components/ui/FormField";
 import FormInput from "@/components/ui/FormInput";
 import FormOptionGroup from "@/components/ui/FormOptionGroup";
 import FormRadio from "@/components/ui/FormRadio";
-import { useDevices } from "@/hooks/useDevices";
 import { Device } from "@/types";
 
 import { deviceFormSchema } from "../_lib/schema";
@@ -28,6 +27,7 @@ interface IDeviceForm {
   submitLabel: string;
   isPending: boolean;
   isEdit?: boolean;
+  isAlreadyMainDevice: boolean;
 }
 
 type DeviceSchemaType = z.input<typeof deviceFormSchema>;
@@ -40,15 +40,9 @@ const DeviceForm = ({
   submitLabel,
   isPending,
   isEdit = false,
+  isAlreadyMainDevice,
 }: IDeviceForm) => {
   const router = useRouter();
-
-  // NOTE: メインデバイス設定の有無を判定するため全てのデバイスを取得
-  const {
-    data: devices,
-    isLoading: isDevicesLoading,
-    isError: isDevicesError,
-  } = useDevices();
 
   // 初期値の生成
   const defaultValues = useMemo<DeviceSchemaType>(() => {
@@ -93,8 +87,6 @@ const DeviceForm = ({
   const purchaseDate = useWatch({ control, name: "purchase_date" });
   const isActiveDevice = status === "main" || status === "sub";
   const isRetired = !!retireDate;
-  const isAlreadyMainDevice =
-    devices && devices.filter((device) => device.is_main).length > 0;
 
   // 売却日が削除された場合は売却金額を空にする
   useEffect(() => {
@@ -251,8 +243,6 @@ const DeviceForm = ({
           status === "main",
           isAlreadyMainDevice,
           isRetired,
-          isDevicesLoading,
-          isDevicesError,
         )}
       >
         <FormOptionGroup>
@@ -260,25 +250,21 @@ const DeviceForm = ({
             id="is-status-main"
             label="メインデバイス"
             value="main"
-            disabled={
-              isDevicesLoading || isDevicesError || isRetired || isPending
-            }
+            disabled={isRetired || isPending}
             {...register("status")}
           />
           <FormRadio
             id="is-status-sub"
             label="サブ機"
             value="sub"
-            disabled={
-              isDevicesLoading || isDevicesError || isRetired || isPending
-            }
+            disabled={isRetired || isPending}
             {...register("status")}
           />
           <FormRadio
             id="is-status-null"
             label="指定しない"
             value="none"
-            disabled={isDevicesLoading || isDevicesError || isPending}
+            disabled={isRetired || isPending}
             {...register("status")}
           />
         </FormOptionGroup>

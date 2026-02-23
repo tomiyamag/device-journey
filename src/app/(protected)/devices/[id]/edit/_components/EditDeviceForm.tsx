@@ -15,9 +15,14 @@ import { DeviceInput } from "../../../_types";
 interface IEditDeviceForm {
   device: Device;
   id: string;
+  isAlreadyMainDevice: boolean;
 }
 
-const EditDeviceForm = ({ device, id }: IEditDeviceForm) => {
+const EditDeviceForm = ({
+  device,
+  id,
+  isAlreadyMainDevice,
+}: IEditDeviceForm) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -89,6 +94,7 @@ const EditDeviceForm = ({ device, id }: IEditDeviceForm) => {
         submitLabel="変更する"
         isPending={isUpdating || isDeleting}
         isEdit
+        isAlreadyMainDevice={isAlreadyMainDevice}
       />
 
       <div className="mt-9 text-center">

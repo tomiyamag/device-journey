@@ -8,30 +8,26 @@ export const deviceStatusDescription = (
   selectedMainDevice: boolean,
   isAlreadyMainDevice: boolean | undefined,
   isRetired: boolean,
-  isDevicesLoading: boolean,
-  isDevicesError: boolean,
 ): string | undefined => {
-  if (!isDevicesLoading) {
-    // メインデバイス設定の有無を取得できなかった場合
-    if (isDevicesError) {
-      return "現在、デバイスの用途は変更できません。時間をおいて再設定してください。";
-    }
+  // メインデバイス未登録＆売却日を指定していない場合
+  if (!isAlreadyMainDevice && !isRetired) {
+    return "メインデバイスが未登録です。この端末を登録しませんか？";
+  }
 
-    // メインデバイス未登録＆売却日を指定していない場合
-    if (!isAlreadyMainDevice && !isRetired) {
-      return "メインデバイスが未登録です。この端末を登録しませんか？";
-    }
+  // 別のデバイスをメインデバイスにする場合
+  if (isAlreadyMainDevice && selectedMainDevice && !initialData.is_main) {
+    return "現在登録されているメインデバイス設定が上書きされます。";
+  }
 
-    // 別のデバイスをメインデバイスにする場合
-    if (isAlreadyMainDevice && selectedMainDevice && !initialData.is_main) {
-      return "現在登録されているメインデバイス設定が上書きされます。";
-    }
-
-    // 売却日の指定を行った場合
-    if (isRetired && !selectedMainDevice) {
-      return "変更する場合は、指定した売却日を削除またはリセットしてください。";
-    }
+  // 売却日の指定を行った場合
+  if (isRetired && !selectedMainDevice) {
+    return "変更する場合は、指定した売却日を削除またはリセットしてください。";
   }
 
   return undefined;
+};
+
+// メインデバイス設定の有無を返す
+export const checkHasMainDevice = (devices: Device[]) => {
+  return devices.filter((device) => device.is_main).length > 0;
 };

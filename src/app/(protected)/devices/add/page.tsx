@@ -1,12 +1,18 @@
-import PageHeading from "@/components/common/PageHeading";
+import { Suspense } from "react";
 
-import AddDeviceForm from "./_components/AddDeviceForm";
+import PageHeading from "@/components/common/PageHeading";
+import Spinner from "@/components/ui/Spinner";
+
+import AddDeviceFormContainer from "./_components/AddDeviceFormContainer";
 
 export default function DeviceAddPage() {
   return (
     <section>
       <PageHeading label="デバイス情報の登録" />
-      <AddDeviceForm />
+
+      <Suspense fallback={<Spinner className="py-34" />}>
+        <AddDeviceFormContainer />
+      </Suspense>
     </section>
   );
 }

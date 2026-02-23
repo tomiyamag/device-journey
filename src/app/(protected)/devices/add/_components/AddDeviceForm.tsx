@@ -13,7 +13,11 @@ import { useDeviceDraftStore } from "../../_stores/useDeviceDraftStore";
 import { useDeviceSearchStore } from "../../_stores/useDeviceSearchStore";
 import { DeviceInput } from "../../_types";
 
-const AddDeviceForm = () => {
+interface IAddDeviceFrom {
+  isAlreadyMainDevice: boolean;
+}
+
+const AddDeviceForm = ({ isAlreadyMainDevice }: IAddDeviceFrom) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -73,6 +77,7 @@ const AddDeviceForm = () => {
       onSubmit={(data) => handleSubmit(data)}
       submitLabel="登録する"
       isPending={isPending}
+      isAlreadyMainDevice={isAlreadyMainDevice}
     />
   );
 };
