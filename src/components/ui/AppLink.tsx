@@ -11,6 +11,7 @@ const AppLink = ({ href, label }: IAppLink) => {
     <Link
       href={href}
       className="inline-flex gap-1 items-center text-teal-700 text-sm underline hover:no-underline"
+      prefetch
     >
       <span>{label}</span>
       <IoIosArrowForward />
