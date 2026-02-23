@@ -1,29 +1,30 @@
-// import AccountForm from "@/components/organisms/AccountForm";
-import { getUser } from "@/lib/queries/user";
+import { getSessionUser } from "@/lib/queries/user";
 import { getUserProfile } from "@/lib/queries/userProfile";
 
 import AccountForm from "./AccountForm";
 import ConfirmedMailAddressMessage from "./ConfirmedMailAddressMessage";
 
 interface IAccountFormContainer {
-  confirmSuccessMessage?: string;
+  searchParams: Promise<{
+    message: string;
+  }>;
 }
 
 const AccountFormContainer = async ({
-  confirmSuccessMessage,
+  searchParams,
 }: IAccountFormContainer) => {
-  const profile = await getUserProfile();
-  const user = await getUser();
+  const user = await getSessionUser();
 
   if (!user) {
     return null;
   }
 
+  const profile = await getUserProfile(user.id);
   const email = user.email ?? "";
 
   return (
     <>
-      <ConfirmedMailAddressMessage message={confirmSuccessMessage} />
+      <ConfirmedMailAddressMessage message={(await searchParams).message} />
       <AccountForm profile={profile} email={email} />
     </>
   );

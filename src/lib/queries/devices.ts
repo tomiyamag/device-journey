@@ -1,20 +1,18 @@
-import { cache } from "react";
+import { cacheTag } from "next/cache";
 
-import { createClient } from "../supabase/server";
-import { getUser } from "./user";
+import { createAdminClient } from "../supabase/server";
 
-export const getDevices = cache(async () => {
-  const supabase = await createClient();
-  const user = await getUser();
+export const getDevices = async (userId: string) => {
+  "use cache";
 
-  if (!user) {
-    return [];
-  }
+  cacheTag(`devices-${userId}`);
 
-  const { data: rawData, error } = await supabase
+  const supabaseAdmin = createAdminClient();
+
+  const { data: rawData, error } = await supabaseAdmin
     .from("devices")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", userId);
 
   if (error) {
     console.error("DB Error: ", error);
@@ -47,4 +45,4 @@ export const getDevices = cache(async () => {
   });
 
   return data;
-});
+};

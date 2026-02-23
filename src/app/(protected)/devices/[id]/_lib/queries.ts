@@ -1,21 +1,19 @@
-import { cache } from "react";
+import { cacheTag } from "next/cache";
 
-import { getUser } from "@/lib/queries/user";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
 
-export const getDeviceById = cache(async (id: string) => {
-  const supabase = await createClient();
-  const user = await getUser();
+export const getDeviceById = async (userId: string, id: string) => {
+  "use cache";
 
-  if (!user) {
-    throw new Error("ユーザーが見つかりません。");
-  }
+  cacheTag(`devices-${userId}`, `device-${id}`);
 
-  const { data, error } = await supabase
+  const supabaseAdmin = createAdminClient();
+
+  const { data, error } = await supabaseAdmin
     .from("devices")
     .select("*")
     .eq("id", id)
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (error) {
@@ -24,4 +22,4 @@ export const getDeviceById = cache(async (id: string) => {
   }
 
   return data;
-});
+};

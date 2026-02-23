@@ -1,14 +1,24 @@
 import PageHeading from "@/components/common/PageHeading";
+import { getSessionUser } from "@/lib/queries/user";
 
 import { getDeviceById } from "../../_lib/queries";
 import EditDeviceForm from "./EditDeviceForm";
 
 interface IEditDeviceFormContainer {
-  id: string;
+  params: Promise<{ id: string }>;
 }
 
-const EditDeviceFormContainer = async ({ id }: IEditDeviceFormContainer) => {
-  const device = await getDeviceById(id);
+const EditDeviceFormContainer = async ({
+  params,
+}: IEditDeviceFormContainer) => {
+  const user = await getSessionUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const { id } = await params;
+  const device = await getDeviceById(user.id, id);
 
   if (!device) {
     // TODO: notFound()

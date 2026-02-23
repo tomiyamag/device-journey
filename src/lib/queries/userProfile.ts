@@ -1,20 +1,18 @@
-import { cache } from "react";
+import { cacheTag } from "next/cache";
 
-import { createClient } from "../supabase/server";
-import { getUser } from "./user";
+import { createAdminClient } from "../supabase/server";
 
-export const getUserProfile = cache(async () => {
-  const supabase = await createClient();
-  const user = await getUser();
+export const getUserProfile = async (userId: string) => {
+  "use cache";
 
-  if (!user) {
-    throw new Error("ユーザーが見つかりません。");
-  }
+  cacheTag(`user-${userId}`);
 
-  const { data, error } = await supabase
+  const supabaseAdmin = createAdminClient();
+
+  const { data, error } = await supabaseAdmin
     .from("profiles")
     .select("*")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
 
   if (error) {
@@ -23,4 +21,4 @@ export const getUserProfile = cache(async () => {
   }
 
   return data;
-});
+};

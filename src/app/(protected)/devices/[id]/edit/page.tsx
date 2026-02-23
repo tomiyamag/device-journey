@@ -7,13 +7,11 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default async function DeviceEditPage({ params }: Props) {
-  const { id } = await params;
-
+export default function DeviceEditPage({ params }: Props) {
   return (
     <section>
       <Suspense fallback={<EditDeviceFormSkeleton />}>
-        <EditDeviceFormContainer id={id} />
+        <EditDeviceFormContainer params={params} />
       </Suspense>
     </section>
   );

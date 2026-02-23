@@ -18,9 +18,7 @@ export default async function AccountPage({ searchParams }: Props) {
       <PageHeading label="アカウント設定" />
 
       <Suspense fallback={<Spinner className="py-32" />}>
-        <AccountFormContainer
-          confirmSuccessMessage={(await searchParams).message}
-        />
+        <AccountFormContainer searchParams={searchParams} />
       </Suspense>
 
       <BackHome />

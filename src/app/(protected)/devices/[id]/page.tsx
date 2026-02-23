@@ -9,13 +9,11 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default async function DeviceDetailPage({ params }: Props) {
-  const { id } = await params;
-
+export default function DeviceDetailPage({ params }: Props) {
   return (
     <section>
       <Suspense fallback={<DeviceDetailSkeleton />}>
-        <DeviceDetailContainer id={id} />
+        <DeviceDetailContainer params={params} />
       </Suspense>
 
       <BackHome

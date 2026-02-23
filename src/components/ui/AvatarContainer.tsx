@@ -1,3 +1,4 @@
+import { getSessionUser } from "@/lib/queries/user";
 import { getUserProfile } from "@/lib/queries/userProfile";
 
 import { Avatar, IAvatar } from "./Avatar";
@@ -8,6 +9,13 @@ export const AvatarContainer = async ({
   size = "full",
   preview,
 }: AvatarContainerProps) => {
-  const userProfile = await getUserProfile();
+  const user = await getSessionUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const userProfile = await getUserProfile(user.id);
+
   return <Avatar userProfile={userProfile} size={size} preview={preview} />;
 };

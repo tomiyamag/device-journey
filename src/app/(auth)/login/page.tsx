@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import AuthLayoutContainer from "../_components/AuthLayoutContainer";
 
 interface Props {
@@ -6,13 +8,15 @@ interface Props {
   }>;
 }
 
-export default async function LoginPage({ searchParams }: Props) {
+export default function LoginPage({ searchParams }: Props) {
   return (
-    <AuthLayoutContainer
-      type="login"
-      title="Device Journey にログイン"
-      description="あなたのモバイル遍歴を、スマートに管理。"
-      successMessage={(await searchParams).message}
-    />
+    <Suspense fallback={null}>
+      <AuthLayoutContainer
+        type="login"
+        title="Device Journey にログイン"
+        description="あなたのモバイル遍歴を、スマートに管理。"
+        searchParams={searchParams}
+      />
+    </Suspense>
   );
 }

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { TbMenuDeep } from "react-icons/tb";
 
-import { UserNameSkeleton } from "../common/UserName";
 import UserNameContainer from "../common/UserNameContainer";
+import { UserNameSkeleton } from "../common/UserNameSkeleton";
 import { AvatarSkeleton } from "../ui/Avatar";
 import { AvatarContainer } from "../ui/AvatarContainer";
 import Menu from "./Menu";
@@ -13,7 +14,10 @@ const Header = () => {
       <div className="flex gap-5 sm:gap-8 items-center flex-1 relative truncate">
         <div className="absolute right-0 z-10 h-full w-10 bg-linear-to-r from-transparent to-white pointer-events-none"></div>
 
-        <Menu />
+        {/* NOTE: useSelectedLayoutSegment() によるレンダリングブロックを防ぐため、Suspense で分離 */}
+        <Suspense fallback={<TbMenuDeep size={22} className="-scale-x-100" />}>
+          <Menu />
+        </Suspense>
 
         <Suspense fallback={<UserNameSkeleton />}>
           <UserNameContainer />
