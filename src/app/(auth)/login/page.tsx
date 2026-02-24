@@ -10,7 +10,7 @@ interface Props {
 
 export default function LoginPage({ searchParams }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense>
       <AuthLayoutContainer
         type="login"
         title="Device Journey にログイン"

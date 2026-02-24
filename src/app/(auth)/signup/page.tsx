@@ -4,7 +4,7 @@ import AuthLayoutContainer from "../_components/AuthLayoutContainer";
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense>
       <AuthLayoutContainer
         type="signup"
         title="アカウントを作成する"

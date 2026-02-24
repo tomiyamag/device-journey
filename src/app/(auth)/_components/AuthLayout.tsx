@@ -57,7 +57,11 @@ const AuthLayout = ({
 
         <div className="flex gap-4 justify-center text-sm text-gray-600">
           <p>{meta.switchText}</p>
-          <Link href={meta.href} className="underline hover:no-underline">
+          <Link
+            href={meta.href}
+            className="underline hover:no-underline"
+            prefetch
+          >
             {meta.linkText}
           </Link>
         </div>
