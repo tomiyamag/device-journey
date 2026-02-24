@@ -101,6 +101,7 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
           <Link
             href={`/devices/${device.id}/edit`}
             className="inline-block transition-opacity hover:opacity-80"
+            prefetch
           >
             <div className="inline-flex items-center gap-1.5 text-teal-600 font-bold">
               <RiEditFill />

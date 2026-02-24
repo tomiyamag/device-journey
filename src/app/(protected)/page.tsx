@@ -33,7 +33,7 @@ export default function HomePage() {
 
       <section>
         <ContentHeading
-          action={<AppLink href="/devices" label="デバイスを管理" />}
+          action={<AppLink href="/devices" label="デバイスを管理" prefetch />}
         >
           その他のデバイス
         </ContentHeading>

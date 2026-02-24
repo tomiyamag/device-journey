@@ -26,7 +26,7 @@ const Header = () => {
 
       <div className="shrink-0">
         <Suspense fallback={<AvatarSkeleton size="small" />}>
-          <Link href="/account" className="block">
+          <Link href="/account" className="block" prefetch>
             <AvatarContainer size="small" />
           </Link>
         </Suspense>

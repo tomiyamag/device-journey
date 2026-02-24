@@ -97,6 +97,7 @@ const Menu = () => {
                         "text-gray-400 pointer-events-none": item.disabled,
                       },
                     )}
+                    prefetch
                   >
                     {item.icon && (
                       <IconWrapper

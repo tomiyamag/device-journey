@@ -10,7 +10,7 @@ export default function ErrorPage() {
         <div className="text-gray-400">予期せぬエラーが発生しました。</div>
       </div>
 
-      <AppLink href="/" label="ホーム" />
+      <AppLink href="/" label="ホーム" prefetch />
     </div>
   );
 }
