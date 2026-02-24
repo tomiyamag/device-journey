@@ -1,5 +1,6 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
+
+import { cn } from "@/lib/utils/cn";
 
 interface IPanel {
   className?: string;
@@ -10,9 +11,7 @@ interface IPanel {
 
 const Panel = ({ className, header, footer, children }: IPanel) => {
   return (
-    <div
-      className={classNames("bg-gray-200 rounded-xl p-1 relative", className)}
-    >
+    <div className={cn("bg-gray-200 rounded-xl p-1 relative", className)}>
       {header && <div className="py-2 px-4 mb-1">{header}</div>}
       <div className="bg-white py-5 px-4 rounded-lg">{children}</div>
       {footer && <div className="py-2 px-2 sm:px-4 mt-1">{footer}</div>}

@@ -1,5 +1,6 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
+
+import { cn } from "@/lib/utils/cn";
 
 interface ISkeleton {
   className?: string;
@@ -10,7 +11,7 @@ interface ISkeleton {
 const Skeleton = ({ className, theme = "gray", children }: ISkeleton) => {
   return (
     <div
-      className={classNames(
+      className={cn(
         "animate-pulse",
         {
           "bg-gray-100": theme === "gray",
