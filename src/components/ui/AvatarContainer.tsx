@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 import { getUserProfile } from "@/lib/queries/userProfile";
 
 import { Avatar, IAvatar } from "./Avatar";
@@ -9,7 +9,7 @@ export const AvatarContainer = async ({
   size = "full",
   preview,
 }: AvatarContainerProps) => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (!user) {
     return null;

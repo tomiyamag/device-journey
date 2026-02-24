@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 import { getUserProfile } from "@/lib/queries/userProfile";
 
 import AccountForm from "./AccountForm";
@@ -13,7 +13,7 @@ interface IAccountFormContainer {
 const AccountFormContainer = async ({
   searchParams,
 }: IAccountFormContainer) => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (!user) {
     return null;

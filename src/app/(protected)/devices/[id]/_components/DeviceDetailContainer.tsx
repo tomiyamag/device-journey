@@ -1,5 +1,5 @@
 import PageHeading from "@/components/common/PageHeading";
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 
 import { getDeviceById } from "../_lib/queries";
 import DeviceDetail from "./DeviceDetail";
@@ -9,7 +9,7 @@ interface IDeviceDetailContainer {
 }
 
 const DeviceDetailContainer = async ({ params }: IDeviceDetailContainer) => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (!user) {
     return null;

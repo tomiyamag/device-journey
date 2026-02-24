@@ -1,10 +1,10 @@
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 import { getUserProfile } from "@/lib/queries/userProfile";
 
 import { UserName } from "./UserName";
 
 const UserNameContainer = async () => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (!user) {
     return null;

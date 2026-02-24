@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 
 import AuthLayout, { IAuthLayout } from "./AuthLayout";
 
@@ -14,7 +14,7 @@ const AuthLayoutContainer = async ({
   searchParams,
   ...rest
 }: IAuthLayoutContainer) => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (user && user.email_confirmed_at) {
     redirect("/");

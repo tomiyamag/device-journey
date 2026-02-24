@@ -1,10 +1,10 @@
 import { getDevices } from "@/lib/queries/devices";
-import { getSessionUser } from "@/lib/queries/user";
+import { getUser } from "@/lib/queries/user";
 
 import ActiveDevice from "./ActiveDevice";
 
 const ActiveDeviceContainer = async () => {
-  const user = await getSessionUser();
+  const user = await getUser();
 
   if (!user) {
     return null;
