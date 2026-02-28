@@ -86,9 +86,7 @@ export async function registerDevice(deviceData: DeviceInput) {
     };
   }
 
-  // キャッシュの更新
-  revalidatePath("/");
-  revalidatePath("/devices");
+  revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
 }
@@ -128,6 +126,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
     };
   }
 
+  revalidateTag(`device-${deviceId}`, "max");
   revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
@@ -154,6 +153,7 @@ export async function deleteDevice(deviceId: string) {
     };
   }
 
+  revalidateTag(`device-${deviceId}`, "max");
   revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
