@@ -1,7 +1,7 @@
 "use server";
 
 import { SupabaseClient } from "@supabase/supabase-js";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
