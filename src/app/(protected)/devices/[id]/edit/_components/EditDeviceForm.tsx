@@ -1,7 +1,7 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { toast } from "sonner";
 
@@ -24,57 +24,47 @@ const EditDeviceForm = ({
   isAlreadyMainDevice,
 }: IEditDeviceForm) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
-  // 更新用 Mutation
-  const { mutate: updateMutate, isPending: isUpdating } = useMutation({
-    mutationFn: (data: DeviceInput) => updateDevice(id, data),
-    onSuccess: async (result) => {
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
-
-      // クライアント側のキャッシュを無効化
-      await queryClient.invalidateQueries({ queryKey: ["devices"] });
-
-      router.push("/");
-      toast.success("デバイス情報を変更しました。");
-    },
-    onError: (err) => {
-      console.error(err);
-      toast.error("予期せぬエラーが発生しました。");
-    },
-  });
-
-  // 削除用 Mutation
-  const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteDevice(id),
-    onSuccess: async (result) => {
-      if (result?.error) {
-        toast.error(result.error);
-        return;
-      }
-
-      // クライアント側のキャッシュを無効化
-      await queryClient.invalidateQueries({ queryKey: ["devices"] });
-
-      router.push("/devices");
-      toast.success("デバイスを削除しました。");
-    },
-    onError: (err) => {
-      console.error(err);
-      toast.error("予期せぬエラーが発生しました。");
-    },
-  });
+  const [isUpdating, startUpdateTransition] = useTransition();
+  const [isDeleting, startDeleteTransition] = useTransition();
 
   const handleUpdate = (data: DeviceInput) => {
-    updateMutate(data);
+    startUpdateTransition(async () => {
+      try {
+        const result = await updateDevice(id, data);
+
+        if (result?.error) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("デバイス情報を変更しました。");
+        router.push(`/devices/${id}`);
+      } catch (err) {
+        console.error(err);
+        toast.error("予期せぬエラーが発生しました。");
+      }
+    });
   };
 
   const handleDelete = () => {
     if (confirm("この操作は取り消せません。\n本当にデバイスを削除しますか？")) {
-      deleteMutate();
+      startDeleteTransition(async () => {
+        try {
+          const result = await deleteDevice(id);
+
+          if (result?.error) {
+            toast.error(result.error);
+            return;
+          }
+
+          toast.success("デバイスを削除しました。");
+          router.push("/devices");
+        } catch (err) {
+          console.error(err);
+          toast.error("予期せぬエラーが発生しました。");
+        }
+      });
     }
   };
 

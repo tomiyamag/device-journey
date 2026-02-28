@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useTransition } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
 import DeviceSpec from "@/components/common/DeviceSpec";
@@ -25,7 +25,7 @@ dayjs.extend(customParseFormat);
 const ResultDevice = () => {
   const router = useRouter();
 
-  const [isNavigating, setIsNavigating] = useState(false);
+  const [isNavigating, startTransition] = useTransition();
   const { selectedDeviceId: deviceId } = useDeviceSearchStore();
   const { data, isFetching, isError } = useGetMobileDevice(deviceId);
   const setDraft = useDeviceDraftStore((state) => state.setDraft);
@@ -77,10 +77,11 @@ const ResultDevice = () => {
   const handleProceed = () => {
     if (!result) return;
 
-    setIsNavigating(true);
     setDraft(result);
 
-    router.push("/devices/add");
+    startTransition(() => {
+      router.push("/devices/add");
+    });
   };
 
   if (isFetching) {

@@ -1,7 +1,7 @@
 "use server";
 
 import { SupabaseClient } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
@@ -128,7 +128,7 @@ export async function updateDevice(deviceId: string, deviceData: DeviceInput) {
     };
   }
 
-  revalidatePath("/", "layout");
+  revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
 }
@@ -154,8 +154,7 @@ export async function deleteDevice(deviceId: string) {
     };
   }
 
-  // キャッシュの更新
-  revalidatePath("/", "layout");
+  revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
 }
