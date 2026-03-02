@@ -1,5 +1,3 @@
-"use client";
-
 import { useFormStatus } from "react-dom";
 
 import Button, { IButton } from "../ui/Button";

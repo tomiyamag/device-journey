@@ -1,24 +1,16 @@
-"use client";
-
-import { useQueryClient } from "@tanstack/react-query";
-
 import { signout } from "@/actions/auth";
 
 import SubmitButton from "./SubmitButton";
 
 const SignoutButton = () => {
-  const queryClient = useQueryClient();
-
-  const handleClick = async () => {
-    // クライアント側の全てのキャッシュを初帰化
-    queryClient.clear();
+  const formAction = async () => {
     await signout();
   };
 
   return (
     <form>
       <SubmitButton
-        formAction={handleClick}
+        formAction={formAction}
         size="auto"
         variant="tertiary"
         className="w-28!"

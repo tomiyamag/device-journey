@@ -47,7 +47,6 @@ const AuthForm = ({ type, successMessage }: IAuthForm) => {
   });
 
   const onSubmit = (data: AuthSchemaType) => {
-    // Server Action は FormData を期待しているため変換する
     const formData = new FormData();
 
     formData.append("email", data.email);
