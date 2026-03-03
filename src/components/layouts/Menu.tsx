@@ -15,9 +15,10 @@ import { HiDeviceTablet } from "react-icons/hi2";
 import { TbMenuDeep, TbSettings } from "react-icons/tb";
 import { TiChartLineOutline } from "react-icons/ti";
 
+import { signout } from "@/actions/auth";
 import { cn } from "@/lib/utils/cn";
 
-import SignoutButton from "../common/SignoutButton";
+import Button from "../ui/Button";
 
 const IconWrapper = ({
   className,
@@ -128,7 +129,11 @@ const Menu = () => {
               </a>
             </div>
 
-            <SignoutButton />
+            <form action={signout}>
+              <Button size="auto" variant="tertiary" className="w-28">
+                ログアウト
+              </Button>
+            </form>
           </div>
         </div>
       </PopoverPanel>
