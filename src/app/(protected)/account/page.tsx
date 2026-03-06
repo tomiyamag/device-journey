@@ -12,7 +12,7 @@ interface Props {
   }>;
 }
 
-export default async function AccountPage({ searchParams }: Props) {
+export default function AccountPage({ searchParams }: Props) {
   return (
     <section>
       <PageHeading label="アカウント設定" />
