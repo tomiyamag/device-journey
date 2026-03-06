@@ -14,7 +14,7 @@ export const getDeviceById = async (userId: string, id: string) => {
     .select("*")
     .eq("id", id)
     .eq("user_id", userId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("DB Error: ", error);

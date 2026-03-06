@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { useActionState, useEffect, useTransition } from "react";
 import { toast } from "sonner";
 
 import { parseMultipleData } from "@/lib/utils/parseMultipleData";
@@ -10,7 +9,7 @@ import { Device } from "@/types";
 
 import { deleteDevice, updateDevice } from "../../../_actions/device";
 import DeviceForm from "../../../_components/DeviceForm";
-import { DeviceInput } from "../../../_types";
+import DeleteDeviceButton from "./DeleteDeviceButton";
 
 interface IEditDeviceForm {
   device: Device;
@@ -25,27 +24,21 @@ const EditDeviceForm = ({
 }: IEditDeviceForm) => {
   const router = useRouter();
 
-  const [isUpdating, startUpdateTransition] = useTransition();
+  const [lastResult, action, isUpdating] = useActionState(
+    updateDevice,
+    undefined,
+  );
   const [isDeleting, startDeleteTransition] = useTransition();
 
-  const handleUpdate = (data: DeviceInput) => {
-    startUpdateTransition(async () => {
-      try {
-        const result = await updateDevice(id, data);
+  useEffect(() => {
+    if (lastResult?.status === "error") {
+      const globalErrors = lastResult.error?.[""];
 
-        if (result?.error) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success("デバイス情報を変更しました。");
-        router.push(`/devices/${id}`);
-      } catch (err) {
-        console.error(err);
-        toast.error("予期せぬエラーが発生しました。");
+      if (globalErrors) {
+        toast.error(globalErrors[0]);
       }
-    });
-  };
+    }
+  }, [lastResult]);
 
   const handleDelete = () => {
     if (confirm("この操作は取り消せません。\n本当にデバイスを削除しますか？")) {
@@ -68,46 +61,29 @@ const EditDeviceForm = ({
     }
   };
 
+  const colors = device.colors;
+  const storage = device.spec.storage;
+
   return (
     <>
       <DeviceForm
         initialData={device}
-        candidateColors={
-          device.colors !== "--" ? parseMultipleData(device.colors) : []
-        }
-        candidateStorages={
-          device.spec.storage !== "--"
-            ? parseMultipleData(device.spec.storage)
-            : []
-        }
-        onSubmit={(data) => handleUpdate(data)}
+        candidateColors={colors !== "--" ? parseMultipleData(colors) : []}
+        candidateStorages={storage !== "--" ? parseMultipleData(storage) : []}
+        action={action}
+        lastResult={lastResult}
         submitLabel="変更する"
         isPending={isUpdating || isDeleting}
-        isEdit
         isAlreadyMainDevice={isAlreadyMainDevice}
+        isEditForm
       />
 
       <div className="mt-9 text-center">
-        <button
-          type="button"
-          className="group inline-block cursor-pointer transition-opacity hover:opacity-80 disabled:cursor-auto disabled:text-gray-400 disabled:opacity-100"
+        <DeleteDeviceButton
           onClick={handleDelete}
-          disabled={isUpdating || isDeleting}
-        >
-          <div className="inline-flex items-center gap-1.5 text-sm underline group-hover:no-underline group-disabled:no-underline">
-            {isDeleting ? (
-              <>
-                <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-transparent"></div>
-                <span>デバイスを削除しています...</span>
-              </>
-            ) : (
-              <>
-                <FaRegTrashCan />
-                <span>デバイスを削除する</span>
-              </>
-            )}
-          </div>
-        </button>
+          isUpdating={isUpdating}
+          isDeleting={isDeleting}
+        />
       </div>
     </>
   );

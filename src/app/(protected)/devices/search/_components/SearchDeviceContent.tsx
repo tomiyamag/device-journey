@@ -23,6 +23,11 @@ const SearchDeviceContent = () => {
   const [selectedDevice, setSelectedDevice] =
     useState<AutocompleteDeviceMobileApiResult | null>(null);
 
+  // Zustand の query がリセットされたら、ローカルの選択状態も null に戻す
+  if (query === "" && selectedDevice !== null) {
+    setSelectedDevice(null);
+  }
+
   const { data, isFetching, isError } = useAutocompleteMobileDevices(query);
 
   const isSuggestionsShow = query.length > minLength;

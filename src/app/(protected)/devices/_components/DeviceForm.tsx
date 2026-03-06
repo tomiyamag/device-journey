@@ -1,12 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod/v4";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { useForm, useWatch } from "react-hook-form";
-import { z } from "zod";
 
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
@@ -15,130 +13,88 @@ import FormOptionGroup from "@/components/ui/FormOptionGroup";
 import FormRadio from "@/components/ui/FormRadio";
 import { Device } from "@/types";
 
-import { deviceFormSchema } from "../_lib/schema";
+import { registerDeviceSchema, updateDeviceSchema } from "../_lib/schema";
 import { deviceStatusDescription } from "../_lib/utils";
-import { DeviceInput, DeviceInputDraft } from "../_types";
+import { DeviceFormState, DeviceInputDraft } from "../_types";
+import { useHoldWhilePending } from "../hooks/useHoldWhilePending";
 
 interface IDeviceForm {
   initialData: DeviceInputDraft | Device;
   candidateColors: string[];
   candidateStorages: string[];
-  onSubmit: (data: DeviceInput) => void;
+  action: (payload: FormData) => void;
+  lastResult: DeviceFormState;
   submitLabel: string;
   isPending: boolean;
-  isEdit?: boolean;
   isAlreadyMainDevice: boolean;
+  isEditForm?: boolean;
 }
-
-type DeviceSchemaType = z.input<typeof deviceFormSchema>;
 
 const DeviceForm = ({
   initialData,
   candidateColors,
   candidateStorages,
-  onSubmit,
+  action,
+  lastResult,
   submitLabel,
   isPending,
-  isEdit = false,
   isAlreadyMainDevice,
+  isEditForm = false,
 }: IDeviceForm) => {
   const router = useRouter();
 
-  // 初期値の生成
-  const defaultValues = useMemo<DeviceSchemaType>(() => {
-    return {
-      // 読み取り専用
-      name: initialData.name,
-      brand: initialData.brand,
-      release_date: initialData.release_date,
+  const schema = isEditForm ? updateDeviceSchema : registerDeviceSchema;
 
-      // それ以外
-      purchase_price: initialData.purchase_price ?? "",
-      purchase_date: initialData.purchase_date ?? "",
-      retire_date: initialData.retire_date ?? "",
-      color: initialData.color ?? "",
-      storage: initialData.storage ?? "",
-      resale_price: initialData.resale_price ?? "",
+  // 初期値
+  const defaultValue = {
+    purchase_price: initialData.purchase_price ?? "",
+    purchase_date: initialData.purchase_date ?? "",
+    retire_date: initialData.retire_date ?? "",
+    color: initialData.color ?? "",
+    storage: initialData.storage ?? "",
+    resale_price: initialData.resale_price ?? "",
 
-      // デバイスの用途フラグを status 文字列に変換
-      status: initialData.is_main
-        ? "main"
-        : initialData.is_sub
-          ? "sub"
-          : "none",
-    } as DeviceSchemaType;
-  }, [initialData]);
+    // デバイスの用途フラグを status 文字列に変換
+    status: initialData.is_main ? "main" : initialData.is_sub ? "sub" : "none",
+  };
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors, isDirty },
-  } = useForm<DeviceSchemaType>({
-    resolver: zodResolver(deviceFormSchema),
-    defaultValues,
+  const [form, fields] = useForm({
+    lastResult,
+    defaultValue,
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema });
+    },
   });
 
-  // UI 制御用
-  const status = useWatch({ control, name: "status" });
-  const retireDate = useWatch({ control, name: "retire_date" });
-  const purchaseDate = useWatch({ control, name: "purchase_date" });
+  const status = useHoldWhilePending(fields.status.value, isPending);
+  const retireDate = useHoldWhilePending(fields.retire_date.value, isPending);
+  const purchaseDate = fields.purchase_date.value;
   const isActiveDevice = status === "main" || status === "sub";
   const isRetired = !!retireDate;
 
-  // 売却日が削除された場合は売却金額を空にする
-  useEffect(() => {
-    if (!retireDate) {
-      setValue("resale_price", "");
-    }
-  }, [retireDate, setValue]);
-
-  const handleFormSubmit = (data: DeviceSchemaType) => {
-    /**
-     * NOTE: status, candidate_colors, candidate_storages はデータとして送信しないため、それら以外を rest として取得
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { candidate_colors, candidate_storages, ...restInitialData } =
-      (initialData as DeviceInputDraft) || {};
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { status: _status, ...restData } = data;
-
-    // 送信するフォームデータを DeviceInput 型に戻す
-    const submitData: DeviceInput = {
-      ...restInitialData,
-      ...restData,
-
-      // 金額を数値に変換
-      purchase_price:
-        data.purchase_price !== "" ? Number(data.purchase_price) : null,
-      resale_price: data.resale_price !== "" ? Number(data.resale_price) : null,
-
-      // 空文字を null に変換
-      purchase_date: data.purchase_date || null,
-      retire_date: data.retire_date || null,
-      color: data.color || null,
-      storage: data.storage || null,
-
-      // status を boolean フラグに変換
-      is_main: data.status === "main",
-      is_sub: data.status === "sub",
-    } as DeviceInput;
-
-    onSubmit(submitData);
-    reset(data);
-  };
-
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+    <form
+      key={form.id}
+      className="flex flex-col gap-6"
+      action={action}
+      {...getFormProps(form)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") e.preventDefault();
+      }}
+    >
       <FormField
         htmlFor="name"
         labelText="機種名"
         description="機種名は変更できません。"
       >
-        <FormInput id="name" type="text" readOnly {...register("name")} />
+        <FormInput
+          id="name"
+          type="text"
+          readOnly
+          defaultValue={initialData.name}
+        />
       </FormField>
 
       <FormField
@@ -146,7 +102,12 @@ const DeviceForm = ({
         labelText="ブランド名"
         description="ブランド名は変更できません。"
       >
-        <FormInput id="brand" type="text" readOnly {...register("brand")} />
+        <FormInput
+          id="brand"
+          type="text"
+          readOnly
+          defaultValue={initialData.brand}
+        />
       </FormField>
 
       <FormField
@@ -158,19 +119,19 @@ const DeviceForm = ({
           id="release-date"
           type="text"
           readOnly
-          {...register("release_date")}
+          defaultValue={initialData.release_date as string}
         />
       </FormField>
 
       <FormField
-        htmlFor="color"
+        htmlFor={fields.color.id}
         labelText="本体カラー"
         description={
           candidateColors.length > 0
             ? undefined
             : "本体カラー名を入力してください。"
         }
-        error={errors?.color?.message}
+        error={fields.color.errors?.[0]}
       >
         {candidateColors.length > 0 ? (
           <FormOptionGroup>
@@ -178,23 +139,23 @@ const DeviceForm = ({
               <Fragment key={index}>
                 <FormRadio
                   label={color}
-                  id={`color-${color}`}
-                  value={color}
                   disabled={isPending}
-                  {...register("color")}
+                  {...getInputProps(fields.color, {
+                    type: "radio",
+                    value: color,
+                  })}
+                  id={`${fields.color.id}-${index}`}
                 />
               </Fragment>
             ))}
           </FormOptionGroup>
         ) : (
           <FormInput
-            id="color"
             placeholder="Midnight Black"
-            type="text"
             autoComplete="off"
             disabled={isPending}
-            {...register("color")}
-            isError={!!errors.color}
+            {...getInputProps(fields.color, { type: "text" })}
+            isError={!!fields.color.errors}
           />
         )}
       </FormField>
@@ -207,7 +168,7 @@ const DeviceForm = ({
             ? undefined
             : "ストレージ容量を入力してください。"
         }
-        error={errors?.storage?.message}
+        error={fields.storage.errors?.[0]}
       >
         {candidateStorages.length > 0 ? (
           <FormOptionGroup>
@@ -215,23 +176,23 @@ const DeviceForm = ({
               <Fragment key={index}>
                 <FormRadio
                   label={storage}
-                  id={`storage-${storage}`}
-                  value={storage}
                   disabled={isPending}
-                  {...register("storage")}
+                  {...getInputProps(fields.storage, {
+                    type: "radio",
+                    value: storage,
+                  })}
+                  id={`${fields.storage.id}-${index}`}
                 />
               </Fragment>
             ))}
           </FormOptionGroup>
         ) : (
           <FormInput
-            id="storage"
             placeholder="256GB"
-            type="text"
             autoComplete="off"
             disabled={isPending}
-            {...register("storage")}
-            isError={!!errors.storage}
+            {...getInputProps(fields.storage, { type: "text" })}
+            isError={!!fields.storage.errors}
           />
         )}
       </FormField>
@@ -247,61 +208,62 @@ const DeviceForm = ({
       >
         <FormOptionGroup>
           <FormRadio
-            id="is-status-main"
             label="メインデバイス"
-            value="main"
             disabled={isRetired || isPending}
-            {...register("status")}
+            {...getInputProps(fields.status, { type: "radio", value: "main" })}
+            id="is-status-main"
           />
           <FormRadio
-            id="is-status-sub"
             label="サブ機"
-            value="sub"
             disabled={isRetired || isPending}
-            {...register("status")}
+            {...getInputProps(fields.status, { type: "radio", value: "sub" })}
+            id="is-status-sub"
           />
           <FormRadio
-            id="is-status-null"
             label="指定しない"
-            value="none"
             disabled={isRetired || isPending}
-            {...register("status")}
+            {...getInputProps(fields.status, { type: "radio", value: "none" })}
+            id="is-status-none"
           />
         </FormOptionGroup>
+
+        {(isRetired || isPending) && (
+          <input
+            type="hidden"
+            name={fields.status.name}
+            value={fields.status.value}
+          />
+        )}
       </FormField>
 
       <FormField
         htmlFor="purchase-date"
         labelText="購入日"
-        error={errors?.purchase_date?.message}
+        error={fields.purchase_date.errors?.[0]}
       >
         <FormInput
-          id="purchase-date"
           max={dayjs().format("YYYY-MM-DD")}
-          type="date"
           disabled={isPending}
-          {...register("purchase_date")}
-          isError={!!errors.purchase_date}
+          {...getInputProps(fields.purchase_date, { type: "date" })}
+          isError={!!fields.purchase_date.errors}
         />
       </FormField>
 
       <FormField
         htmlFor="purchase-price"
         labelText="購入金額"
-        error={errors?.purchase_price?.message}
+        error={fields.purchase_price.errors?.[0]}
       >
         <div className="flex items-center gap-2">
           <span>¥</span>
           <FormInput
-            id="purchase-price"
-            type="text"
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="off"
             placeholder="159800"
             disabled={isPending}
-            {...register("purchase_price")}
-            isError={!!errors.purchase_price}
+            {...getInputProps(fields.purchase_price, { type: "text" })}
+            isError={!!fields.purchase_price.errors}
           />
         </div>
       </FormField>
@@ -312,16 +274,14 @@ const DeviceForm = ({
             htmlFor="retire-date"
             labelText="売却日"
             description="デバイスを売却済みの場合は、売却日を指定してください。"
-            error={errors?.retire_date?.message}
+            error={fields.retire_date.errors?.[0]}
           >
             <FormInput
-              id="retire-date"
               min={purchaseDate || undefined}
               max={dayjs().format("YYYY-MM-DD")}
-              type="date"
               disabled={isPending}
-              {...register("retire_date")}
-              isError={!!errors.retire_date}
+              {...getInputProps(fields.retire_date, { type: "date" })}
+              isError={!!fields.retire_date.errors}
             />
           </FormField>
 
@@ -329,25 +289,27 @@ const DeviceForm = ({
             <FormField
               htmlFor="sold-price"
               labelText="売却金額"
-              error={errors?.resale_price?.message}
+              error={fields.resale_price.errors?.[0]}
             >
               <div className="flex items-center gap-2">
                 <span>¥</span>
                 <FormInput
-                  id="sold-price"
-                  type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
                   autoComplete="off"
                   placeholder="65000"
                   disabled={isPending}
-                  {...register("resale_price")}
-                  isError={!!errors.resale_price}
+                  {...getInputProps(fields.resale_price, { type: "text" })}
+                  isError={!!fields.resale_price.errors}
                 />
               </div>
             </FormField>
           )}
         </>
+      )}
+
+      {isEditForm && (
+        <input type="hidden" name="device_id" value={initialData.id} />
       )}
 
       <div className="flex flex-col-reverse sm:flex-row gap-6 sm:gap-4 mt-3">
@@ -360,10 +322,9 @@ const DeviceForm = ({
           戻る
         </Button>
         <Button
-          type="button"
-          onClick={handleSubmit(handleFormSubmit)}
+          type="submit"
           loading={isPending}
-          disabled={isEdit && !isDirty}
+          disabled={isEditForm && !form.dirty}
         >
           {submitLabel}
         </Button>

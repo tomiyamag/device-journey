@@ -15,8 +15,10 @@ const DeviceDetailContainer = async ({ params }: IDeviceDetailContainer) => {
     return null;
   }
 
-  const { id } = await params;
-  const device = await getDeviceById(user.id, id);
+  const userId = user.id;
+  const { id: deviceId } = await params;
+
+  const device = await getDeviceById(userId, deviceId);
 
   if (!device) {
     // TODO: notFound()

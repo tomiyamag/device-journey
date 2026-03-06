@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 import Spinner from "@/components/ui/Spinner";
@@ -9,8 +9,7 @@ import Spinner from "@/components/ui/Spinner";
 import { registerDevice } from "../../_actions/device";
 import DeviceForm from "../../_components/DeviceForm";
 import { useDeviceDraftStore } from "../../_stores/useDeviceDraftStore";
-import { useDeviceSearchStore } from "../../_stores/useDeviceSearchStore";
-import { DeviceInput } from "../../_types";
+import { DeviceFormState } from "../../_types";
 
 interface IAddDeviceFrom {
   isAlreadyMainDevice: boolean;
@@ -19,57 +18,50 @@ interface IAddDeviceFrom {
 const AddDeviceForm = ({ isAlreadyMainDevice }: IAddDeviceFrom) => {
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const draft = useDeviceDraftStore((state) => state.draft);
-  const { clearDraft } = useDeviceDraftStore();
-  const { clearSearch } = useDeviceSearchStore();
+
+  const registerWithDraft = async (
+    prevState: DeviceFormState,
+    formData: FormData,
+  ) => {
+    if (!draft) {
+      return prevState;
+    }
+    return registerDevice(draft, prevState, formData);
+  };
+
+  const [lastResult, action, isPending] = useActionState(
+    registerWithDraft,
+    undefined,
+  );
 
   useEffect(() => {
-    if (!draft && !isSubmitting) {
+    if (!draft && !isPending) {
       router.push("/devices/search");
     }
-  }, [draft, isSubmitting, router]);
+  }, [draft, isPending, router]);
+
+  useEffect(() => {
+    if (lastResult?.status === "error") {
+      const globalErrors = lastResult.error?.[""];
+
+      if (globalErrors) {
+        toast.error(globalErrors[0]);
+      }
+    }
+  }, [lastResult]);
 
   if (!draft) {
     return <Spinner className="py-8" />;
   }
-
-  const handleSubmit = (data: DeviceInput) => {
-    startTransition(async () => {
-      try {
-        const result = await registerDevice(data);
-
-        if (result?.error) {
-          toast.error(result.error);
-          return;
-        }
-
-        /**
-         * NOTE:
-         * clearDraft() の実行で検索画面に遷移するため、フラグを立てて回避（登録完了後はデバイス一覧へ遷移させる）
-         */
-        setIsSubmitting(true);
-
-        clearDraft();
-        clearSearch();
-
-        toast.success("デバイスを登録しました。");
-        router.push("/devices");
-      } catch (err) {
-        console.error(err);
-        toast.error("予期せぬエラーが発生しました");
-      }
-    });
-  };
 
   return (
     <DeviceForm
       initialData={draft}
       candidateColors={draft.candidate_colors}
       candidateStorages={draft.candidate_storages}
-      onSubmit={(data) => handleSubmit(data)}
+      action={action}
+      lastResult={lastResult}
       submitLabel="登録する"
       isPending={isPending}
       isAlreadyMainDevice={isAlreadyMainDevice}

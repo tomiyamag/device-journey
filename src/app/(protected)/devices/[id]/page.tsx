@@ -4,6 +4,7 @@ import BackHome from "@/components/common/BackHome";
 
 import DeviceDetailContainer from "./_components/DeviceDetailContainer";
 import DeviceDetailSkeleton from "./_components/DeviceDetailSkeleton";
+import DeviceUpdatedToast from "./_components/DeviceUpdatedToast";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -11,17 +12,23 @@ interface Props {
 
 export default function DeviceDetailPage({ params }: Props) {
   return (
-    <section>
-      <Suspense fallback={<DeviceDetailSkeleton />}>
-        <DeviceDetailContainer params={params} />
+    <>
+      <Suspense>
+        <DeviceUpdatedToast />
       </Suspense>
 
-      <BackHome
-        prevItem={{
-          href: "/devices",
-          label: "マイデバイス",
-        }}
-      />
-    </section>
+      <section>
+        <Suspense fallback={<DeviceDetailSkeleton />}>
+          <DeviceDetailContainer params={params} />
+        </Suspense>
+
+        <BackHome
+          prevItem={{
+            href: "/devices",
+            label: "マイデバイス",
+          }}
+        />
+      </section>
+    </>
   );
 }

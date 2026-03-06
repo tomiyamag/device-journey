@@ -19,12 +19,13 @@ const EditDeviceFormContainer = async ({
     return null;
   }
 
-  const { id } = await params;
+  const userId = user.id;
+  const { id: deviceId } = await params;
 
   // NOTE: メインデバイス設定の有無を判定するため全てのデバイスも同時に取得
   const [device, devices] = await Promise.all([
-    getDeviceById(user.id, id),
-    getDevices(user.id),
+    getDeviceById(userId, deviceId),
+    getDevices(userId),
   ]);
 
   if (!device) {
@@ -39,7 +40,7 @@ const EditDeviceFormContainer = async ({
       <PageHeading label={`${device.brand} ${device.name}`} />
       <EditDeviceForm
         device={device}
-        id={id}
+        id={deviceId}
         isAlreadyMainDevice={isAlreadyMainDevice}
       />
     </div>
