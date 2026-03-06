@@ -74,11 +74,19 @@ const baseDeviceSchema = z
 const deviceSchemaTransform = <T extends z.ZodObject<z.ZodRawShape>>(
   schema: T,
 ) =>
-  schema.transform((data) => ({
-    ...data,
-    is_main: data.status === "main",
-    is_sub: data.status === "sub",
-  }));
+  schema.transform((data) => {
+    const isMain = data.status === "main";
+    const isSub = data.status === "sub";
+    const isActive = isMain || isSub;
+
+    return {
+      ...data,
+      is_main: isMain,
+      is_sub: isSub,
+      retire_date: isActive ? null : data.retire_date,
+      resale_price: isActive ? null : data.resale_price,
+    };
+  });
 
 export const registerDeviceSchema = deviceSchemaTransform(baseDeviceSchema);
 export const updateDeviceSchema = deviceSchemaTransform(

@@ -11,6 +11,7 @@ import FormField from "@/components/ui/FormField";
 import FormInput from "@/components/ui/FormInput";
 import FormOptionGroup from "@/components/ui/FormOptionGroup";
 import FormRadio from "@/components/ui/FormRadio";
+import { cn } from "@/lib/utils/cn";
 import { Device } from "@/types";
 
 import { registerDeviceSchema, updateDeviceSchema } from "../_lib/schema";
@@ -268,45 +269,52 @@ const DeviceForm = ({
         </div>
       </FormField>
 
-      {!isActiveDevice && (
-        <>
-          <FormField
-            htmlFor="retire-date"
-            labelText="売却日"
-            description="デバイスを売却済みの場合は、売却日を指定してください。"
-            error={fields.retire_date.errors?.[0]}
-          >
-            <FormInput
-              min={purchaseDate || undefined}
-              max={dayjs().format("YYYY-MM-DD")}
-              disabled={isPending}
-              {...getInputProps(fields.retire_date, { type: "date" })}
-              isError={!!fields.retire_date.errors}
-            />
-          </FormField>
+      <div className={cn("flex-col gap-6", isActiveDevice ? "hidden" : "flex")}>
+        <FormField
+          htmlFor="retire-date"
+          labelText="売却日"
+          description="デバイスを売却済みの場合は、売却日を指定してください。"
+          error={fields.retire_date.errors?.[0]}
+        >
+          <FormInput
+            min={purchaseDate || undefined}
+            max={dayjs().format("YYYY-MM-DD")}
+            disabled={isPending}
+            {...getInputProps(fields.retire_date, { type: "date" })}
+            onChange={(e) => {
+              // NOTE: カレンダーがクリアされたら売却金額を空にする
+              if (!e.target.value) {
+                form.update({
+                  name: fields.resale_price.name,
+                  value: "",
+                });
+              }
+            }}
+            isError={!!fields.retire_date.errors}
+          />
+        </FormField>
 
-          {isRetired && (
-            <FormField
-              htmlFor="sold-price"
-              labelText="売却金額"
-              error={fields.resale_price.errors?.[0]}
-            >
-              <div className="flex items-center gap-2">
-                <span>¥</span>
-                <FormInput
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  autoComplete="off"
-                  placeholder="65000"
-                  disabled={isPending}
-                  {...getInputProps(fields.resale_price, { type: "text" })}
-                  isError={!!fields.resale_price.errors}
-                />
-              </div>
-            </FormField>
-          )}
-        </>
-      )}
+        <div className={isRetired ? "block" : "hidden"}>
+          <FormField
+            htmlFor="sold-price"
+            labelText="売却金額"
+            error={fields.resale_price.errors?.[0]}
+          >
+            <div className="flex items-center gap-2">
+              <span>¥</span>
+              <FormInput
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="off"
+                placeholder="65000"
+                disabled={isPending}
+                {...getInputProps(fields.resale_price, { type: "text" })}
+                isError={!!fields.resale_price.errors}
+              />
+            </div>
+          </FormField>
+        </div>
+      </div>
 
       {isEditForm && (
         <input type="hidden" name="device_id" value={initialData.id} />
