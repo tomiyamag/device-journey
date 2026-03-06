@@ -77,19 +77,25 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
           title="💾 Storage"
           detail={
             <>
-              {device.spec.storage.split(", ").map((item, index) => (
-                <span
-                  key={item}
-                  className={cn({
-                    "font-bold": item === device.storage,
-                  })}
-                >
-                  {item}
-                  {index === device.spec.storage.split(", ").length - 1
-                    ? ""
-                    : ", "}
-                </span>
-              ))}
+              {device.spec.storage === "--" && device.storage ? (
+                <span className="font-bold">{device.storage}</span>
+              ) : (
+                <>
+                  {device.spec.storage.split(", ").map((item, index) => (
+                    <span
+                      key={item}
+                      className={cn({
+                        "font-bold": item === device.storage,
+                      })}
+                    >
+                      {item}
+                      {index === device.spec.storage.split(", ").length - 1
+                        ? ""
+                        : ", "}
+                    </span>
+                  ))}
+                </>
+              )}
             </>
           }
           size="lg"
@@ -116,17 +122,23 @@ const DeviceDetail = ({ device }: IDeviceDetail) => {
           </DeviceDetailTableRow>
 
           <DeviceDetailTableRow head="本体カラー">
-            {device.colors.split(", ").map((color, index) => (
-              <span
-                key={color}
-                className={cn({
-                  "font-bold": color === device.color,
-                })}
-              >
-                {color}
-                {index === device.colors.split(", ").length - 1 ? "" : ", "}
-              </span>
-            ))}
+            {!device.colors ? (
+              <span className="font-bold">{device.color}</span>
+            ) : (
+              <>
+                {device.colors.split(", ").map((color, index) => (
+                  <span
+                    key={color}
+                    className={cn({
+                      "font-bold": color === device.color,
+                    })}
+                  >
+                    {color}
+                    {index === device.colors.split(", ").length - 1 ? "" : ", "}
+                  </span>
+                ))}
+              </>
+            )}
           </DeviceDetailTableRow>
 
           <DeviceDetailTableRow head="購入日">

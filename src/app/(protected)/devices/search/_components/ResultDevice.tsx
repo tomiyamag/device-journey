@@ -60,7 +60,7 @@ const ResultDevice = () => {
           ? formatReleaseDate(data.release_date)
           : "--",
       candidate_colors: parseMultipleData(data.colors ?? ""),
-      colors: data?.colors || "不明",
+      colors: data?.colors || "",
       color: null,
       candidate_storages: parseMultipleData(data.storage ?? ""),
       storage: null,
@@ -120,7 +120,7 @@ const ResultDevice = () => {
 
             <div className="flex flex-col gap-1 text-xs text-gray-500 font-bold">
               <div>発売日 : {result.release_date}</div>
-              <div>色 : {result.colors}</div>
+              <div>色 : {result.colors || "不明"}</div>
             </div>
 
             <div className="grid grid-cols-2 gap-2 mt-3 sm:mt-2 text-left">
