@@ -2,7 +2,7 @@
 
 import { parseWithZod } from "@conform-to/zod/v4";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getUser } from "@/lib/queries/user";
@@ -177,6 +177,7 @@ export async function updateDevice(
 
   revalidateTag(`device-${deviceId}`, "max");
   revalidateTag(`devices-${user.id}`, "max");
+  revalidatePath("/devices");
 
   redirect(`/devices/${deviceId}?updated=1`);
 }
