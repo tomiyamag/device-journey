@@ -316,7 +316,10 @@ const DeviceForm = ({
         <Button
           type="button"
           variant="back"
-          onClick={() => router.back()}
+          onClick={() => {
+            form.reset();
+            router.back();
+          }}
           disabled={isPending}
         >
           戻る
