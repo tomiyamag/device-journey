@@ -5,11 +5,11 @@ import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 import Spinner from "@/components/ui/Spinner";
+import { FormState } from "@/types";
 
 import { registerDevice } from "../../_actions/device";
 import DeviceForm from "../../_components/DeviceForm";
 import { useDeviceDraftStore } from "../../_stores/useDeviceDraftStore";
-import { DeviceFormState } from "../../_types";
 
 interface IAddDeviceFrom {
   isAlreadyMainDevice: boolean;
@@ -21,7 +21,7 @@ const AddDeviceForm = ({ isAlreadyMainDevice }: IAddDeviceFrom) => {
   const draft = useDeviceDraftStore((state) => state.draft);
 
   const registerWithDraft = async (
-    prevState: DeviceFormState,
+    prevState: FormState,
     formData: FormData,
   ) => {
     if (!draft) {

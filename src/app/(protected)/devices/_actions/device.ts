@@ -7,9 +7,10 @@ import { redirect } from "next/navigation";
 
 import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
+import { FormState } from "@/types";
 
 import { registerDeviceSchema, updateDeviceSchema } from "../_lib/schema";
-import { DeviceFormState, DeviceInputDraft } from "../_types";
+import { DeviceInputDraft } from "../_types";
 
 // 全デバイスの is_main フラグを false にリセットする
 const resetMainDeviceFlags = async (
@@ -58,9 +59,9 @@ async function resolveDeviceImage(endpoint: string | null | undefined) {
 
 export async function registerDevice(
   draftData: DeviceInputDraft,
-  prevState: DeviceFormState,
+  prevState: FormState,
   formData: FormData,
-): Promise<DeviceFormState> {
+): Promise<FormState> {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -119,9 +120,9 @@ export async function registerDevice(
 }
 
 export async function updateDevice(
-  prevState: DeviceFormState,
+  prevState: FormState,
   formData: FormData,
-): Promise<DeviceFormState> {
+): Promise<FormState> {
   const supabase = await createClient();
   const user = await getUser();
 

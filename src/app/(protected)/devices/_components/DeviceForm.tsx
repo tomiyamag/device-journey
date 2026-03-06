@@ -12,11 +12,11 @@ import FormInput from "@/components/ui/FormInput";
 import FormOptionGroup from "@/components/ui/FormOptionGroup";
 import FormRadio from "@/components/ui/FormRadio";
 import { cn } from "@/lib/utils/cn";
-import { Device } from "@/types";
+import { Device, FormState } from "@/types";
 
 import { registerDeviceSchema, updateDeviceSchema } from "../_lib/schema";
 import { deviceStatusDescription } from "../_lib/utils";
-import { DeviceFormState, DeviceInputDraft } from "../_types";
+import { DeviceInputDraft } from "../_types";
 import { useHoldWhilePending } from "../hooks/useHoldWhilePending";
 
 interface IDeviceForm {
@@ -24,7 +24,7 @@ interface IDeviceForm {
   candidateColors: string[];
   candidateStorages: string[];
   action: (payload: FormData) => void;
-  lastResult: DeviceFormState;
+  lastResult: FormState;
   submitLabel: string;
   isPending: boolean;
   isAlreadyMainDevice: boolean;

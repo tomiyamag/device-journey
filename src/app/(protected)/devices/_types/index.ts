@@ -10,10 +10,3 @@ export type DeviceInputDraft = MergeDeep<
     candidate_storages: string[];
   }
 >;
-
-export type DeviceFormState =
-  | {
-      status?: "error" | "success";
-      error?: Record<string, string[] | null>;
-    }
-  | undefined;

@@ -34,3 +34,9 @@ export type Database = MergeDeep<
 
 export type Device = Database["public"]["Tables"]["devices"]["Row"];
 export type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
+export type FormState =
+  | {
+      status?: "error" | "success";
+      error?: Record<string, string[] | null>;
+    }
+  | undefined;
