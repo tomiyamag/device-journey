@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { toast } from "sonner";
 
 import Spinner from "@/components/ui/Spinner";
+import { useFormResultToast } from "@/hooks/useFormResultToast";
 import { FormState } from "@/types";
 
 import { registerDevice } from "../../_actions/device";
@@ -41,15 +41,7 @@ const AddDeviceForm = ({ isAlreadyMainDevice }: IAddDeviceFrom) => {
     }
   }, [draft, isPending, router]);
 
-  useEffect(() => {
-    if (lastResult?.status === "error") {
-      const globalErrors = lastResult.error?.[""];
-
-      if (globalErrors) {
-        toast.error(globalErrors[0]);
-      }
-    }
-  }, [lastResult]);
+  useFormResultToast(lastResult, { showSuccessToast: false });
 
   if (!draft) {
     return <Spinner className="py-8" />;

@@ -27,7 +27,7 @@ const uploadUserAvatar = async (
     };
   }
 
-  return { status: "success" };
+  return { success: true };
 };
 
 export const updateUserProfile = async (
@@ -64,6 +64,7 @@ export const updateUserProfile = async (
       return {
         status: "error",
         error: { "": [uploadResult.error] },
+        timestamp: Date.now(),
       };
     }
 

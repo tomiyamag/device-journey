@@ -90,12 +90,7 @@ const DeviceForm = ({
         labelText="機種名"
         description="機種名は変更できません。"
       >
-        <FormInput
-          id="name"
-          type="text"
-          readOnly
-          defaultValue={initialData.name}
-        />
+        <FormInput id="name" type="text" readOnly value={initialData.name} />
       </FormField>
 
       <FormField
@@ -103,12 +98,7 @@ const DeviceForm = ({
         labelText="ブランド名"
         description="ブランド名は変更できません。"
       >
-        <FormInput
-          id="brand"
-          type="text"
-          readOnly
-          defaultValue={initialData.brand}
-        />
+        <FormInput id="brand" type="text" readOnly value={initialData.brand} />
       </FormField>
 
       <FormField
@@ -120,7 +110,7 @@ const DeviceForm = ({
           id="release-date"
           type="text"
           readOnly
-          defaultValue={initialData.release_date as string}
+          value={initialData.release_date as string}
         />
       </FormField>
 

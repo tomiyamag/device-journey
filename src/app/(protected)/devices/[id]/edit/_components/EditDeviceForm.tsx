@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useTransition } from "react";
+import { useActionState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { useFormResultToast } from "@/hooks/useFormResultToast";
 import { parseMultipleData } from "@/lib/utils/parseMultipleData";
 import { Device } from "@/types";
 
@@ -30,15 +31,7 @@ const EditDeviceForm = ({
   );
   const [isDeleting, startDeleteTransition] = useTransition();
 
-  useEffect(() => {
-    if (lastResult?.status === "error") {
-      const globalErrors = lastResult.error?.[""];
-
-      if (globalErrors) {
-        toast.error(globalErrors[0]);
-      }
-    }
-  }, [lastResult]);
+  useFormResultToast(lastResult, { showSuccessToast: false });
 
   const handleDelete = () => {
     if (confirm("この操作は取り消せません。\n本当にデバイスを削除しますか？")) {

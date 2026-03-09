@@ -90,6 +90,7 @@ export async function registerDevice(
       return {
         status: "error",
         error: { "": ["デバイス情報の更新に失敗しました。"] },
+        timestamp: Date.now(),
       };
     }
   }
@@ -112,6 +113,7 @@ export async function registerDevice(
     return {
       status: "error",
       error: { "": ["デバイスの登録に失敗しました。"] },
+      timestamp: Date.now(),
     };
   }
 
@@ -155,6 +157,7 @@ export async function updateDevice(
       return {
         status: "error",
         error: { "": ["デバイス情報の更新に失敗しました。"] },
+        timestamp: Date.now(),
       };
     }
   }
@@ -173,6 +176,7 @@ export async function updateDevice(
     return {
       status: "error",
       error: { "": ["デバイス情報の更新に失敗しました。"] },
+      timestamp: Date.now(),
     };
   }
 
