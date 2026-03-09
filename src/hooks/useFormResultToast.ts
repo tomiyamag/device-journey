@@ -12,7 +12,6 @@ export const useFormResultToast = (
   options: IUseFormResultToastOptions = {},
 ) => {
   const { showSuccessToast = true } = options;
-  const timestamp = lastResult?.timestamp;
 
   /**
    * NOTE: useActionState はページ再アクセス時に前回の結果を復元するため、タイムスタンプで新規の送信結果かどうかを判定する
@@ -20,6 +19,7 @@ export const useFormResultToast = (
    * @see
    * https://www.robinwieruch.de/react-server-actions-useactionstate-toast/
    */
+  const timestamp = lastResult?.timestamp;
   const prevTimestamp = useRef(timestamp);
 
   useEffect(() => {
