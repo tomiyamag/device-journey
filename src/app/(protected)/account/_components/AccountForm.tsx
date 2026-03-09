@@ -1,149 +1,71 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import z from "zod";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod/v4";
+import { useActionState } from "react";
 
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
 import FormInput from "@/components/ui/FormInput";
+import { useFormResultToast } from "@/hooks/useFormResultToast";
 import { UserProfile } from "@/types";
 
-import { updateUserProfile, uploadUserAvatar } from "../_actions/profile";
-import { accountFormSchema } from "../_lib/schema";
-import { UserProfileInput } from "../_types";
+import { updateUserProfile } from "../_actions/profile";
+import { accountSchema } from "../_lib/schema";
 import AvatarField from "./AvatarField";
-
-type AccountSchemaType = z.input<typeof accountFormSchema>;
 
 interface IAccountForm {
   profile: UserProfile;
   email: string;
 }
 
-const randomValue = Math.random();
+const AccountForm = ({ profile, email }: IAccountForm) => {
+  const [lastResult, action, isPending] = useActionState(
+    updateUserProfile,
+    undefined,
+  );
 
-export default function AccountForm({ profile, email }: IAccountForm) {
-  const queryClient = useQueryClient();
-
-  // 初期値の生成
-  const defaultValues = useMemo(() => {
-    return {
-      avatar_url: profile.avatar_url,
+  const [form, fields] = useForm({
+    lastResult,
+    defaultValue: {
       username: profile.username,
-    } as AccountSchemaType;
-  }, [profile.avatar_url, profile.username]);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isDirty },
-  } = useForm<AccountSchemaType>({
-    resolver: zodResolver(accountFormSchema),
-    defaultValues,
+      avatar_url: undefined,
+    },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: accountSchema });
+    },
   });
 
-  // 画像アップロード用 Mutation
-  const { mutateAsync: uploadAvatarMutate, isPending: isAvatarUploading } =
-    useMutation({
-      mutationFn: async ({
-        filePath,
-        file,
-      }: {
-        filePath: string;
-        file: File;
-      }) => {
-        return await uploadUserAvatar(filePath, file);
-      },
-      onSuccess: async (result) => {
-        if (result?.error) {
-          toast.error(result?.error);
-          return;
-        }
-      },
-      onError: (err) => {
-        console.error(err);
-        toast.error("予期せぬエラーが発生しました。");
-      },
-    });
-
-  // プロフィール更新用 Mutation
-  const { mutateAsync: updateProfileMutate, isPending: isProfileUpdating } =
-    useMutation({
-      mutationFn: (data: UserProfileInput) => updateUserProfile(data),
-      onSuccess: async (result) => {
-        if (result?.error) {
-          toast.error(result.error);
-          return;
-        }
-
-        // クライアント側のキャッシュを無効化
-        await queryClient.invalidateQueries({ queryKey: ["profile"] });
-
-        toast.success("アカウント情報を変更しました。");
-      },
-      onError: (err) => {
-        console.error(err);
-        toast.error("予期せぬエラーが発生しました。");
-      },
-    });
-
-  const handleFormSubmit = async (data: AccountSchemaType) => {
-    try {
-      let finalAvatarUrl: string | null = defaultValues.avatar_url as string;
-
-      const { avatar_url: avatar_files } = data;
-
-      // アバター画像が選択された場合はファイル名を生成して送信
-      if (avatar_files instanceof FileList && data.avatar_url.length > 0) {
-        const file = avatar_files[0];
-        const fileExt = file.name.split(".").pop();
-        const filePath = `${profile.id}-${randomValue}.${fileExt}`;
-
-        // 画像をストレージにアップ
-        await uploadAvatarMutate({ filePath, file });
-
-        finalAvatarUrl = filePath;
-      }
-
-      const submitData: UserProfileInput = {
-        avatar_url: finalAvatarUrl,
-        username: data.username,
-      } as UserProfileInput;
-
-      // プロフィール更新
-      await updateProfileMutate(submitData);
-      reset(submitData as AccountSchemaType);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  useFormResultToast(lastResult);
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+    <form
+      key={form.id}
+      action={action}
+      {...getFormProps(form)}
+      className="flex flex-col gap-6"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") e.preventDefault();
+      }}
+    >
       <AvatarField
-        key={profile.avatar_url}
         profile={profile}
-        {...register("avatar_url")}
-        error={errors?.avatar_url?.message}
+        {...getInputProps(fields.avatar_url, { type: "file" })}
+        error={fields.avatar_url.errors?.[0]}
       />
 
       <FormField
-        htmlFor="username"
+        htmlFor={fields.username.id}
         labelText="あなたの名前"
-        error={errors?.username?.message}
+        error={fields.username.errors?.[0]}
       >
         <FormInput
-          id="username"
-          type="text"
           placeholder="名前を入力してください"
           autoComplete="off"
-          {...register("username")}
-          isError={!!errors.username}
+          {...getInputProps(fields.username, { type: "text" })}
+          isError={!!fields.username.errors}
         />
       </FormField>
 
@@ -170,14 +92,15 @@ export default function AccountForm({ profile, email }: IAccountForm) {
 
       <div className="mt-3">
         <Button
-          type="button"
-          onClick={handleSubmit(handleFormSubmit)}
-          loading={isAvatarUploading || isProfileUpdating}
-          disabled={!isDirty}
+          type="submit"
+          loading={isPending}
+          disabled={isPending || !form.dirty}
         >
           変更を保存
         </Button>
       </div>
     </form>
   );
-}
+};
+
+export default AccountForm;

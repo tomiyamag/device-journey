@@ -2,38 +2,35 @@ import z from "zod";
 
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
-export const accountFormSchema = z.object({
-  avatar_url: z.custom<FileList | string>().superRefine((val, ctx) => {
-    // 送信するのはファイル URL のみのため、文字列が入っていればバリデーション OK
-    if (typeof val === "string") return;
-
-    // FileList でも空の場合はバリデーション OK（選択キャンセルや未選択）
-    if (!val || (val instanceof FileList && val.length === 0)) return;
-
-    const file = val[0];
-
-    // サイズチェック
-    if (file.size > MAX_FILE_SIZE) {
-      ctx.addIssue({
-        code: "custom",
-        message: "ファイルサイズの上限は 3 MB です。",
-      });
-    }
-
-    // 形式チェック
-    if (!file.type.startsWith("image/")) {
-      ctx.addIssue({
-        code: "custom",
-        message: "画像ファイルを選択してください。",
-      });
-    }
-  }),
-
+export const accountSchema = z.object({
   username: z
-    .string()
+    .string({ error: "名前を入力してください。" })
     .min(1, "名前を入力してください。")
     .max(20, "名前は 20 文字以内で入力してください。"),
-});
+  avatar_url: z
+    .custom<File | string>()
+    .optional()
+    .superRefine((val, ctx) => {
+      // 未選択または初期値の文字列（URL）の場合は OK
+      if (!val || typeof val === "string") return;
 
-export const accountFormEmailSchema = z.object();
-export const accountFormPasswordSchema = z.object();
+      // 選択キャンセル or 未選択時は OK
+      if (val.size === 0) return;
+
+      // サイズチェック
+      if (val.size > MAX_FILE_SIZE) {
+        ctx.addIssue({
+          code: "custom",
+          message: "ファイルサイズの上限は 3 MB です。",
+        });
+      }
+
+      // 形式チェック
+      if (!val.type.startsWith("image/")) {
+        ctx.addIssue({
+          code: "custom",
+          message: "画像ファイルを選択してください。",
+        });
+      }
+    }),
+});

@@ -9,7 +9,18 @@ export interface IFormFile extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const FormFile = forwardRef<HTMLInputElement, IFormFile>(
-  ({ id, label, className, ...rest }, ref) => {
+  (
+    {
+      id,
+      label,
+      className,
+      // NOTE: input type="file" に value や defaultValue を指定できないため、取り出して渡さない
+      value: _value,
+      defaultValue: _defaultValue,
+      ...rest
+    },
+    ref,
+  ) => {
     return (
       <>
         <label

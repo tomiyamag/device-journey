@@ -13,7 +13,7 @@ interface IAvatarField extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const AvatarField = forwardRef<HTMLInputElement, IAvatarField>(
-  ({ onChange, error, profile, ...rest }, ref) => {
+  ({ error, profile, ...rest }, ref) => {
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
     // プレビュー表示
@@ -26,11 +26,6 @@ const AvatarField = forwardRef<HTMLInputElement, IAvatarField>(
       } else {
         // NOTE: キャンセルされた場合は前回の選択も取り消されるため、プレビューの挙動をブラウザの仕様と合わせる
         setAvatarPreview(null);
-      }
-
-      // 親コンポーネントから渡された React Hook Form の onChange を実行する
-      if (onChange) {
-        onChange(e);
       }
     };
 

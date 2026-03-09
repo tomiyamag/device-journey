@@ -1,3 +1,4 @@
+import { SubmissionResult } from "@conform-to/react";
 import { MergeDeep } from "type-fest";
 
 import { Database as DatabaseGenerated } from "./supabase";
@@ -35,8 +36,8 @@ export type Database = MergeDeep<
 export type Device = Database["public"]["Tables"]["devices"]["Row"];
 export type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
 export type FormState =
-  | {
-      status?: "error" | "success";
-      error?: Record<string, string[] | null>;
-    }
+  | (SubmissionResult & {
+      message?: string;
+      timestamp?: number;
+    })
   | undefined;

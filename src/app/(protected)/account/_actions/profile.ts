@@ -1,38 +1,103 @@
 "use server";
 
+import { parseWithZod } from "@conform-to/zod/v4";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
 import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
+import { FormState } from "@/types";
 
-import { UserProfileInput } from "../_types";
+import { accountSchema } from "../_lib/schema";
 
-export const updateUserProfile = async (userProfileData: UserProfileInput) => {
+const uploadUserAvatar = async (
+  supabase: SupabaseClient,
+  filePath: string,
+  file: File,
+) => {
+  const { error } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file);
+
+  if (error) {
+    console.error("DB Error: ", error);
+
+    return {
+      error: "プロフィール画像のアップロードに失敗しました。",
+    };
+  }
+
+  return { status: "success" };
+};
+
+export const updateUserProfile = async (
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> => {
   const supabase = await createClient();
   const user = await getUser();
 
   if (!user) {
-    throw new Error("ユーザーが見つかりません。");
+    return {
+      status: "error",
+      error: { "": ["ユーザーが見つかりません。"] },
+    };
+  }
+
+  const submission = parseWithZod(formData, { schema: accountSchema });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { username, avatar_url: avatarFile } = submission.value;
+
+  let finalAvatarUrl: string | undefined = undefined;
+
+  if (avatarFile instanceof File && avatarFile.size > 0) {
+    const fileExt = avatarFile.name.split(".").pop();
+    const filePath = `${user.id}-${crypto.randomUUID()}.${fileExt}`;
+
+    const uploadResult = await uploadUserAvatar(supabase, filePath, avatarFile);
+
+    if (uploadResult.error) {
+      return {
+        status: "error",
+        error: { "": [uploadResult.error] },
+      };
+    }
+
+    finalAvatarUrl = filePath;
   }
 
   const { error } = await supabase.from("profiles").upsert({
-    ...userProfileData,
+    username,
     id: user.id,
+    ...(finalAvatarUrl && { avatar_url: finalAvatarUrl }),
   });
 
   if (error) {
     console.error("DB Error: ", error);
+
     return {
-      error: "アカウント情報の更新に失敗しました。",
+      status: "error",
+      error: {
+        "": ["アカウント情報の更新に失敗しました。"],
+      },
+      timestamp: Date.now(),
     };
   }
 
-  // キャッシュの更新
   revalidatePath("/", "layout");
 
-  return { success: true };
+  return {
+    status: "success",
+    message: "アカウント情報を変更しました。",
+    timestamp: Date.now(),
+  };
 };
 
+// TODO: メールアドレス変更実装
 export const updateUserEmail = async (newEmail: string) => {
   const supabase = await createClient();
 
@@ -53,31 +118,6 @@ export const updateUserEmail = async (newEmail: string) => {
   }
 
   revalidatePath("/account");
-
-  return { success: true };
-};
-
-export const uploadUserAvatar = async (filePath: string, file: File) => {
-  const supabase = await createClient();
-  const user = await getUser();
-
-  if (!user) {
-    throw new Error("ユーザーが見つかりません。");
-  }
-
-  const { error } = await supabase.storage
-    .from("avatars")
-    .upload(filePath, file);
-
-  if (error) {
-    console.error("DB Error: ", error);
-    return {
-      error: "プロフィール画像のアップロードに失敗しました。",
-    };
-  }
-
-  // キャッシュの更新
-  revalidatePath("/", "layout");
 
   return { success: true };
 };
