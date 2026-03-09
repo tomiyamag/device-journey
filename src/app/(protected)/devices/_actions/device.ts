@@ -59,7 +59,7 @@ async function resolveDeviceImage(endpoint: string | null | undefined) {
 
 export async function registerDevice(
   draftData: DeviceInputDraft,
-  prevState: FormState,
+  _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
   const supabase = await createClient();
@@ -122,7 +122,7 @@ export async function registerDevice(
 }
 
 export async function updateDevice(
-  prevState: FormState,
+  _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
   const supabase = await createClient();

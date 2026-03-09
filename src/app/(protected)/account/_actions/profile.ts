@@ -31,7 +31,7 @@ const uploadUserAvatar = async (
 };
 
 export const updateUserProfile = async (
-  prevState: FormState,
+  _prevState: FormState,
   formData: FormData,
 ): Promise<FormState> => {
   const supabase = await createClient();
