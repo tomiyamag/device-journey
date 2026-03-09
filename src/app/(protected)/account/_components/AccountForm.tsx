@@ -3,6 +3,7 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod/v4";
 import { useActionState } from "react";
+import z from "zod";
 
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
@@ -19,13 +20,15 @@ interface IAccountForm {
   email: string;
 }
 
+type AccountSchemaType = z.input<typeof accountSchema>;
+
 const AccountForm = ({ profile, email }: IAccountForm) => {
   const [lastResult, action, isPending] = useActionState(
     updateUserProfile,
     undefined,
   );
 
-  const [form, fields] = useForm({
+  const [form, fields] = useForm<AccountSchemaType>({
     lastResult,
     defaultValue: {
       username: profile.username,

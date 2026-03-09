@@ -5,6 +5,7 @@ import { parseWithZod } from "@conform-to/zod/v4";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react/jsx-runtime";
+import z from "zod";
 
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
@@ -30,6 +31,10 @@ interface IDeviceForm {
   isAlreadyMainDevice: boolean;
   isEditForm?: boolean;
 }
+
+type RegisterSchemaType = z.infer<typeof registerDeviceSchema>;
+type UpdateSchemaType = z.infer<typeof updateDeviceSchema>;
+type DeviceSchemaType = RegisterSchemaType | UpdateSchemaType;
 
 const DeviceForm = ({
   initialData,
@@ -59,7 +64,7 @@ const DeviceForm = ({
     status: initialData.is_main ? "main" : initialData.is_sub ? "sub" : "none",
   };
 
-  const [form, fields] = useForm({
+  const [form, fields] = useForm<DeviceSchemaType>({
     lastResult,
     defaultValue,
     shouldValidate: "onBlur",
