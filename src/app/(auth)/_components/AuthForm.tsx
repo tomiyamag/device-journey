@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod/v4";
 import { usePathname, useRouter } from "next/navigation";
-import { startTransition, useActionState, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -12,8 +12,9 @@ import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
 import FormInput from "@/components/ui/FormInput";
 import FormPassword from "@/components/ui/FormPassword";
+import { useFormResultToast } from "@/hooks/useFormResultToast";
 
-import { authFormSchema } from "../_lib/schema";
+import { authSchema } from "../_lib/schema";
 
 export type AuthType = "login" | "signup";
 
@@ -22,49 +23,30 @@ export interface IAuthForm {
   successMessage?: string;
 }
 
-type AuthSchemaType = z.input<typeof authFormSchema>;
+type AuthSchemaType = z.input<typeof authSchema>;
 
 const AuthForm = ({ type, successMessage }: IAuthForm) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const actionFn = type === "login" ? login : signup;
-  const initialFormState = { errorMessage: "" };
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [lastResult, action, isPending] = useActionState(actionFn, undefined);
 
-  const [formState, formAction, isPending] = useActionState(
-    actionFn,
-    initialFormState,
-  );
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AuthSchemaType>({
-    resolver: zodResolver(authFormSchema),
+  const [form, fields] = useForm<AuthSchemaType>({
+    lastResult,
+    defaultValue: {
+      email: "",
+      password: "",
+    },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: authSchema });
+    },
   });
 
-  const onSubmit = (data: AuthSchemaType) => {
-    const formData = new FormData();
-
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-
-    startTransition(() => {
-      formAction(formData);
-    });
-  };
-
-  // エラー
-  useEffect(() => {
-    if (formState.errorMessage) {
-      toast.error(formState.errorMessage);
-    }
-  }, [formState]);
-
-  // 成功
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage, {
@@ -72,44 +54,44 @@ const AuthForm = ({ type, successMessage }: IAuthForm) => {
         id: "auth-success",
       });
 
-      router.replace(pathname);
+      router.replace(pathname, { scroll: false });
     }
   }, [successMessage, router, pathname]);
 
+  useFormResultToast(lastResult, { showSuccessToast: false });
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      action={action}
+      {...getFormProps(form)}
       className="flex flex-col gap-6 max-w-sm mx-auto"
     >
       <FormField
         labelText="メールアドレス"
         htmlFor="email"
-        error={errors?.email?.message}
+        error={fields.email.errors?.[0]}
       >
         <FormInput
-          id="email"
-          type="email"
           placeholder="user@example.com"
-          {...register("email")}
-          isError={!!errors.email}
+          {...getInputProps(fields.email, { type: "email" })}
+          isError={!!fields.email.errors}
         />
       </FormField>
 
       <FormField
         labelText="パスワード"
         htmlFor="password"
-        error={errors?.password?.message}
+        error={fields.password.errors?.[0]}
       >
         <FormPassword
-          id="password"
           isPasswordShow={isPasswordShow}
           setIsPasswordShow={setIsPasswordShow}
-          {...register("password")}
-          isError={!!errors.password}
+          {...getInputProps(fields.password, { type: "password" })}
+          isError={!!fields.password.errors}
         />
       </FormField>
 
-      <Button loading={isPending}>
+      <Button type="submit" loading={isPending}>
         {type === "login" ? "ログイン" : "新規登録"}
       </Button>
     </form>

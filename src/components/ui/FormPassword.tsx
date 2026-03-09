@@ -13,6 +13,8 @@ interface IFormPassword extends IFormInput {
 const FormPassword = ({
   isPasswordShow,
   setIsPasswordShow,
+  // NOTE: type は isPasswordShow で出し分けるため getInputProps から受け取った値を渡さない
+  type: _type,
   ...rest
 }: IFormPassword) => {
   const iconClassNames = cn(
@@ -23,9 +25,9 @@ const FormPassword = ({
   return (
     <div className="relative">
       <FormInput
-        {...rest}
         type={isPasswordShow ? "text" : "password"}
         className="pr-12"
+        {...rest}
       />
       <div className="h-full flex items-center px-4 absolute top-0 right-0">
         <div>

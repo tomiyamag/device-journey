@@ -22,7 +22,7 @@ const ConfirmedMailAddressMessage = ({
         // NOTE: 開発時にトーストが二つ表示されないよう id を指定
         id: "email-confirmed",
       });
-      router.replace(pathname);
+      router.replace(pathname, { scroll: false });
     }
   }, [message, router, pathname]);
 

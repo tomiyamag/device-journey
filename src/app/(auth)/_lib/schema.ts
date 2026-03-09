@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-export const authFormSchema = z.object({
+export const authSchema = z.object({
   email: z
-    .string()
+    .string({ error: "メールアドレスを入力してください。" })
     .min(1, "メールアドレスを入力してください。")
-    .email("メールアドレスの形式が正しくありません。"),
+    .pipe(z.email("メールアドレスの形式が正しくありません。")),
   password: z
-    .string()
+    .string({ error: "パスワードを入力してください。" })
     .min(1, "パスワードを入力してください。")
     .min(8, "パスワードは 8 文字以上で入力してください。")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$/, {

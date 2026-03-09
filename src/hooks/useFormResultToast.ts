@@ -29,8 +29,10 @@ export const useFormResultToast = (
 
     prevTimestamp.current = timestamp;
 
-    if (lastResult?.status === "success") {
-      toast.success(lastResult.message);
+    if (showSuccessToast) {
+      if (lastResult?.status === "success") {
+        toast.success(lastResult.message);
+      }
     }
 
     if (lastResult?.status === "error") {
