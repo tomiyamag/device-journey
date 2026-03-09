@@ -14,10 +14,10 @@ import FormRadio from "@/components/ui/FormRadio";
 import { cn } from "@/lib/utils/cn";
 import { Device, FormState } from "@/types";
 
+import { useHoldWhilePending } from "../_hooks/useHoldWhilePending";
 import { registerDeviceSchema, updateDeviceSchema } from "../_lib/schema";
 import { deviceStatusDescription } from "../_lib/utils";
 import { DeviceInputDraft } from "../_types";
-import { useHoldWhilePending } from "../hooks/useHoldWhilePending";
 
 interface IDeviceForm {
   initialData: DeviceInputDraft | Device;
