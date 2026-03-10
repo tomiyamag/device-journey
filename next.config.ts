@@ -16,8 +16,8 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "3mb",
     },
-    cacheComponents: true,
   },
+  cacheComponents: true,
 };
 
 export default nextConfig;
