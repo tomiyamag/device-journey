@@ -1,11 +1,19 @@
 "use server";
 
-import { autocompleteMobileDevices, getMobileDevice } from "../_lib/fetcher";
+import {
+  autocompleteMobileDevices,
+  getMobileDevice,
+  resolveMobileDeviceImage,
+} from "../_lib/fetcher";
 
-export async function autocompleteMobileDevicesAction(query: string) {
+export const autocompleteMobileDevicesAction = async (query: string) => {
   return await autocompleteMobileDevices(query);
-}
+};
 
-export async function getMobileDeviceAction(id: number) {
+export const getMobileDeviceAction = async (id: number) => {
   return await getMobileDevice(id);
-}
+};
+
+export const getMobileDeviceImageAction = async (id: number) => {
+  return await resolveMobileDeviceImage(id);
+};

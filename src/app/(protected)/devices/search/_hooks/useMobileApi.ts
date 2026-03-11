@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   autocompleteMobileDevicesAction,
   getMobileDeviceAction,
+  getMobileDeviceImageAction,
 } from "../_actions/search";
 import { minLength } from "../_components/SearchDeviceContent";
 import {
@@ -40,10 +41,16 @@ export const useAutocompleteMobileDevices = (query: string) => {
 export const useGetMobileDevice = (id: number | null) => {
   return useQuery<GetDeviceMobileApiResult | null>({
     queryKey: ["getMobileDevice", id],
-    queryFn: async () => {
-      if (!id) return null;
-      return getMobileDeviceAction(id);
-    },
+    queryFn: () => getMobileDeviceAction(id!),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
+};
+
+export const useGetMobileDeviceImage = (id: number | null) => {
+  return useQuery<string | null>({
+    queryKey: ["getMobileDeviceImage", id],
+    queryFn: () => getMobileDeviceImageAction(id!),
     staleTime: Infinity,
     enabled: !!id,
   });
