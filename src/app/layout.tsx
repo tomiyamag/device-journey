@@ -1,10 +1,10 @@
 import "./globals.css";
 
-import classNames from "classnames";
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import { Toaster } from "sonner";
 
+import { cn } from "@/lib/utils/cn";
 import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
@@ -44,13 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body
-        className={classNames(
-          inter.variable,
-          notoSansJp.variable,
-          "antialiased",
-        )}
-      >
+      <body className={cn(inter.variable, notoSansJp.variable, "antialiased")}>
         <QueryProvider>
           <Toaster
             richColors

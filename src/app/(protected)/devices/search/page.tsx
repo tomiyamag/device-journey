@@ -1,7 +1,8 @@
-import PageHeading from "@/components/atoms/PageHeading";
-import BackHome from "@/components/molecules/BackHome";
-import SearchDeviceForm from "@/components/molecules/SearchDeviceForm";
-import SearchDeviceResult from "@/components/molecules/SearchDeviceResult";
+import BackHome from "@/components/common/BackHome";
+import PageHeading from "@/components/common/PageHeading";
+
+import ResultDevice from "./_components/ResultDevice";
+import SearchDevice from "./_components/SearchDevice";
 
 export default function DevicesSearchPage() {
   return (
@@ -9,10 +10,10 @@ export default function DevicesSearchPage() {
       <div className="flex flex-col gap-9">
         <div>
           <PageHeading label="新規追加するデバイスを検索" />
-          <SearchDeviceForm />
+          <SearchDevice />
         </div>
 
-        <SearchDeviceResult />
+        <ResultDevice />
       </div>
 
       <BackHome

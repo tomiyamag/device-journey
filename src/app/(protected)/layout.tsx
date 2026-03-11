@@ -1,7 +1,7 @@
-import Footer from "@/components/organisms/Footer";
-import Header from "@/components/organisms/Header";
+import Footer from "@/components/layouts/Footer";
+import Header from "@/components/layouts/Header";
 
-export default async function MainLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

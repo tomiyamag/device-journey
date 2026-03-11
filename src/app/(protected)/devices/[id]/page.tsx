@@ -1,22 +1,34 @@
-import BackHome from "@/components/molecules/BackHome";
-import DeviceDetailContainer from "@/components/organisms/DeviceDetailContainer";
+import { Suspense } from "react";
+
+import BackHome from "@/components/common/BackHome";
+
+import DeviceDetailContainer from "./_components/DeviceDetailContainer";
+import DeviceDetailSkeleton from "./_components/DeviceDetailSkeleton";
+import DeviceUpdatedToast from "./_components/DeviceUpdatedToast";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default async function DeviceDetailPage({ params }: Props) {
-  const { id } = await params;
-
+export default function DeviceDetailPage({ params }: Props) {
   return (
-    <section>
-      <DeviceDetailContainer id={id} />
-      <BackHome
-        prevItem={{
-          href: "/devices",
-          label: "マイデバイス",
-        }}
-      />
-    </section>
+    <>
+      <Suspense>
+        <DeviceUpdatedToast />
+      </Suspense>
+
+      <section>
+        <Suspense fallback={<DeviceDetailSkeleton />}>
+          <DeviceDetailContainer params={params} />
+        </Suspense>
+
+        <BackHome
+          prevItem={{
+            href: "/devices",
+            label: "マイデバイス",
+          }}
+        />
+      </section>
+    </>
   );
 }
