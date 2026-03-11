@@ -19,6 +19,7 @@ import { signout } from "@/actions/auth";
 import { cn } from "@/lib/utils/cn";
 
 import Button from "../ui/Button";
+import SignoutButton from "../ui/SignoutButton";
 
 const IconWrapper = ({
   className,
@@ -130,9 +131,7 @@ const Menu = () => {
             </div>
 
             <form action={signout}>
-              <Button size="auto" variant="tertiary" className="w-28">
-                ログアウト
-              </Button>
+              <SignoutButton />
             </form>
           </div>
         </div>
