@@ -1,24 +1,31 @@
 "use server";
 
+import { parseWithZod } from "@conform-to/zod/v4";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { authSchema } from "@/app/(auth)/_lib/schema";
 import { createClient } from "@/lib/supabase/server";
+import { FormState } from "@/types";
 
-export async function login(
-  prevSate: { errorMessage: string },
+export const login = async (
+  _prevState: FormState,
   formData: FormData,
-) {
+): Promise<FormState> => {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  const submission = parseWithZod(formData, { schema: authSchema });
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { email, password } = submission.value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) {
     // メールアドレス未確認の場合
@@ -26,46 +33,67 @@ export async function login(
       await supabase.auth.signOut();
 
       return {
-        errorMessage:
-          "メールアドレスの確認が完了していません。送信されたメールをご確認ください。",
+        status: "error",
+        error: {
+          "": [
+            "メールアドレスの確認が完了していません。送信されたメールをご確認ください。",
+          ],
+        },
+        timestamp: Date.now(),
       };
     }
 
     // それ以外
     return {
-      errorMessage: "アカウントが存在しないか、ログイン情報が間違っています。",
+      status: "error",
+      error: {
+        "": ["アカウントが存在しないか、ログイン情報が間違っています。"],
+      },
+      timestamp: Date.now(),
     };
   }
 
   revalidatePath("/", "layout");
   redirect("/");
-}
+};
 
-export async function signup(
-  prevSate: { errorMessage: string },
+export const signup = async (
+  _prevState: FormState,
   formData: FormData,
-) {
+): Promise<FormState> => {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  const submission = parseWithZod(formData, { schema: authSchema });
 
-  const { data: signUpData, error } = await supabase.auth.signUp(data);
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { email, password } = submission.value;
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
 
   // 既存ユーザーの場合
-  if (signUpData.user && signUpData.user.identities?.length === 0) {
+  if (data.user && data.user.identities?.length === 0) {
     return {
-      errorMessage: "このメールアドレスは既に登録されています。",
+      status: "error",
+      error: {
+        "": ["このメールアドレスは既に登録されています。"],
+      },
+      timestamp: Date.now(),
     };
   }
 
   if (error) {
     return {
-      errorMessage: "アカウントの作成に失敗しました。",
+      status: "error",
+      error: {
+        "": ["アカウントの作成に失敗しました。"],
+      },
+      timestamp: Date.now(),
     };
   }
 
@@ -75,18 +103,18 @@ export async function signup(
     "確認メールを送信しました。メール内のリンクから登録を完了してください。",
   );
 
-  redirect(`/auth/login?message=${message}`);
-}
+  redirect(`/login?message=${message}`);
+};
 
-export async function signout() {
+export const signout = async () => {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    redirect("/auth/login");
+    redirect("/login");
   }
 
   revalidatePath("/", "layout");
-  redirect("/auth/login");
-}
+  redirect("/login");
+};

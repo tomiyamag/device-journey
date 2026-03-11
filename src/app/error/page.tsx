@@ -1,6 +1,6 @@
 import { PiSmileySad } from "react-icons/pi";
 
-import AppLink from "@/components/atoms/AppLink";
+import AppLink from "@/components/ui/AppLink";
 
 export default function ErrorPage() {
   return (
@@ -10,7 +10,7 @@ export default function ErrorPage() {
         <div className="text-gray-400">予期せぬエラーが発生しました。</div>
       </div>
 
-      <AppLink href="/" label="ホーム" />
+      <AppLink href="/" label="ホーム" prefetch />
     </div>
   );
 }
