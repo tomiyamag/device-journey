@@ -2,9 +2,8 @@
 
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useTransition } from "react";
+import { useTransition } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
 import DeviceSpec from "@/components/common/DeviceSpec";
@@ -15,7 +14,10 @@ import { parseMultipleData } from "@/lib/utils/parseMultipleData";
 import { useDeviceDraftStore } from "../../_stores/useDeviceDraftStore";
 import { useDeviceSearchStore } from "../../_stores/useDeviceSearchStore";
 import { DeviceInputDraft } from "../../_types";
-import { useGetMobileDevice } from "../_hooks/useMobileApi";
+import {
+  useGetMobileDevice,
+  useGetMobileDeviceImage,
+} from "../_hooks/useMobileApi";
 import { formatReleaseDate } from "../_lib/utils";
 import ResultStatusMessage from "./ResultStatusMessage";
 
@@ -28,61 +30,12 @@ const ResultDevice = () => {
   const [isNavigating, startTransition] = useTransition();
   const { selectedDeviceId: deviceId } = useDeviceSearchStore();
   const { data, isFetching, isError } = useGetMobileDevice(deviceId);
+  const { data: imageBase64Url } = useGetMobileDeviceImage(deviceId);
   const setDraft = useDeviceDraftStore((state) => state.setDraft);
-
-  const result = useMemo<DeviceInputDraft | null>(() => {
-    if (!data) {
-      return null;
-    }
-
-    return {
-      name: data.name ?? "",
-      brand: data.manufacturer_name ?? "",
-      purchase_price: null,
-      purchase_date: null,
-      retire_date: null,
-      // image_url: data.images[0]?.image_url
-      //   ? data.images[0].image_url
-      //   : data.main_image_b64
-      //     ? `data:image/png;base64,${data.main_image_b64}`
-      //     : null,
-      image_url: `/api/device-image/${deviceId}`,
-      spec: {
-        display: data.screen_resolution || "--",
-        camera: data.camera || "--",
-        battery: data.battery_capacity || "--",
-        weight: data.weight || "--",
-        hardware: data.hardware || "--",
-        storage: data.storage || "--",
-      },
-      release_date:
-        data.release_date && data.release_date !== "Cancelled"
-          ? formatReleaseDate(data.release_date)
-          : "--",
-      candidate_colors: parseMultipleData(data.colors ?? ""),
-      colors: data?.colors || "",
-      color: null,
-      candidate_storages: parseMultipleData(data.storage ?? ""),
-      storage: null,
-      is_sub: false,
-      is_main: false,
-      resale_price: null,
-    };
-  }, [data, deviceId]);
 
   if (!deviceId) {
     return null;
   }
-
-  const handleProceed = () => {
-    if (!result) return;
-
-    setDraft(result);
-
-    startTransition(() => {
-      router.push("/devices/add");
-    });
-  };
 
   if (isFetching) {
     return <Spinner className="py-24" />;
@@ -92,9 +45,45 @@ const ResultDevice = () => {
     return <ResultStatusMessage message="通信エラーが発生しました" />;
   }
 
-  if (!data || !result) {
+  if (!data) {
     return <ResultStatusMessage message="デバイス情報が見つかりませんでした" />;
   }
+
+  const result: DeviceInputDraft = {
+    name: data.name ?? "",
+    brand: data.manufacturer_name ?? "",
+    purchase_price: null,
+    purchase_date: null,
+    retire_date: null,
+    image_url: imageBase64Url ?? "",
+    spec: {
+      display: data.screen_resolution || "--",
+      camera: data.camera || "--",
+      battery: data.battery_capacity || "--",
+      weight: data.weight || "--",
+      hardware: data.hardware || "--",
+      storage: data.storage || "--",
+    },
+    release_date:
+      data.release_date && data.release_date !== "Cancelled"
+        ? formatReleaseDate(data.release_date)
+        : "--",
+    candidate_colors: parseMultipleData(data.colors ?? ""),
+    colors: data?.colors || "",
+    color: null,
+    candidate_storages: parseMultipleData(data.storage ?? ""),
+    storage: null,
+    is_sub: false,
+    is_main: false,
+    resale_price: null,
+  };
+
+  const handleProceed = () => {
+    setDraft(result);
+    startTransition(() => {
+      router.push("/devices/add");
+    });
+  };
 
   return (
     <div className="flex flex-col gap-9">

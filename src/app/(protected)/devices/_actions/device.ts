@@ -25,43 +25,11 @@ const resetMainDeviceFlags = async (
   return error;
 };
 
-// デバイス画像を Base64 に変換
-async function resolveDeviceImage(endpoint: string | null | undefined) {
-  if (!endpoint) {
-    return null;
-  }
-
-  // デバイス ID 抽出
-  const id = endpoint.split("/").pop();
-
-  if (!id) {
-    return null;
-  }
-
-  const apiKey = process.env.MOBILE_API_KEY;
-  const url = `https://api.mobileapi.dev/devices/${id}/image/?key=${apiKey}`;
-
-  try {
-    const res = await fetch(url, {
-      next: { revalidate: 300 },
-    });
-
-    if (!res.ok) {
-      return null;
-    }
-
-    const buffer = Buffer.from(await res.arrayBuffer());
-    return `data:${res.headers.get("Content-Type") || "image/jpeg"};base64,${buffer.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-export async function registerDevice(
+export const registerDevice = async (
   draftData: DeviceInputDraft,
   _prevState: FormState,
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState> => {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -102,7 +70,6 @@ export async function registerDevice(
     ...restDraftData,
     ...restValidatedFormData,
     user_id: user.id,
-    image_url: await resolveDeviceImage(draftData.image_url),
   };
 
   const { error } = await supabase.from("devices").insert(payload);
@@ -119,12 +86,12 @@ export async function registerDevice(
 
   revalidateTag(`devices-${user.id}`, "max");
   redirect(`/devices/?registered=1`);
-}
+};
 
-export async function updateDevice(
+export const updateDevice = async (
   _prevState: FormState,
   formData: FormData,
-): Promise<FormState> {
+): Promise<FormState> => {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -185,9 +152,9 @@ export async function updateDevice(
   revalidatePath("/devices");
 
   redirect(`/devices/${deviceId}?updated=1`);
-}
+};
 
-export async function deleteDevice(deviceId: string) {
+export const deleteDevice = async (deviceId: string) => {
   const supabase = await createClient();
   const user = await getUser();
 
@@ -214,4 +181,4 @@ export async function deleteDevice(deviceId: string) {
   revalidateTag(`devices-${user.id}`, "max");
 
   return { success: true };
-}
+};
