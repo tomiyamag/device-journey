@@ -1,19 +1,19 @@
-type Battery = {
+export interface Battery {
   id: number;
   type: string;
   charging: string;
-};
+}
 
-type Body = {
+export interface Body {
   id: number;
   dimensions: string;
   weight: string;
   build: string;
   sim: string;
   other: string;
-};
+}
 
-type Comms = {
+export interface Comms {
   id: number;
   wlan: string;
   bluetooth: string;
@@ -21,62 +21,53 @@ type Comms = {
   nfc: string;
   radio: string;
   usb: string;
-};
+}
 
-type Display = {
+export interface Display {
   id: number;
   type: string;
   size: string;
   resolution: string;
   protection: string;
   other: string;
-};
+}
 
-type Features = {
+export interface Features {
   id: number;
   sensors: string;
   other: string;
-};
+}
 
-type Image = {
-  id: number;
-  image_url: string;
-  image_b64: string;
-  caption: string;
-  is_official: boolean;
-  order: number;
-};
-
-type Camera = {
+export interface Camera {
   id: number;
   modules: string;
   features: string;
   video: string;
-};
+}
 
-type Manufacturer = {
+export interface Manufacturer {
   id: number;
   name: string;
   logo_b64: null;
   website_url: null;
-};
+}
 
-type Memory = {
+export interface Memory {
   id: number;
   card_slot: string;
   internal: string;
   other: string;
-};
+}
 
-type Misc = {
+export interface Misc {
   id: number;
   model_numbers: string;
   sar_us: string;
   sar_eu: string;
   price: string;
-};
+}
 
-type Network = {
+export interface Network {
   id: number;
   technology: string;
   bands_2g: string;
@@ -84,21 +75,21 @@ type Network = {
   bands_4g: string;
   bands_5g: string;
   speed: string;
-};
+}
 
-type Platform = {
+export interface Platform {
   id: number;
   os: string;
   chipset: string;
   cpu: string;
   gpu: string;
-};
+}
 
-type Sound = {
+export interface Sound {
   id: number;
   loudspeaker: string;
   audio_jack: string;
-};
+}
 
 export type AutocompleteDeviceMobileApiResult = {
   id: number;
@@ -127,8 +118,8 @@ export type GetDeviceMobileApiResult = {
   camera: string;
   battery_capacity: string;
   hardware: string;
-  main_image_b64: string;
-  images: Image[];
+  image_b64: string;
+  image_url: string;
   network: Network;
   body: Body;
   display: Display;
