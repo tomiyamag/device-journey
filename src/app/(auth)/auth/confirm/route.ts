@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     if (!error) {
       redirectTo.searchParams.delete("next");
       redirectTo.searchParams.set(
-        "message",
+        "successMessage",
         "メールアドレスの確認が完了しました。",
       );
       return NextResponse.redirect(redirectTo);
@@ -34,6 +34,10 @@ export async function GET(request: NextRequest) {
   }
 
   // return the user to an error page with some instructions
-  redirectTo.pathname = "/error";
+  redirectTo.pathname = "/login";
+  redirectTo.searchParams.set(
+    "errorMessage",
+    "リンクが無効か、期限切れです。もう一度お試しください。",
+  );
   return NextResponse.redirect(redirectTo);
 }

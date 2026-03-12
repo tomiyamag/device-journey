@@ -1,3 +1,5 @@
+"use client";
+
 import { PiSmileySad } from "react-icons/pi";
 
 import AppLink from "@/components/ui/AppLink";
