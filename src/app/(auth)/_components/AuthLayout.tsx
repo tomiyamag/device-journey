@@ -8,6 +8,7 @@ export interface IAuthLayout extends IAuthForm {
   title: ReactNode;
   description?: string;
   successMessage?: string;
+  errorMessage?: string;
 }
 
 const AUTH_META: Record<
@@ -35,6 +36,7 @@ const AuthLayout = ({
   title,
   description,
   successMessage,
+  errorMessage,
 }: IAuthLayout) => {
   const meta = AUTH_META[type];
 
@@ -52,7 +54,11 @@ const AuthLayout = ({
           </div>
         </div>
         <div className="w-full">
-          <AuthForm type={type} successMessage={successMessage} />
+          <AuthForm
+            type={type}
+            successMessage={successMessage}
+            errorMessage={errorMessage}
+          />
         </div>
 
         <div className="flex gap-4 justify-center text-sm text-gray-600">

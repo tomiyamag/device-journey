@@ -21,11 +21,12 @@ export type AuthType = "login" | "signup";
 export interface IAuthForm {
   type: AuthType;
   successMessage?: string;
+  errorMessage?: string;
 }
 
 type AuthSchemaType = z.input<typeof authSchema>;
 
-const AuthForm = ({ type, successMessage }: IAuthForm) => {
+const AuthForm = ({ type, successMessage, errorMessage }: IAuthForm) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -48,15 +49,23 @@ const AuthForm = ({ type, successMessage }: IAuthForm) => {
   });
 
   useEffect(() => {
+    if (!successMessage && !errorMessage) return;
+
     if (successMessage) {
       toast.success(successMessage, {
         // NOTE: 開発時にトーストが二つ表示されないよう id を指定
         id: "auth-success",
       });
-
-      router.replace(pathname, { scroll: false });
     }
-  }, [successMessage, router, pathname]);
+
+    if (errorMessage) {
+      toast.error(errorMessage, {
+        id: "auth-error",
+      });
+    }
+
+    router.replace(pathname, { scroll: false });
+  }, [successMessage, errorMessage, router, pathname]);
 
   useFormResultToast(lastResult, { showSuccessToast: false });
 
