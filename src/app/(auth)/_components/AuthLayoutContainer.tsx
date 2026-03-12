@@ -6,7 +6,8 @@ import AuthLayout, { IAuthLayout } from "./AuthLayout";
 
 interface IAuthLayoutContainer extends IAuthLayout {
   searchParams?: Promise<{
-    message: string;
+    successMessage?: string;
+    errorMessage?: string;
   }>;
 }
 
@@ -20,9 +21,15 @@ const AuthLayoutContainer = async ({
     redirect("/");
   }
 
-  const { message: successMessage } = (await searchParams) || {};
+  const { successMessage, errorMessage } = (await searchParams) || {};
 
-  return <AuthLayout successMessage={successMessage} {...rest} />;
+  return (
+    <AuthLayout
+      successMessage={successMessage}
+      errorMessage={errorMessage}
+      {...rest}
+    />
+  );
 };
 
 export default AuthLayoutContainer;

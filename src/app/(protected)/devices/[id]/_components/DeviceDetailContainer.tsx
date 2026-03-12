@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import PageHeading from "@/components/common/PageHeading";
 import { getUser } from "@/lib/queries/user";
 
@@ -21,8 +23,7 @@ const DeviceDetailContainer = async ({ params }: IDeviceDetailContainer) => {
   const device = await getDeviceById(userId, deviceId);
 
   if (!device) {
-    // TODO: notFound()
-    return null;
+    notFound();
   }
 
   return (

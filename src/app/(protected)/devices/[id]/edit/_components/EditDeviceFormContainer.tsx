@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import PageHeading from "@/components/common/PageHeading";
 import { getDevices } from "@/lib/queries/devices";
 import { getUser } from "@/lib/queries/user";
@@ -29,8 +31,7 @@ const EditDeviceFormContainer = async ({
   ]);
 
   if (!device) {
-    // TODO: notFound()
-    return null;
+    notFound();
   }
 
   const isAlreadyMainDevice = checkHasMainDevice(devices);

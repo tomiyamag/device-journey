@@ -4,7 +4,8 @@ import AuthLayoutContainer from "../_components/AuthLayoutContainer";
 
 interface Props {
   searchParams: Promise<{
-    message: string;
+    successMessage?: string;
+    errorMessage?: string;
   }>;
 }
 
