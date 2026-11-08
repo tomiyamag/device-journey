@@ -8,7 +8,8 @@ import AccountFormContainer from "./_components/AccountFormContainer";
 
 interface Props {
   searchParams: Promise<{
-    message: string;
+    successMessage?: string;
+    errorMessage?: string;
   }>;
 }
 
