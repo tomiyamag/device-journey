@@ -6,7 +6,8 @@ import ConfirmedMailAddressMessage from "./ConfirmedMailAddressMessage";
 
 interface IAccountFormContainer {
   searchParams: Promise<{
-    message: string;
+    successMessage?: string;
+    errorMessage?: string;
   }>;
 }
 
@@ -21,11 +22,20 @@ const AccountFormContainer = async ({
 
   const profile = await getUserProfile(user.id);
   const email = user.email ?? "";
+  const pendingEmail = user.new_email ?? undefined;
+  const { successMessage, errorMessage } = await searchParams;
 
   return (
     <>
-      <ConfirmedMailAddressMessage message={(await searchParams).message} />
-      <AccountForm profile={profile} email={email} />
+      <ConfirmedMailAddressMessage
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
+      <AccountForm
+        profile={profile}
+        email={email}
+        pendingEmail={pendingEmail}
+      />
     </>
   );
 };

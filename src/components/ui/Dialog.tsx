@@ -13,9 +13,10 @@ interface IDialog {
   title: string;
   children: ReactNode;
   onClose: () => void;
+  footer?: ReactNode;
 }
 
-const Dialog = ({ isOpen, onClose, title, children }: IDialog) => {
+const Dialog = ({ isOpen, onClose, title, children, footer }: IDialog) => {
   return (
     <DialogBase
       open={isOpen}
@@ -31,16 +32,20 @@ const Dialog = ({ isOpen, onClose, title, children }: IDialog) => {
 
           <div className="text-sm/relaxed">{children}</div>
 
-          <div className="block w-auto ml-auto mr-0">
-            <Button
-              type="button"
-              onClick={onClose}
-              className="px-8"
-              size="auto"
-            >
-              閉じる
-            </Button>
-          </div>
+          {footer ? (
+            footer
+          ) : (
+            <div className="block w-auto ml-auto mr-0">
+              <Button
+                type="button"
+                onClick={onClose}
+                className="px-8"
+                size="auto"
+              >
+                閉じる
+              </Button>
+            </div>
+          )}
         </DialogPanel>
       </div>
     </DialogBase>

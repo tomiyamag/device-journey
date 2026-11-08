@@ -2,6 +2,21 @@ import z from "zod";
 
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
+export const emailChangeSchema = z
+  .object({
+    email: z
+      .string({ error: "メールアドレスを入力してください。" })
+      .min(1, "メールアドレスを入力してください。")
+      .pipe(z.email("メールアドレスの形式が正しくありません。")),
+    email_confirmation: z
+      .string({ error: "確認用メールアドレスを入力してください。" })
+      .min(1, "確認用メールアドレスを入力してください。"),
+  })
+  .refine((data) => data.email === data.email_confirmation, {
+    path: ["email_confirmation"],
+    message: "メールアドレスが一致しません。",
+  });
+
 export const accountSchema = z.object({
   username: z
     .string({ error: "名前を入力してください。" })
