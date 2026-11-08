@@ -8,7 +8,7 @@ import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
 import { FormState } from "@/types";
 
-import { accountSchema } from "../_lib/schema";
+import { accountSchema, emailChangeSchema } from "../_lib/schema";
 
 const uploadUserAvatar = async (
   supabase: SupabaseClient,
@@ -98,27 +98,104 @@ export const updateUserProfile = async (
   };
 };
 
-// TODO: メールアドレス変更実装
-export const updateUserEmail = async (newEmail: string) => {
+export const updateUserEmail = async (
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> => {
   const supabase = await createClient();
+  const user = await getUser();
 
-  const message = encodeURIComponent("メールアドレスを変更しました。");
+  if (!user) {
+    return {
+      status: "error",
+      error: { "": ["ユーザーが見つかりません。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  const submission = parseWithZod(formData, { schema: emailChangeSchema });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { email } = submission.value;
+  const currentEmail = user.email ?? "";
+
+  if (!currentEmail) {
+    return {
+      status: "error",
+      error: { "": ["現在のメールアドレスを取得できませんでした。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  if (email.toLowerCase() === currentEmail.toLowerCase()) {
+    return {
+      status: "error",
+      error: { email: ["現在のメールアドレスと同じです。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  if (user.new_email && email.toLowerCase() === user.new_email.toLowerCase()) {
+    return {
+      status: "error",
+      error: {
+        email: [
+          "このメールアドレスへの変更は既にリクエストされています。確認メールをご確認ください。",
+        ],
+      },
+      timestamp: Date.now(),
+    };
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (!baseUrl) {
+    console.error("NEXT_PUBLIC_BASE_URL is not set.");
+
+    return {
+      status: "error",
+      error: { "": ["メールアドレスの変更リクエストに失敗しました。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  const emailRedirectTo = new URL("/auth/confirm", baseUrl).toString();
 
   const { error } = await supabase.auth.updateUser(
-    { email: newEmail },
-    {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/account?message=${message}`,
-    },
+    { email },
+    { emailRedirectTo },
   );
 
   if (error) {
-    console.error("DB Error: ", error);
+    console.error("Auth Error: ", error);
+
+    let message = "メールアドレスの変更リクエストに失敗しました。";
+
+    if (error.code === "email_exists" || error.code === "user_already_exists") {
+      message = "このメールアドレスは既に使用されています。";
+    }
+
+    if (error.code === "over_email_send_rate_limit") {
+      message =
+        "確認メールの送信回数が上限に達しました。しばらく待ってから再度お試しください。";
+    }
+
     return {
-      error: "メールアドレスの変更リクエストに失敗しました。",
+      status: "error",
+      error: { "": [message] },
+      timestamp: Date.now(),
     };
   }
 
   revalidatePath("/account");
 
-  return { success: true };
+  return {
+    status: "success",
+    message:
+      "確認メールを送信しました。メール内のリンクから変更を完了してください。",
+    timestamp: Date.now(),
+  };
 };
