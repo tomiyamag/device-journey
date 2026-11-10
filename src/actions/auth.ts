@@ -4,7 +4,7 @@ import { parseWithZod } from "@conform-to/zod/v4";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { authSchema } from "@/app/(auth)/_lib/schema";
+import { authSchema, signupSchema } from "@/app/(auth)/_lib/schema";
 import { createClient } from "@/lib/supabase/server";
 import { FormState } from "@/types";
 
@@ -63,7 +63,7 @@ export const signup = async (
 ): Promise<FormState> => {
   const supabase = await createClient();
 
-  const submission = parseWithZod(formData, { schema: authSchema });
+  const submission = parseWithZod(formData, { schema: signupSchema });
 
   if (submission.status !== "success") {
     return submission.reply();
