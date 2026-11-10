@@ -8,7 +8,11 @@ import { getUser } from "@/lib/queries/user";
 import { createClient } from "@/lib/supabase/server";
 import { FormState } from "@/types";
 
-import { accountSchema, emailChangeSchema } from "../_lib/schema";
+import {
+  accountSchema,
+  emailChangeSchema,
+  passwordChangeSchema,
+} from "../_lib/schema";
 
 const uploadUserAvatar = async (
   supabase: SupabaseClient,
@@ -196,6 +200,95 @@ export const updateUserEmail = async (
     status: "success",
     message:
       "確認メールを送信しました。メール内のリンクから変更を完了してください。",
+    timestamp: Date.now(),
+  };
+};
+
+export const updateUserPassword = async (
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> => {
+  const supabase = await createClient();
+  const user = await getUser();
+
+  if (!user) {
+    return {
+      status: "error",
+      error: { "": ["ユーザーが見つかりません。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  const submission = parseWithZod(formData, { schema: passwordChangeSchema });
+
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
+
+  const { current_password, password } = submission.value;
+  const email = user.email ?? "";
+
+  if (!email) {
+    return {
+      status: "error",
+      error: { "": ["メールアドレスを取得できませんでした。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  if (current_password === password) {
+    return {
+      status: "error",
+      error: {
+        password: ["現在のパスワードと異なるパスワードを入力してください。"],
+      },
+      timestamp: Date.now(),
+    };
+  }
+
+  // NOTE: updateUser の current_password は supabase-js 2.102.0 以降のみ対応のため、
+  // 現在のパスワードは signInWithPassword で検証する
+  const { error: verifyError } = await supabase.auth.signInWithPassword({
+    email,
+    password: current_password,
+  });
+
+  if (verifyError) {
+    return {
+      status: "error",
+      error: { current_password: ["現在のパスワードが正しくありません。"] },
+      timestamp: Date.now(),
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    console.error("Auth Error: ", error);
+
+    let message = "パスワードの変更に失敗しました。";
+
+    if (error.code === "same_password") {
+      message = "現在のパスワードと異なるパスワードを入力してください。";
+    }
+
+    if (error.code === "weak_password") {
+      message =
+        "パスワードが安全ではありません。別のパスワードを入力してください。";
+    }
+
+    return {
+      status: "error",
+      error: { "": [message] },
+      timestamp: Date.now(),
+    };
+  }
+
+  revalidatePath("/account");
+
+  return {
+    status: "success",
+    message: "パスワードを変更しました。",
     timestamp: Date.now(),
   };
 };

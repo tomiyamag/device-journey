@@ -1,6 +1,24 @@
 import z from "zod";
 
+import {
+  passwordConfirmationSchema,
+  passwordSchema,
+} from "@/lib/schemas/password";
+
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
+
+export const passwordChangeSchema = z
+  .object({
+    current_password: z
+      .string({ error: "現在のパスワードを入力してください。" })
+      .min(1, "現在のパスワードを入力してください。"),
+    password: passwordSchema,
+    password_confirmation: passwordConfirmationSchema,
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    path: ["password_confirmation"],
+    message: "パスワードが一致しません。",
+  });
 
 export const emailChangeSchema = z
   .object({

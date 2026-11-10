@@ -15,6 +15,7 @@ import { updateUserProfile } from "../_actions/profile";
 import { accountSchema } from "../_lib/schema";
 import AvatarField from "./AvatarField";
 import ChangeEmailDialog from "./ChangeEmailDialog";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 interface IAccountForm {
   profile: UserProfile;
@@ -26,6 +27,7 @@ type AccountSchemaType = z.input<typeof accountSchema>;
 
 const AccountForm = ({ profile, email, pendingEmail }: IAccountForm) => {
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
 
   const [lastResult, action, isPending] = useActionState(
     updateUserProfile,
@@ -109,14 +111,26 @@ const AccountForm = ({ profile, email, pendingEmail }: IAccountForm) => {
         <FormField
           htmlFor="password"
           labelText="パスワード"
-          description="現在、パスワードの変更は行えません。"
+          description="変更するには、現在のパスワードの入力が必要です。"
         >
-          <FormInput
-            id="password"
-            type="password"
-            value="************"
-            readOnly
-          />
+          <div className="flex items-center gap-3">
+            <FormInput
+              id="password"
+              type="password"
+              value="************"
+              readOnly
+              className="min-w-0 flex-1"
+            />
+            <Button
+              type="button"
+              variant="back"
+              size="auto"
+              className="shrink-0 px-4"
+              onClick={() => setIsPasswordDialogOpen(true)}
+            >
+              変更
+            </Button>
+          </div>
         </FormField>
 
         <div className="mt-3">
@@ -134,6 +148,11 @@ const AccountForm = ({ profile, email, pendingEmail }: IAccountForm) => {
         isOpen={isEmailDialogOpen}
         currentEmail={email}
         onClose={() => setIsEmailDialogOpen(false)}
+      />
+
+      <ChangePasswordDialog
+        isOpen={isPasswordDialogOpen}
+        onClose={() => setIsPasswordDialogOpen(false)}
       />
     </>
   );
