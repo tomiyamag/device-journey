@@ -1,6 +1,11 @@
 "use client";
 
-import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import {
+  getFormProps,
+  getInputProps,
+  type Submission,
+  useForm,
+} from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod/v4";
 import { usePathname, useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -14,7 +19,7 @@ import FormInput from "@/components/ui/FormInput";
 import FormPassword from "@/components/ui/FormPassword";
 import { useFormResultToast } from "@/hooks/useFormResultToast";
 
-import { authSchema } from "../_lib/schema";
+import { authSchema, signupSchema } from "../_lib/schema";
 
 export type AuthType = "login" | "signup";
 
@@ -24,15 +29,18 @@ export interface IAuthForm {
   errorMessage?: string;
 }
 
-type AuthSchemaType = z.input<typeof authSchema>;
+type AuthSchemaType = z.input<typeof signupSchema>;
 
 const AuthForm = ({ type, successMessage, errorMessage }: IAuthForm) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const actionFn = type === "login" ? login : signup;
+  const formSchema = type === "login" ? authSchema : signupSchema;
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [isPasswordConfirmationShow, setIsPasswordConfirmationShow] =
+    useState(false);
   const [lastResult, action, isPending] = useActionState(actionFn, undefined);
 
   const [form, fields] = useForm<AuthSchemaType>({
@@ -40,11 +48,16 @@ const AuthForm = ({ type, successMessage, errorMessage }: IAuthForm) => {
     defaultValue: {
       email: "",
       password: "",
+      password_confirmation: "",
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: authSchema });
+      // NOTE: ログイン時は signupSchema の確認用パスワードを検証しないため、
+      // フォーム全体の型（新規登録）に合わせて戻り値の型を揃える
+      return parseWithZod(formData, {
+        schema: formSchema,
+      }) as Submission<AuthSchemaType>;
     },
   });
 
@@ -99,6 +112,23 @@ const AuthForm = ({ type, successMessage, errorMessage }: IAuthForm) => {
           isError={!!fields.password.errors}
         />
       </FormField>
+
+      {type === "signup" && (
+        <FormField
+          labelText="パスワード（確認用）"
+          htmlFor="password_confirmation"
+          error={fields.password_confirmation.errors?.[0]}
+        >
+          <FormPassword
+            isPasswordShow={isPasswordConfirmationShow}
+            setIsPasswordShow={setIsPasswordConfirmationShow}
+            {...getInputProps(fields.password_confirmation, {
+              type: "password",
+            })}
+            isError={!!fields.password_confirmation.errors}
+          />
+        </FormField>
+      )}
 
       <Button type="submit" loading={isPending}>
         {type === "login" ? "ログイン" : "新規登録"}
